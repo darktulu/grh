@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		#{msg['entretien.title']}
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderRH.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="form">
+			<div class="page-header">
+				<h1>Cvteque</h1>
+			</div>
+			<h:outputLabel value="nom" />
+			<h:inputText value="#{cvtequeBean.nom}" />
+			<h:outputLabel value="prenom" />
+			<h:inputText value="#{cvtequeBean.prenom}" />
+			<h:outputLabel value="row numbers" />
+			<h:inputText value="#{cvtequeBean.size}" />
+			<p:commandLink styleClass="btn btn-primary" value="search" actionListener="#{cvtequeBean.search}" update="@form" />
+			<f:subview rendered="#{not empty cvtequeBean.candidats}">
+				<h2 id="recherche">Resultat de la recherche</h2>
+				<h:dataTable styleClass="table table-striped" id="candidatsTable" var="candidat" value="#{cvtequeBean.candidats}"
+					rows="#{cvtequeBean.size}">
+
+					<p:column>
+						<h:commandLink action="profil.xhtml">
+							<f:setPropertyActionListener target="#{profilBean.candidat}" value="#{candidat}" />
+							<f:facet name="header">
+								<h:outputText value="#{msg['convocation.candidat.fullname']}" />
+							</f:facet>
+							<h:outputText value="#{candidat.nom} #{candidat.prenom} #{candidat.username}" />
+						</h:commandLink>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="ajouter à la demande" />
+						</f:facet>
+						<p:commandLink styleClass="icon-user" action="#{demandeSessionBean.addCandidat}" update=":siderform">
+							<f:setPropertyActionListener target="#{demandeSessionBean.candidat}" value="#{candidat}" />
+						</p:commandLink>
+					</p:column>
+				</h:dataTable>
+				<div class="pager">
+					<ul>
+						<li class="previous #{cvtequeBean.page == 0?'disabled':''}"><p:commandLink
+								actionListener="#{cvtequeBean.previous}" update="@form">Previous
+						</p:commandLink></li>
+						<li>#{cvtequeBean.page +1} / #{cvtequeBean.pagecount}</li>
+						<li class="next #{cvtequeBean.page +1 == cvtequeBean.pagecount?'disabled':''}"><p:commandLink
+								actionListener="#{cvtequeBean.next}" update="@form">Next
+						</p:commandLink></li>
+					</ul>
+				</div>
+			</f:subview>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="footer">
+		<ui:include src="/templates/footers/footer.xhtml" />
+	</ui:define>
+</ui:composition>

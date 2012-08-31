@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+#{msg['profil.title']}
+</ui:define>
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<div class="container">
+		<div class="row">
+			<ui:define name="sider">
+				<ui:include src="/templates/siders/siderCE.xhtml" />
+			</ui:define>
+			<ui:define name="body">
+				<h:form >
+index du role CE
+				</h:form>
+			</ui:define>
+		</div>
+	</div>
+</ui:composition>

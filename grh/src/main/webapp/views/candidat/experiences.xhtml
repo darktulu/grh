@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		#{msg['candidat.experience.title']}
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderCandidat.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="form">
+			<div class="page-header">
+				<p:commandLink styleClass="btn btn-primary pull-right" immediate="true" value="Ajouter une formation"
+					update=":formAdd:experiencePanelAdd" oncomplete="experienceDialogAdd.show()" title="Ajouter une formation" />
+				<h1>#{msg['candidat.experience.subtitle']}</h1>
+			</div>
+
+			<p:dataTable styleClass="table table-striped"
+				id="experienceTable" var="experience" value="#{informationBean.experiences}">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.experience.company']}" />
+					</f:facet>
+					<h:outputText value="#{experience.company}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.experience.function']}" />
+					</f:facet>
+					<h:outputText value="#{experience.function}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.experience.desc']}" />
+					</f:facet>
+					<h:outputText value="#{experience.description}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.experience.entrydate']}" />
+					</f:facet>
+					<h:outputText value="#{experience.entrydate}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.experience.leavingdate']}" />
+					</f:facet>
+					<h:outputText value="#{experience.leavingdate}">
+						<f:convertDateTime dateStyle="short" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['action']}" />
+					</f:facet>
+					<p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="experienceDialogEdit.show()"
+						update=":formEdit:experiencePanelEdit">
+						<f:setPropertyActionListener target="#{informationBean.experience}" value="#{experience}" />
+					</p:commandLink>
+
+					<h:outputText value=" / " />
+
+					<p:commandLink styleClass="icon-remove" immediate="true" oncomplete="experienceDialogDelete.show()">
+						<f:setPropertyActionListener target="#{informationBean.experience}" value="#{experience}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog closable="false" id="dialogDelete" header="Supprimer la experience" showEffect="fade"
+				widgetVar="experienceDialogDelete" modal="true">
+
+				<h:outputText value="Voulez vous vraiment supprimer la experience ?" />
+				<br />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" update="@form" value="#{msg['yes']}"
+					actionListener="#{informationBean.deleteExperience}" oncomplete="experienceDialogDelete.hide()" />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" immediate="true"
+					value="#{msg['no']}" oncomplete="experienceDialogDelete.hide()" actionListener="#{informationBean.initExperience}" />
+
+			</p:dialog>
+
+		</h:form>
+
+
+		<h:form id="formAdd">
+			<p:dialog closable="false" id="dialogAdd" showEffect="fade" widgetVar="experienceDialogAdd" modal="true">
+				<h3>#{msg['candidat.experience.add']}</h3>
+				<p:outputPanel id="experiencePanelAdd">
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="etab" value="#{msg['candidat.experience.company']}" />
+						<div class="controls">
+							<p:inputText id="etab" required="true" value="#{informationBean.experience.company}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="etabmsg" for="etab" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="dip" value="#{msg['candidat.experience.function']}" />
+						<div class="controls">
+							<p:inputText id="dip" required="true" value="#{informationBean.experience.function}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="dipmsg" for="dip" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="specialite" value="#{msg['candidat.experience.desc']}" />
+						<div class="controls">
+							<p:inputText id="specialite" required="true" value="#{informationBean.experience.description}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="specialitemsg" for="specialite" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="entrydate" value="#{msg['candidat.experience.entrydate']}" />
+						<div class="controls">
+							<p:calendar id="entrydate" required="true" value="#{informationBean.experience.entrydate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="entrydatemsg" for="entrydate" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="leavingdate" value="#{msg['candidat.experience.leavingdate']}" />
+						<div class="controls">
+							<p:calendar id="leavingdate" required="true" value="#{informationBean.experience.leavingdate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="leavingdatemsg" for="leavingdate" />
+						</div>
+					</div>
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
+						update=":form:experienceTable,:formAdd:experiencePanelAdd,:form"
+						oncomplete="if(!args.validationFailed)experienceDialogAdd.hide()" value="#{msg['add']}"
+						actionListener="#{informationBean.addExperience}" />
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="experienceDialogAdd.hide()"
+						actionListener="#{informationBean.initExperience}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formEdit">
+			<p:dialog closable="false" id="dialogEdit" showEffect="fade" widgetVar="experienceDialogEdit" modal="true">
+				<h3>#{msg['candidat.experience.update']}</h3>
+				<p:outputPanel id="experiencePanelEdit">
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="etab" value="#{msg['candidat.experience.company']}" />
+						<div class="controls">
+							<p:inputText id="etab" required="true" value="#{informationBean.experience.company}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="etabmsg" for="etab" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="dip" value="#{msg['candidat.experience.function']}" />
+						<div class="controls">
+							<p:inputText id="dip" required="true" value="#{informationBean.experience.function}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="dipmsg" for="dip" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="specialite" value="#{msg['candidat.experience.desc']}" />
+						<div class="controls">
+							<p:inputTextarea autoResize="true" id="specialite" required="true" value="#{informationBean.experience.description}">
+							</p:inputTextarea>
+							<h:message styleClass="help-inline" id="specialitemsg" for="specialite" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="entrydate" value="#{msg['candidat.experience.entrydate']}" />
+						<div class="controls">
+							<p:calendar id="entrydate" required="true" value="#{informationBean.experience.entrydate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="entrydatemsg" for="entrydate" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="leavingdate" value="#{msg['candidat.experience.leavingdate']}" />
+						<div class="controls">
+							<p:calendar id="leavingdate" required="true" value="#{informationBean.experience.leavingdate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="leavingdatemsg" for="leavingdate" />
+						</div>
+					</div>
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
+						update=":form:experienceTable,:formEdit:experiencePanelEdit,:form:experienceTable"
+						oncomplete="if(!args.validationFailed)experienceDialogEdit.hide()" value="#{msg['update']}"
+						actionListener="#{informationBean.updateExperience}" />
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="if(args)experienceDialogEdit.hide()"
+						actionListener="#{informationBean.initExperience}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

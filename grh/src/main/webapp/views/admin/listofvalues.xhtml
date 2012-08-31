@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		Administration des List Of Value
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderAdmin.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="typeTableForm">
+
+			<h:messages
+				style="width : 300px; border : 2px solid red ; font-weight : bold; color : red ; background-color : #ffdbdb" />
+
+			<p:commandLink immediate="true" styleClass="btn btn-primary pull-right" value="Ajouter un type"
+				update=":addTypeForm:typePanelAdd" oncomplete="typeDialogAdd.show()" title="Ajouter un type" />
+			<br />
+			<br />
+			<p:treeTable id="typeTable" binding="#{adminListOfValueBean.componentType}"
+				value="#{adminListOfValueBean.root}" var="type">
+
+				<p:column style="width:20px">
+					<f:facet name="header">  
+                Type of value  
+            </f:facet>
+					<p:commandLink style="text-decoration : none; " value="#{type.nom}"
+						actionListener="#{adminListOfValueBean.showSelectedType}" update=":valueTableForm">
+					</p:commandLink>
+				</p:column>
+
+				<p:column style="width:20px">
+					<p:commandLink update=":editTypeForm:typePanelEdit" oncomplete="typeDialogEdit.show()"
+						title="Edit Type" styleClass="icon-search">
+						<f:setPropertyActionListener value="#{type}" target="#{adminListOfValueBean.selectedType}" />
+					</p:commandLink>
+					<p:commandLink styleClass="icon-search" update=":deleteTypeForm:typePanelDelete"
+						oncomplete="typeDialogDelete.show()" title="Delete Type">
+						<f:setPropertyActionListener value="#{type}" target="#{adminListOfValueBean.selectedType}" />
+					</p:commandLink>
+				</p:column>
+
+			</p:treeTable>
+		</h:form>
+
+
+		<h:form id="addTypeForm">
+			<p:dialog header="Ajouter un type" showEffect="fade" widgetVar="typeDialogAdd" modal="true">
+				<p:outputPanel id="typePanelAdd">
+					<p:messages />
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputLabel styleClass="bold" for="typeID" value="Type :" />
+						<p:inputText id="typeID" required="true" requiredMessage="Type obligatoire !"
+							validatorMessage="Le type doit être entre 2 et 25 caractères !"
+							value="#{adminListOfValueBean.addedType.nom}">
+							<f:validateLength maximum="25" minimum="2" />
+						</p:inputText>
+
+						<h:outputLabel styleClass="bold" for="parentType" value="Parent :" />
+						<h:selectOneMenu id="parentType" value="#{adminListOfValueBean.addedType.parent}" converter="#{genericConverter}">
+							<f:selectItem value="#{null}" itemLabel="choix parent" />
+							<f:selectItems value="#{adminListOfValueBean.types}" var="type" itemLabel="#{type.nom}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<p:commandLink update=":typeTableForm:typeTable" style="color : white ; margin : 5px"
+						styleClass="btn btn-primary" value="Ajouter"
+						actionListener="#{adminListOfValueBean.ajouterType}"
+						oncomplete="if(!args.validationFailed)typeDialogAdd.hide()" />
+					<p:commandLink style="color : white ; margin : 5px" styleClass="btn btn-primary"
+						value="Annuler" oncomplete="typeDialogAdd.hide()" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		
+		<h:form id="editTypeForm">
+			<p:dialog header="Modifier le type" showEffect="fade" widgetVar="typeDialogEdit" modal="true">
+				<p:outputPanel id="typePanelEdit">
+					<p:messages />
+					<h:panelGrid columns="2" cellpadding="5"
+						rendered="#{not empty adminListOfValueBean.selectedType}">
+						<h:outputLabel for="name" value="Name: " />
+						<h:inputText required="true" requiredMessage="Type obligatoire !"
+							validatorMessage="Le type doit être entre 2 et 25 caractères !" id="name"
+							value="#{adminListOfValueBean.selectedType.nom}" style="font-weight:bold">
+							<f:validateLength minimum="2" maximum="25" />
+						</h:inputText>
+					</h:panelGrid>
+					<p:commandLink update=":typeTableForm:typeTable" style="color : white ; margin : 5px"
+						styleClass="btn btn-primary" oncomplete="if(!args.validationFailed)typeDialogEdit.hide()"
+						value="Valider" actionListener="#{adminListOfValueBean.updateSelectedType}" />
+					<p:commandLink style="color : white ; margin : 5px" styleClass="btn btn-primary"
+						oncomplete="typeDialogEdit.hide()" value="Annuler" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="deleteTypeForm">
+			<p:dialog header="Supprimer le type" showEffect="fade" widgetVar="typeDialogDelete" modal="true">
+				<p:outputPanel id="typePanelDelete">
+					<p:messages />
+					<h:panelGroup rendered="true">
+						<h:panelGrid columns="2" cellpadding="5"
+							rendered="#{not empty adminListOfValueBean.selectedType}">
+							<h:outputText id="confirm" value=" Voulez-vous supprimer le type ?" style="font-weight:bold" />
+						</h:panelGrid>
+						<p:commandLink update=":typeTableForm:typeTable" value="Oui"
+							style="color : white ; margin : 5px" styleClass="btn btn-primary"
+							oncomplete="if(!args.validationFailed)typeDialogDelete.hide()"
+							actionListener="#{adminListOfValueBean.deleteSelectedType}" />
+						<p:commandLink oncomplete="typeDialogDelete.hide()" value="Non"
+							style="color : white ; margin : 5px" styleClass="btn btn-primary" />
+					</h:panelGroup>
+
+					<h:panelGroup rendered="false">
+						<h:outputText
+							value="Le type #{adminListOfValueBean.selectedType.nom} ne peut pas être supprimé. Supprimer dabord ses fils !" />
+						<h:commandButton value="Fermer" />
+					</h:panelGroup>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="valueTableForm">
+			<p:commandLink styleClass="btn btn-primary pull-right" value="Ajouter une valeur"
+				update=":addValueForm:valuePanelAdd" oncomplete="valueDialogAdd.show()"
+				title="Ajouter une valeur">
+				<f:setPropertyActionListener target="#{adminListOfValueBean.addedValue.type}"
+					value="#{adminListOfValueBean.selectedType}" />
+			</p:commandLink>
+			<br />
+			<br />
+			<p:treeTable id="valueTree" value="#{adminListOfValueBean.rootValue}" var="value">
+				<f:facet name="header">
+					<h:outputText value="#{adminListOfValueBean.selectedType.nom}" />
+				</f:facet>
+				<p:column style="width:20px">
+					<f:facet name="header">
+					</f:facet>
+					<h:commandLink style="text-decoration : none; " value="#{value.value}" />
+				</p:column>
+
+				<p:column style="width:20px">
+					<p:commandLink update=":editValueForm:valuePanelEdit" oncomplete="valueDialogEdit.show()"
+						title="View Detail">
+						<f:setPropertyActionListener value="#{value}" target="#{adminListOfValueBean.selectedValue}" />
+						<f:setPropertyActionListener value="#{value.value}" target="#{adminListOfValueBean.nomValue}" />
+						<h:graphicImage library="images" name="edit.gif" />
+					</p:commandLink>
+					<p:commandLink style="margin-left : 10px" update=":deleteValueForm:valuePanelDelete"
+						oncomplete="valueDialogDelete.show()" title="View Detail">
+						<h:graphicImage style="width : 30px ; height : 20px" value="/resources/images/deleteIcone.png" />
+						<f:setPropertyActionListener value="#{value}" target="#{adminListOfValueBean.selectedValue}" />
+						<h:graphicImage library="images" name="delete.gif" />
+					</p:commandLink>
+				</p:column>
+
+			</p:treeTable>
+		</h:form>
+
+		
+			<p:dialog header="Ajouter une valeur" showEffect="fade" widgetVar="valueDialogAdd" modal="true">
+				<h:form id="addValueForm"><p:outputPanel id="valuePanelAdd">
+					<p:messages />
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputLabel styleClass="bold" for="value" value="Valeur :" />
+						<h:inputText id="value" required="true" requiredMessage="Valeur obligatoire !"
+							value="#{adminListOfValueBean.addedValue.value}"
+							validatorMessage="La valeur doit être entre 2 et 25 caractères !">
+							<f:validateLength minimum="2" maximum="25" />
+						</h:inputText>
+
+
+						<h:outputLabel styleClass="bold" value="Type :" />
+						<h:selectOneMenu binding="#{adminListOfValueBean.htmlSelectOneMenu}"
+							value="#{adminListOfValueBean.addedValue.type}"
+							validator="#{adminListOfValueBean.validateType}" converter="#{genericConverter}">
+							<f:selectItems value="#{adminListOfValueBean.types}" var="select" itemLabel="#{select.nom}" />
+							<f:ajax render="parentValue" event="change" listener="#{adminListOfValueBean.remplirParent}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel styleClass="bold" for="parentValue" value="Parent :" />
+						<h:selectOneMenu id="parentValue" value="#{adminListOfValueBean.addedValue.parent}"
+							validator="#{adminListOfValueBean.validateParent}" converter="#{genericConverter}" >
+							<f:selectItem value="#{null}" itemLabel="value parent" />
+							<f:selectItems value="#{adminListOfValueBean.parentvalues}" var="select" itemLabel="#{select.value}" />
+						</h:selectOneMenu>
+
+					</h:panelGrid>
+					<p:commandLink update=":valueTableForm:valueTree" value="Ajouter"
+						style="color : white ; margin : 5px" styleClass="btn btn-primary"
+						actionListener="#{adminListOfValueBean.add}"
+						oncomplete="if(!args.validationFailed)valueDialogAdd.hide()" />
+					<p:commandLink value="Annuler" style="color : white ; margin : 5px"
+						styleClass="btn btn-primary" oncomplete="valueDialogAdd.hide()" />
+				</p:outputPanel>
+			</h:form></p:dialog>		
+
+
+		<h:form id="editValueForm">
+			<p:dialog header="Modifier la valeur" showEffect="fade" widgetVar="valueDialogEdit" modal="true">
+				<p:outputPanel id="valuePanelEdit">
+					<p:messages />
+					<h:panelGrid columns="2" cellpadding="5"
+						rendered="#{not empty adminListOfValueBean.selectedValue}">
+						<h:outputLabel for="nom" value="Nom : " />
+						<h:inputText id="nom" value="#{adminListOfValueBean.selectedValue.value}" style="font-weight:bold" />
+					</h:panelGrid>
+					<p:commandLink style="color : white ; margin : 5px" styleClass="btn btn-primary"
+						update=":valueTableForm:valueTree"
+						oncomplete="if(!args.validationFailed)valueDialogEdit.hide()" value="Valider"
+						actionListener="#{adminListOfValueBean.updateSelectedValue}" />
+					<p:commandLink style="color : white ; margin : 5px" styleClass="btn btn-primary"
+						oncomplete="valueDialogEdit.hide()" value="Annuler" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="deleteValueForm">
+			<p:dialog header="Supprimer la valeur" showEffect="fade" widgetVar="valueDialogDelete"
+				modal="true">
+				<p:outputPanel id="valuePanelDelete">
+					<h:panelGroup rendered="true">
+						<p:messages />
+						<h:panelGrid columns="2" cellpadding="5"
+							rendered="#{not empty adminListOfValueBean.selectedValue}">
+							<h:outputText id="confirmValue" value=" Voulez-vous supprimer la valeur ?"
+								style="font-weight:bold" />
+						</h:panelGrid>
+						<p:commandLink update=":valueTableForm:valueTree" value="Oui"
+							style="color : white ; margin : 5px" styleClass="btn btn-primary"
+							oncomplete="if(!args.validationFailed)valueDialogDelete.hide()"
+							actionListener="#{adminListOfValueBean.deleteSelectedValue}" />
+						<p:commandLink value="Non" style="color : white ; margin : 5px" styleClass="btn btn-primary"
+							oncomplete="valueDialogDelete.hide()" />
+					</h:panelGroup>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

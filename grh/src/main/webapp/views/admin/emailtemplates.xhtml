@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		Candidatures
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderAdmin.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+
+		<h:form id="templateForm" enctype="multipart/form-data" prependId="false">
+		<h:commandButton styleClass="btn btn-primary pull-right" 
+			action="createEmailTemplate.xhtml"
+			value="Ajouter un template"
+			title="Ajouter un template" />
+			<h:outputText value="Listing des templates d'emails" />
+			<p:dataTable id="templates" var="templates" value="#{adminEmailTemplateBean.templateEmailVOs}" styleClass="table table-striped" binding="#{adminEmailTemplateBean.uiDataTable}">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Code" />
+					</f:facet>
+					<h:outputText value="#{templates.code}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Actions" />
+					</f:facet>
+					<div class="btn-group">
+						<p:commandLink styleClass="btn" actionListener="#{adminEmailTemplateBean.setData}"
+							oncomplete="tempDialogDelete.show();">
+							<i class="icon-trash"></i>
+						</p:commandLink>
+						<p:commandLink styleClass="btn" update=":showTemplate"
+							actionListener="#{adminEmailTemplateBean.setData}" oncomplete="tempDialogShow.show();">
+							<i class="icon-share"></i>
+						</p:commandLink>
+						<p:commandLink styleClass="btn btn-primary" style="color:white" update=":updateTemplate"
+							actionListener="#{adminEmailTemplateBean.setData}" oncomplete="tempDialogUpd.show();">
+							<i class="icon-pencil icon-white"></i>
+						</p:commandLink>
+					</div>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+
+		<p:dialog id="dialogUpdate" showEffect="fade" widgetVar="tempDialogUpd" modal="true"
+			resizable="false">
+			<h:form id="updateTemplate" enctype="multipart/form-data" styleClass="form-horizontal"
+				prependId="false">
+				<h3>Modification template</h3>
+
+				<div class="control-group">
+					<h:outputLabel for="code" styleClass="control-label" value="Code" />
+					<div class="controls">
+						<p:inputText id="code" value="#{adminEmailTemplateBean.selectedTemplate.code}" required="true"
+							requiredMessage="Code obligatoire" maxlength="20" />
+						<h:message styleClass="help-inline" for="code" />
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<h:outputLabel for="expediteur" styleClass="control-label" value="Expediteur " />
+					<div class="controls">
+						<p:inputText id="expediteur" value="#{adminEmailTemplateBean.selectedTemplate.expediteur}"
+							required="true" requiredMessage="expéditeur obligatoire" maxlength="60" />
+						<h:message styleClass="help-inline" for="expediteur" />
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<h:outputLabel for="sujet" styleClass="control-label" value="Sujet " />
+					<div class="controls">
+						<h:inputText id="sujet" value="#{adminEmailTemplateBean.selectedTemplate.sujet}"
+							required="true" requiredMessage="sujet obligatoire"
+							validatorMessage="Nombre de caractères du sujet doit être entre 5 et 50">
+							<f:validateLength minimum="5" maximum="50" />
+						</h:inputText>
+						<h:message id="sujetId" styleClass="help-inline" for="sujet" />
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<h:outputLabel for="message" styleClass="control-label" value="Message " />
+					<div class="controls">
+						<p:editor id="message" value="#{adminEmailTemplateBean.selectedTemplate.message}"
+							required="true" requiredMessage="message obligatoire"
+							validatorMessage="Nombre de caractères du message doit être entre 20 et 1000">
+							<f:validateLength minimum="20" maximum="1000" />
+						</p:editor>
+						<h:message styleClass="help-inline" for="message" />
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<p:commandLink value="Creer template" update="updateTemplate"
+						actionListener="#{adminEmailTemplateBean.updateEmailTemplate}"
+						styleClass="btn btn-primary btn-small" style="color : white ; margin : 5px" />
+					<p:commandLink value="Annuler" styleClass="btn" oncomplete="tempDialogUpd.hide()" />
+				</div>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog id="dialogShow" showEffect="fade" widgetVar="tempDialogShow" modal="true"
+			resizable="false">
+			<h:form id="showTemplate" enctype="multipart/form-data" styleClass="form-horizontal"
+				prependId="false">
+				<h3>Details template Email</h3>
+
+				<div class="control-group">
+					<h:outputLabel for="codeShow" styleClass="control-label" value="Code" />
+					<div class="controls">
+						<h:outputText id="codeShow" value="#{adminEmailTemplateBean.selectedTemplate.code}" />
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<h:outputLabel for="expediteurShow" styleClass="control-label" value="Expediteur " />
+					<div class="controls">
+						<h:outputText id="expediteurShow"
+							value="#{adminEmailTemplateBean.selectedTemplate.expediteur}" />
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<h:outputLabel for="sujetShow" styleClass="control-label" value="Sujet " />
+					<div class="controls">
+						<h:outputText id="sujetShow" value="#{adminEmailTemplateBean.selectedTemplate.sujet}" />
+					</div>
+				</div>
+
+
+				<div class="control-group">
+						<p:editor id="messageShow" value="#{adminEmailTemplateBean.selectedTemplate.message}"
+							disabled="true" controls=""/>
+					
+				</div>
+
+				<div class="form-actions">
+					<p:commandLink value="Fermer" styleClass="btn" oncomplete="tempDialogShow.hide()" />
+				</div>
+			</h:form>
+		</p:dialog>
+
+
+		<p:dialog id="deleteDialog" header="Supprimer le type" showEffect="fade"
+			widgetVar="tempDialogDelete" modal="true" resizable="false">
+			<h:form id="deleteTemplateForm">
+				<p:outputPanel>
+					<h:panelGroup>
+						<h:outputText value=" Voulez-vous supprimer le template ?" style="font-weight:bold" />
+						<p:commandLink update=":templateForm:templates" value="Oui"
+							style="color : white ; margin : 5px" styleClass="btn btn-primary"
+							actionListener="#{adminEmailTemplateBean.deleteEmailTemplate}"
+							oncomplete="tempDialogDelete.hide()" />
+						<p:commandLink oncomplete="tempDialogDelete.hide()" value="Non"
+							style="color : white ; margin : 5px" styleClass="btn btn-primary" />
+					</h:panelGroup>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>

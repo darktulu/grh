@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		#{msg['candidat.competence.title']}
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderCandidat.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="form">
+			<div class="page-header">
+				<p:commandLink styleClass="btn btn-primary pull-right" immediate="true" value="Ajouter une competence"
+					update=":formAdd:competencePanelAdd" oncomplete="competenceDialogAdd.show()" title="Ajouter une competence" />
+				<h1>#{msg['candidat.competence.subtitle']}</h1>
+			</div>
+			<p:dataTable styleClass="table table-striped" rendered="#{not empty informationBean.competences}"
+				id="competenceTable" var="competence" value="#{informationBean.competences}">
+
+				<p:column style="max-width : 180px">
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.competence.competence']}" />
+					</f:facet>
+					<h:outputText value="#{competence.libelle}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.competence.lvl']}" />
+					</f:facet>
+					<h:outputText value="#{competence.niveauCompetence}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.competence.desc']}" />
+					</f:facet>
+					<h:outputText value="#{competence.description}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['action']}" />
+					</f:facet>
+					<p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="competenceDialogEdit.show()"
+						update=":formEdit:competencePanelEdit">
+						<f:setPropertyActionListener target="#{informationBean.competence}" value="#{competence}" />
+					</p:commandLink>
+
+					<h:outputText value=" / " />
+
+					<p:commandLink styleClass="icon-remove" immediate="true" oncomplete="competenceDialogDelete.show()">
+						<f:setPropertyActionListener target="#{informationBean.competence}" value="#{competence}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog closable="false" id="dialogDelete" header="Supprimer la competence" showEffect="fade"
+				widgetVar="competenceDialogDelete" modal="true">
+
+				<h:outputText value="Voulez vous vraiment supprimer la competence ?" />
+				<br />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" update="@form" value="#{msg['yes']}"
+					actionListener="#{informationBean.deleteCompetence}" oncomplete="competenceDialogDelete.hide()" />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" immediate="true"
+					value="#{msg['no']}" oncomplete="competenceDialogDelete.hide()" />
+
+			</p:dialog>
+
+		</h:form>
+
+
+		<h:form id="formAdd">
+			<p:dialog closable="false" id="dialogAdd" showEffect="fade" widgetVar="competenceDialogAdd" modal="true">
+				<h3>#{msg['candidat.competence.add']}</h3>
+				<p:outputPanel id="competencePanelAdd">
+
+					<p:messages id="errorMessages" />
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="libelle" value="#{msg['candidat.competence.competence']}" />
+						<h:inputText id="libelle" value="#{informationBean.competence.libelle}" required="true"
+							requiredMessage="Competence obligatoire" validatorMessage="Competence trop longue">
+							<f:validateLength maximum="50" />
+						</h:inputText>
+
+
+						<h:outputLabel for="niveauCompetence" value="#{msg['candidat.competence.lvl']}" />
+						<h:selectOneMenu id="niveauCompetence" value="#{informationBean.competence.niveauCompetence}">
+							<f:selectItems value="#{enumsBean.lvlCompetences}" var="#{niveau}" itemValue="#{niveau}"
+								itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel for="description" value="#{msg['candidat.competence.desc']}" />
+						<h:inputText id="description" value="#{informationBean.competence.description}"
+							validatorMessage="Description trop longue">
+							<f:validateLength maximum="250" />
+						</h:inputText>
+
+					</h:panelGrid>
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
+						update=":formAdd:errorMessages,:form:competenceTable,:formAdd:competencePanelAdd,:form"
+						oncomplete="if(!args.validationFailed)competenceDialogAdd.hide()" value="#{msg['add']}"
+						actionListener="#{informationBean.addCompetence}" />
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="competenceDialogAdd.hide()"
+						actionListener="#{informationBean.initCompetence}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formEdit">
+
+			<p:dialog closable="false" id="dialogEdit" showEffect="fade" draggable="false" resizable="false"
+				widgetVar="competenceDialogEdit" modal="true">
+				<h3>#{msg['candidat.competence.update']}</h3>
+				<p:outputPanel id="competencePanelEdit">
+					<p:messages id="errorMessagesU" />
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputLabel for="libelle" value="#{msg['candidat.competence.competence']}" />
+						<h:inputText id="libelle" value="#{informationBean.competence.libelle}" required="true"
+							requiredMessage="Competence obligatoire" validatorMessage="Competence trop longue">
+							<f:validateLength maximum="50" />
+						</h:inputText>
+
+
+						<h:outputLabel for="niveauCompetence" value="#{msg['candidat.competence.lvl']}" />
+						<h:selectOneMenu id="niveauCompetence" value="#{informationBean.competence.niveauCompetence}">
+							<f:selectItems value="#{enumsBean.lvlCompetences}" var="#{niveau}" itemValue="#{niveau}"
+								itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel for="description" value="#{msg['candidat.competence.desc']}" />
+						<h:inputText id="description" value="#{informationBean.competence.description}"
+							validatorMessage="Description trop longue">
+							<f:validateLength maximum="250" />
+						</h:inputText>
+					</h:panelGrid>
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
+						update=":formEdit:errorMessagesU,:form:competenceTable,:formEdit:competencePanelEdit,:form:competenceTable"
+						oncomplete="if(!args.validationFailed)competenceDialogEdit.hide()" value="#{msg['update']}"
+						actionListener="#{informationBean.updateCompetence}" />
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="if(args)competenceDialogEdit.hide()"
+						actionListener="#{informationBean.initCompetence}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

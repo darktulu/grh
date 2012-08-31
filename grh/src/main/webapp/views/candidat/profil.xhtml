@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml">
+
+	<ui:define name="title">
+#{msg['profil.title']}
+</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml"></ui:include>
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderCandidat.xhtml" />
+	</ui:define>
+	<ui:define name="body">
+		<blockquote>
+			<h1>#{authenticationBean.candidat.nom} #{authenticationBean.candidat.prenom}</h1>
+
+			<p>#{authenticationBean.candidat.email}</p>
+			<p>#{authenticationBean.candidat.telephone}</p>
+		</blockquote>
+
+		<h2>#{msg['candidat.experience.subtitle']}</h2>
+
+		<h:form id="experienceForm">
+			<ui:repeat value="#{informationBean.experiences}" var="experience">
+				<div class="formation-block">
+					<h3>
+						#{experience.function}
+						<p:commandLink title="#{msg['delete']}" update="@form" styleClass="icon-remove" immediate="true"
+							oncomplete="experienceDialogDelete.show()" style="float:right">
+							<f:setPropertyActionListener target="#{informationBean.experience}" value="#{experience}" />
+						</p:commandLink>
+					</h3>
+					<p>#{experience.company}<br/>#{experience.description}</p>
+					<p class="muted">
+						<h:outputText value="#{experience.entrydate}">
+							<f:convertDateTime dateStyle="short" />
+						</h:outputText>
+						-
+						<h:outputText value="#{experience.leavingdate}">
+							<f:convertDateTime dateStyle="short" />
+						</h:outputText>
+					</p>
+				</div>
+
+			</ui:repeat>
+		</h:form>
+
+		<h2>#{msg['candidat.formation.subtitle']}</h2>
+
+		<h:form id="formationsForm">
+			<ui:repeat value="#{informationBean.formations}" var="formation">
+				<div class="formation-block">
+					<h3>
+						#{formation.etablissement}
+						<p:commandLink title="#{msg['delete']}" update="@form" styleClass="icon-remove" immediate="true"
+							oncomplete="competenceDialogDelete.show()" style="float:right">
+							<f:setPropertyActionListener target="#{informationBean.formation}" value="#{formation}" />
+						</p:commandLink>
+					</h3>
+					<p>#{formation.titreDiplome} , #{formation.optionFormation}</p>
+					<p class="muted">
+						<h:outputText value="#{formation.entrydate}">
+							<f:convertDateTime dateStyle="short" />
+						</h:outputText>
+						-
+						<h:outputText value="#{formation.leavingdate}">
+							<f:convertDateTime dateStyle="short" />
+						</h:outputText>
+					</p>
+				</div>
+
+			</ui:repeat>
+		</h:form>
+
+		<h2>#{msg['candidat.competence.subtitle']}</h2>
+
+		<h:form id="competencesForm">
+			<ui:repeat value="#{informationBean.competences}" var="comp">
+				<div class="well competence-inline">
+					<h:outputText value="#{comp.libelle}" title="#{comp.niveauCompetence}" />
+					<p:commandLink title="#{msg['delete']}" update="@form" styleClass="icon-remove" immediate="true"
+						oncomplete="competenceDialogDelete.show()">
+						<f:setPropertyActionListener target="#{informationBean.competence}" value="#{comp}" />
+					</p:commandLink>
+				</div>
+
+			</ui:repeat>
+			<p:dialog closable="false" id="dialogDelete" header="Supprimer la competence" showEffect="fade"
+				widgetVar="competenceDialogDelete" modal="true">
+				<h:outputText value="Voulez vous vraiment supprimer #{informationBean.competence.libelle} ?" />
+				<br />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" update="@form" value="#{msg['yes']}"
+					actionListener="#{informationBean.deleteCompetence}" oncomplete="competenceDialogDelete.hide()" />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" immediate="true"
+					value="#{msg['no']}" oncomplete="competenceDialogDelete.hide()" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/templates/footers/footer.xhtml" />
+	</ui:define>
+</ui:composition>

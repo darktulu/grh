@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		#{msg['candidat.formation.title']}
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderCandidat.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="form">
+			<div class="page-header">
+
+				<p:commandLink styleClass="btn btn-primary pull-right" immediate="true" value="Ajouter une formation"
+					update=":formAdd:formationPanelAdd" oncomplete="formationDialogAdd.show()" title="Ajouter une formation" />
+				<h1>#{msg['candidat.formation.subtitle']}</h1>
+			</div>
+
+			<p:dataTable styleClass="table table-striped" rendered="#{not empty informationBean.formations}" id="formationTable"
+				var="formation" value="#{informationBean.formations}">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.formation.diploma']}" />
+					</f:facet>
+					<h:outputText value="#{formation.optionFormation}" />
+				</p:column>
+
+				<p:column style="max-width : 180px">
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.formation.school']}" />
+					</f:facet>
+					<h:outputText value="#{formation.etablissement}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.formation.option']}" />
+					</f:facet>
+					<h:outputText value="#{formation.optionFormation}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.formation.speciality']}" />
+					</f:facet>
+					<h:outputText value="#{formation.specialite}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.formation.entrydate']}" />
+					</f:facet>
+					<h:outputText value="#{formation.entrydate}">
+						<f:convertDateTime dateStyle="short" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.formation.leavingdate']}" />
+					</f:facet>
+					<h:outputText value="#{formation.leavingdate}">
+						<f:convertDateTime dateStyle="short" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['action']}" />
+					</f:facet>
+					<p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="formationDialogEdit.show()"
+						update=":formEdit:formationPanelEdit">
+						<f:setPropertyActionListener target="#{informationBean.formation}" value="#{formation}" />
+					</p:commandLink>
+
+					<h:outputText value=" / " />
+
+					<p:commandLink styleClass="icon-remove" immediate="true" oncomplete="formationDialogDelete.show()">
+						<f:setPropertyActionListener target="#{informationBean.formation}" value="#{formation}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog closable="false" id="dialogDelete" header="Supprimer la formation" showEffect="fade"
+				widgetVar="formationDialogDelete" modal="true">
+
+				<h:outputText value="Voulez vous vraiment supprimer la formation ?" />
+				<br />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" update="@form" value="#{msg['yes']}"
+					actionListener="#{informationBean.deleteFormation}" oncomplete="formationDialogDelete.hide()" />
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" immediate="true"
+					value="#{msg['no']}" oncomplete="formationDialogDelete.hide()" actionListener="#{informationBean.initFormation}" />
+
+			</p:dialog>
+
+		</h:form>
+
+
+		<h:form id="formAdd">
+			<p:dialog closable="false" id="dialogAdd" showEffect="fade" widgetVar="formationDialogAdd" modal="true">
+				<h3>#{msg['candidat.formation.add']}</h3>
+				<p:outputPanel id="formationPanelAdd">
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="etab" value="#{msg['candidat.formation.school']}" />
+						<div class="controls">
+							<p:inputText id="etab" required="true" value="#{informationBean.formation.etablissement}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="etabmsg" for="etab" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="dip" value="#{msg['candidat.formation.diploma']}" />
+						<div class="controls">
+							<p:inputText id="dip" required="true" value="#{informationBean.formation.titreDiplome}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="dipmsg" for="dip" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="specialite" value="#{msg['candidat.formation.speciality']}" />
+						<div class="controls">
+							<p:inputText id="specialite" required="true" value="#{informationBean.formation.specialite}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="specialitemsg" for="specialite" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="optionFormation" value="#{msg['candidat.formation.option']}" />
+						<div class="controls">
+							<p:inputText id="optionFormation" required="true" value="#{informationBean.formation.optionFormation}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="optionFormationmsg" for="optionFormation" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="entrydate" value="#{msg['candidat.formation.entrydate']}" />
+						<div class="controls">
+							<p:calendar id="entrydate" required="true" value="#{informationBean.formation.entrydate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="entrydatemsg" for="entrydate" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="leavingdate" value="#{msg['candidat.formation.leavingdate']}" />
+						<div class="controls">
+							<p:calendar id="leavingdate" required="true" value="#{informationBean.formation.leavingdate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="leavingdatemsg" for="leavingdate" />
+						</div>
+					</div>
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
+						update=":form:formationTable,:formAdd:formationPanelAdd,:form"
+						oncomplete="if(!args.validationFailed)formationDialogAdd.hide()" value="#{msg['add']}"
+						actionListener="#{informationBean.addFormation}" />
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="formationDialogAdd.hide()" actionListener="#{informationBean.initFormation}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formEdit">
+
+			<p:dialog closable="false" id="dialogEdit" showEffect="fade" draggable="false" resizable="false"
+				widgetVar="formationDialogEdit" modal="true">
+				<h3>#{msg['candidat.formation.update']}</h3>
+				<p:outputPanel id="formationPanelEdit">
+					<p:messages id="errorMessagesU" />
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="etab" value="#{msg['candidat.formation.school']}" />
+						<div class="controls">
+							<p:inputText id="etab" required="true" value="#{informationBean.formation.etablissement}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="etabmsg" for="etab" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="dip" value="#{msg['candidat.formation.diploma']}" />
+						<div class="controls">
+							<p:inputText id="dip" required="true" value="#{informationBean.formation.titreDiplome}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="dipmsg" for="dip" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="specialite" value="#{msg['candidat.formation.speciality']}" />
+						<div class="controls">
+							<p:inputText id="specialite" required="true" value="#{informationBean.formation.specialite}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="specialitemsg" for="specialite" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="optionFormation" value="#{msg['candidat.formation.option']}" />
+						<div class="controls">
+							<p:inputText id="optionFormation" required="true" value="#{informationBean.formation.optionFormation}">
+							</p:inputText>
+							<h:message styleClass="help-inline" id="optionFormationmsg" for="optionFormation" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="entrydate" value="#{msg['candidat.formation.entrydate']}" />
+						<div class="controls">
+							<p:calendar id="entrydate" required="true" value="#{informationBean.formation.entrydate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="entrydatemsg" for="entrydate" />
+						</div>
+					</div>
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="leavingdate" value="#{msg['candidat.formation.leavingdate']}" />
+						<div class="controls">
+							<p:calendar id="leavingdate" required="true" value="#{informationBean.formation.leavingdate}">
+								<f:convertDateTime dateStyle="short" />
+							</p:calendar>
+							<h:message styleClass="help-inline" id="leavingdatemsg" for="leavingdate" />
+						</div>
+					</div>
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
+						update=":formEdit:errorMessagesU,:form:formationTable,:formEdit:formationPanelEdit,:form:formationTable"
+						oncomplete="if(!args.validationFailed)formationDialogEdit.hide()" value="#{msg['update']}"
+						actionListener="#{informationBean.updateFormation}" />
+					<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="if(args)formationDialogEdit.hide()"
+						actionListener="#{informationBean.initFormation}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

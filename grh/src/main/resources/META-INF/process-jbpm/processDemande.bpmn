@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_candidatureListItem" structureRef="java.util.List" />
+  <itemDefinition id="_demandeItem" structureRef="com.bull.grh.view.metier.vo.DemandeVO" />
+  
+  <itemDefinition id="_12_multiInstanceItemType" />
+
+  <process processType="Private" isExecutable="true" id="PROCESS_DEMANDE_RECRUTEMENT" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="com.bull.grh.domaine.types.EtatDemande" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="candidatureList" itemSubjectRef="_candidatureListItem"/>
+    <property id="demande" itemSubjectRef="_demandeItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <userTask id="_2" name="Proposition de condidats" >
+      <ioSpecification>
+        <dataInput id="_2_demandeInput" name="demande" />
+        <dataInput id="_2_TaskNameInput" name="TaskName" />
+        <dataOutput id="_2_demandeOutput" name="demande" />
+        <inputSet>
+          <dataInputRefs>_2_demandeInput</dataInputRefs>
+          <dataInputRefs>_2_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2_demandeOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>demande</sourceRef>
+        <targetRef>_2_demandeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">validationDemandeTask</from>
+          <to xsi:type="tFormalExpression">_2_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2_demandeOutput</sourceRef>
+        <targetRef>demande</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>ROLE_RH</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="_4" name="Choix pour convocation" >
+      <ioSpecification>
+        <dataInput id="_4_demandeInput" name="demande" />
+        <dataInput id="_4_TaskNameInput" name="TaskName" />
+        <dataOutput id="_4_candidatureListOutput" name="candidatureList" />
+        <dataOutput id="_4_demandeOutput" name="demande" />
+        <inputSet>
+          <dataInputRefs>_4_demandeInput</dataInputRefs>
+          <dataInputRefs>_4_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_candidatureListOutput</dataOutputRefs>
+          <dataOutputRefs>_4_demandeOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>demande</sourceRef>
+        <targetRef>_4_demandeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_4_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">choixConvocationTask</from>
+          <to xsi:type="tFormalExpression">_4_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_candidatureListOutput</sourceRef>
+        <targetRef>candidatureList</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_demandeOutput</sourceRef>
+        <targetRef>demande</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{demande.personne.username}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <endEvent id="_5" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_7" name="Gateway" gatewayDirection="Diverging" />
+    <userTask id="_8" name="Soumission de demande" >
+      <ioSpecification>
+        <dataInput id="_8_demandeInput" name="demande" />
+        <dataInput id="_8_TaskNameInput" name="TaskName" />
+        <dataOutput id="_8_demandeOutput" name="demande" />
+        <inputSet>
+          <dataInputRefs>_8_demandeInput</dataInputRefs>
+          <dataInputRefs>_8_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_8_demandeOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>demande</sourceRef>
+        <targetRef>_8_demandeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">demandeInitTask</from>
+          <to xsi:type="tFormalExpression">_8_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_demandeOutput</sourceRef>
+        <targetRef>demande</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{demande.personne.username}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <endEvent id="_9" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_10" name="Gateway" gatewayDirection="Converging" />
+    <exclusiveGateway id="_11" name="Gateway" gatewayDirection="Diverging" />
+    <subProcess id="_12" name="Multiple Instances"  >
+      <ioSpecification>
+        <dataInput id="_12_input" name="MultiInstanceInput" />
+        <inputSet/>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>candidatureList</sourceRef>
+        <targetRef>_12_input</targetRef>
+      </dataInputAssociation>
+      <multiInstanceLoopCharacteristics>
+        <loopDataInputRef>_12_input</loopDataInputRef>
+        <inputDataItem id="candidature" itemSubjectRef="_12_multiInstanceItemType"/>
+      </multiInstanceLoopCharacteristics>
+    <!-- nodes -->
+    <startEvent id="_12-2-1" name="Start" />
+    <callActivity id="_12-2-2" name="Convocation process" calledElement="PROCESS_CONVOCATION" >
+      <ioSpecification>
+        <dataInput id="_12-2-2_candidatureInput" name="candidature" />
+        <inputSet>
+          <dataInputRefs>_12-2-2_candidatureInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>candidature</sourceRef>
+        <targetRef>_12-2-2_candidatureInput</targetRef>
+      </dataInputAssociation>
+    </callActivity>
+    <endEvent id="_12-2-3" name="End" />
+    <!-- connections -->
+    <sequenceFlow id="_12-2-1-_12-2-2" sourceRef="_12-2-1" targetRef="_12-2-2" />
+    <sequenceFlow id="_12-2-2-_12-2-3" sourceRef="_12-2-2" targetRef="_12-2-3" />
+    </subProcess>
+
+    <!-- connections -->
+    <sequenceFlow id="_11-_2" sourceRef="_11" targetRef="_2" name="Soumettre" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return demande.getEtatDemande() == EtatDemande.SENT;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_7-_4" sourceRef="_7" targetRef="_4" name="Proposition" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return !(demande.getEtatDemande() == EtatDemande.REJECTED);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12-_5" sourceRef="_12" targetRef="_5" />
+    <sequenceFlow id="_2-_7" sourceRef="_2" targetRef="_7" />
+    <sequenceFlow id="_10-_8" sourceRef="_10" targetRef="_8" />
+    <sequenceFlow id="_11-_9" sourceRef="_11" targetRef="_9" name="Supprimer" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return !(demande.getEtatDemande() == EtatDemande.SENT);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_10" sourceRef="_1" targetRef="_10" />
+    <sequenceFlow id="_7-_10" sourceRef="_7" targetRef="_10" name="Demande rejected" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return demande.getEtatDemande() == EtatDemande.REJECTED;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_8-_11" sourceRef="_8" targetRef="_11" />
+    <sequenceFlow id="_4-_12" sourceRef="_4" targetRef="_12" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="PROCESS_DEMANDE_RECRUTEMENT" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="12" y="240" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="408" y="96" width="184" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="702" y="246" width="194" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="1247" y="109" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="656" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="252" y="240" width="146" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="180" y="168" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="96" y="240" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="300" y="168" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="918" y="48" width="295" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12-2-1" >
+        <dc:Bounds x="930" y="98" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12-2-2" >
+        <dc:Bounds x="1000" y="98" width="132" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12-2-3" >
+        <dc:Bounds x="1144" y="97" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_12-2-1-_12-2-2" >
+        <di:waypoint x="36" y="74" />
+        <di:waypoint x="148" y="74" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-2-2-_12-2-3" >
+        <di:waypoint x="148" y="74" />
+        <di:waypoint x="250" y="73" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_2" >
+        <di:waypoint x="324" y="192" />
+        <di:waypoint x="324" y="120" />
+        <di:waypoint x="500" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_4" >
+        <di:waypoint x="680" y="120" />
+        <di:waypoint x="801" y="121" />
+        <di:waypoint x="799" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_5" >
+        <di:waypoint x="1065" y="123" />
+        <di:waypoint x="1271" y="133" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_7" >
+        <di:waypoint x="500" y="120" />
+        <di:waypoint x="680" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_8" >
+        <di:waypoint x="120" y="264" />
+        <di:waypoint x="325" y="264" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_9" >
+        <di:waypoint x="324" y="192" />
+        <di:waypoint x="204" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_10" >
+        <di:waypoint x="36" y="264" />
+        <di:waypoint x="120" y="264" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_10" >
+        <di:waypoint x="680" y="120" />
+        <di:waypoint x="679" y="334" />
+        <di:waypoint x="120" y="336" />
+        <di:waypoint x="120" y="264" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_11" >
+        <di:waypoint x="325" y="264" />
+        <di:waypoint x="324" y="192" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_12" >
+        <di:waypoint x="799" y="270" />
+        <di:waypoint x="1066" y="268" />
+        <di:waypoint x="1065" y="123" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

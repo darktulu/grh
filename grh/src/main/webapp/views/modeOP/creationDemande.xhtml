@@ -1,0 +1,188 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<div class="container">
+		<div class="row">
+			<ui:define name="sider">
+				<ui:include src="/templates/siders/siderOP.xhtml" />
+			</ui:define>
+			<ui:define name="body">
+				<h1>Création de la demande</h1>
+				<h:form id="formDemande" prependId="false" styleClass="form-horizontal">
+					<br />
+					<h3>Description du poste</h3>
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="intitulePoste" value="intitule Poste" />
+						<div class="controls">
+							<p:inputText id="intitulePoste" required="true" requiredMessage="Intitulé obligatoire !"
+								validatorMessage="L'intitulé doit être entre 2 et 25 caractères !"
+								value="#{demandeBean.demande.intitulePoste}">
+								<f:validateLength maximum="35" minimum="2" />
+							</p:inputText>
+							<h:message styleClass="help-inline" id="intitulePostemsg" for="intitulePoste" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="nbPersonnes"
+							value="Nombre de personnes souhaité" />
+						<div class="controls">
+							<p:inputText id="nbPersonnes" value="#{demandeBean.demande.nbPersonnes}" />
+							<h:message styleClass="help-inline" id="nbPersonnesID" for="nbPersonnes" />
+						</div>
+					</div>
+
+					<f:subview rendered="#{!empty listOfValues.listDisponibilite}">
+						<div class="control-group">
+							<h:outputLabel styleClass="control-label" for="disponibilite" value="Disponibilité" />
+							<div class="controls">
+								<h:selectOneMenu id="disponibilite" value="#{demandeBean.demande.disponibilite}" converter="#{genericConverter}">
+									<f:selectItems value="#{listOfValues.listDisponibilite}" var="select"
+										itemLabel="#{select.value}" />
+								</h:selectOneMenu>
+								<h:message styleClass="help-inline" id="disponibiliteID" for="disponibilite" />
+							</div>
+						</div>
+					</f:subview>
+
+					<f:subview rendered="#{!empty listOfValues.listNiveauEtu}">
+						<div class="control-group">
+							<h:outputLabel styleClass="control-label" for="niveauEtu" value="Niveau étude" />
+							<div class="controls">
+								<p:selectOneMenu id="niveauEtu" value="#{demandeBean.demande.niveauEtu}">
+									<f:selectItems value="#{listOfValues.listNiveauEtu}" var="select"
+										itemLabel="#{select.value}" itemValue="#{select}" />
+								</p:selectOneMenu>
+								<h:message styleClass="help-inline" id="niveauEtuID" for="niveauEtu" />
+							</div>
+						</div>
+					</f:subview>
+
+					<f:subview rendered="#{!empty listOfValues.listNiveauExp}">
+						<div class="control-group">
+							<h:outputLabel styleClass="control-label" for="niveauExp" value="Niveau expérience" />
+							<div class="controls">
+								<p:selectOneMenu id="niveauExp" value="#{demandeBean.demande.niveauExp}">
+									<f:selectItems value="#{listOfValues.listNiveauExp}" var="select"
+										itemLabel="#{select.value}" itemValue="#{select}" />
+								</p:selectOneMenu>
+								<h:message styleClass="help-inline" id="niveauExpID" for="niveauExp" />
+							</div>
+						</div>
+					</f:subview>
+
+					<f:subview rendered="#{!empty listOfValues.listPays}">
+						<div class="control-group">
+							<h:outputLabel styleClass="control-label" for="pays" value="Pays" />
+							<div class="controls">
+								<p:selectManyMenu id="pays" value="#{demandeBean.demande.pays}">
+									<f:selectItems value="#{listOfValues.listPays}" var="select" itemLabel="#{select.value}"
+										itemValue="#{select}" />
+								</p:selectManyMenu>
+								<h:message styleClass="help-inline" id="paysID" for="pays" />
+							</div>
+						</div>
+					</f:subview>
+
+					<f:subview rendered="#{!empty listOfValues.listVille}">
+						<div class="control-group">
+							<h:outputLabel styleClass="control-label" for="villes" value="Villes" />
+							<div class="controls">
+								<p:selectManyMenu id="villes" value="#{demandeBean.demande.villes}">
+									<f:selectItems value="#{listOfValues.listVille}" var="select" itemLabel="#{select.value}"
+										itemValue="#{select}" />
+								</p:selectManyMenu>
+								<h:message styleClass="help-inline" id="villesID" for="villes" />
+							</div>
+						</div>
+					</f:subview>
+					<h3>Description du profil</h3>
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="sexeProfil" value="Sexe" />
+						<div class="controls">
+							<p:selectOneMenu id="sexeProfil" value="#{demandeBean.demande.descPosteProfil.gender}">
+								<f:selectItems value="#{enumsBean.sexes}" var="sexe" itemValue="#{sexe}"
+									itemLabel="#{sexe.label}" />
+							</p:selectOneMenu>
+							<h:message styleClass="help-inline" id="sexeProfilID" for="sexeProfil" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="ageProfil" value="Age" />
+						<div class="controls">
+							<p:inputText id="ageProfil" value="#{demandeBean.demande.descPosteProfil.ageProfil}" />
+							<h:message styleClass="help-inline" id="ageProfilID" for="ageProfil" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="formationReference"
+							value="Formation de référence" />
+						<div class="controls">
+							<p:inputText id="formationReference"
+								value="#{demandeBean.demande.descPosteProfil.formationReference}" />
+							<h:message styleClass="help-inline" id="formationReferenceID" for="formationReference" />
+						</div>
+					</div>
+
+					<h3>Compétences requises</h3>
+
+					<div class="control-group">
+						<h:outputLabel value="Connaissances théoriques" styleClass="control-label"
+							for="connaissanceTheorique" />
+						<div class="controls">
+							<p:inputText id="connaissanceTheorique"
+								value="#{demandeBean.demande.descPosteProfil.connaissanceTheorique}" />
+							<h:message styleClass="help-inline" id="connaissanceTheoriqueID" for="connaissanceTheorique" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h:outputLabel value="Compétences techniques" styleClass="control-label"
+							for="connaissanceTechnique" />
+						<div class="controls">
+							<p:inputText id="connaissanceTechnique"
+								value="#{demandeBean.demande.descPosteProfil.connaissanceTechnique}" />
+							<h:message styleClass="help-inline" id="connaissanceTechniqueID" for="connaissanceTechnique" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h:outputLabel styleClass="control-label" for="competenceOrgRel"
+							value="Compétences organisationnelles et relationnelles" />
+						<div class="controls">
+							<p:inputText id="competenceOrgRel"
+								value="#{demandeBean.demande.descPosteProfil.competenceOrgRel}" />
+							<h:message styleClass="help-inline" id="competenceOrgRelID" for="competenceOrgRel" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h:outputLabel value="Autres éléments d'informations" styleClass="control-label"
+							for="descautre" />
+						<div class="controls">
+							<p:inputTextarea id="descautre" value="#{demandeBean.demande.descPosteProfil.autre}" />
+							<h:message styleClass="help-inline" id="descautreID" for="descautre" />
+						</div>
+					</div>
+
+					<p:messages globalOnly="true" />
+					<div class="form-actions">
+						<p:commandButton value="creer demande" styleClass="btn btn-primary btn-small"
+							action="#{demandeBean.createDemande}" update="formDemande"/>
+						<p:commandButton value="Annuler" styleClass="btn btn-small" />
+					</div>
+				</h:form>
+			</ui:define>
+		</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<div class="container">
+		<div class="row">
+			<ui:define name="sider">
+				<ui:include src="/templates/siders/siderOP.xhtml" />
+			</ui:define>
+			<ui:define name="body">
+				<h1>Liste des demandes</h1>
+				<h:form id="formDemande" prependId="false">
+					<br />
+					<h3>Description du poste</h3>
+					<p:dataTable id="deamnadesID" var="demande" styleClass="table table-striped" value="#{demandeBean.demandesNouveau}">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Intitulé poste" />
+							</f:facet>
+							<h:outputText value="#{demande.intitulePoste}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Intitulé poste" />
+							</f:facet>
+							<h:outputText value="#{demande.nbPersonnes}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Intitulé poste" />
+							</f:facet>
+							<h:outputText value="#{demande.date}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Actions" />
+							</f:facet>
+							<div class="btn-group">
+								<p:commandLink styleClass="btn" oncomplete="confirmationDel.show()">
+									<i class="icon-trash"></i>
+									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
+								</p:commandLink>
+								<p:commandLink styleClass="btn">
+									<i class="icon-pencil"></i>
+								</p:commandLink>
+								<p:commandLink styleClass="btn btn-primary" style="color:white" oncomplete="confirmationSend.show()">
+									<i class="icon-share icon-white"></i>
+									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
+								</p:commandLink>
+							</div>
+						</p:column>
+					</p:dataTable>
+
+
+					<p:confirmDialog widgetVar="confirmationDel"
+						message="Voullez-vous vraiment supprimer cette demande ? cette action est irréversible">
+						<p:commandLink id="confirmDel" value="Supprimer" oncomplete="confirmationDel.hide()"
+							actionListener="#{demandeBean.deleteDemande}" styleClass="btn" update=":formDemande" />
+						<p:commandLink id="declineDel" value="Annuler" onclick="confirmationDel.hide()" type="button" styleClass="btn" />
+					</p:confirmDialog>
+
+					<p:confirmDialog widgetVar="confirmationSend"
+						message="Voullez-vous vraiment soumettre cette demande ? cette action est irréversible">
+						<p:commandLink id="confirmSend" value="Soumettre" oncomplete="confirmationSend.hide()"
+							actionListener="#{demandeBean.sendDemande}" styleClass="btn btn-primary" style="color:white;"
+							update=":formDemande" />
+						<p:commandLink id="declineSend" value="Annuler" onclick="confirmationSend.hide()" type="button" styleClass="btn" />
+					</p:confirmDialog>
+
+				</h:form>
+			</ui:define>
+		</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		#{msg['entretien.title']}
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderRH.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="form">
+			<div class="page-header">
+				<h1>#{msg['entretien.subtitle']}</h1>
+			</div>
+			<p:dataTable styleClass="table table-striped" id="entretienTable" var="entretien" value="#{entretienBean.entretiensRH}">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['convocation.demande.titlejob']}" />
+					</f:facet>
+					<h:outputText value="#{entretien.date}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['convocation.candidat.fullname']}" />
+					</f:facet>
+					<h:outputText value="#{entretien.candidature.candidat.nom} #{entretien.candidature.candidat.prenom}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['convocation.candidat.email']}" />
+					</f:facet>
+					<h:outputText value="#{entretien.candidature.demande.intitulePoste}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['action']}" />
+					</f:facet>
+					<p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="entretienDialogProceed.show()"
+						update=":formProceed:entretienPanelProceed">
+						<f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}" />
+					</p:commandLink>
+
+					<h:outputText value=" / " />
+
+					<p:commandLink styleClass="icon-search" immediate="true" oncomplete="entretienDialogInfo.show()" update=":formInfo">
+						<f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog id="dialogInfo" showEffect="fade" draggable="false" resizable="false" widgetVar="entretienDialogInfo"
+			modal="true">
+			<h:form id="formInfo" styleClass="form-horizontal">
+				<div class="span6">
+					<h2 class="page-header">#{msg['convocation.candidat.contact']}</h2>
+					<p>des infos depuis la base</p>
+					<div class="form-actions" style="display: block; float: none;">
+						<p:commandLink styleClass="btn btn-primary" immediate="true" value="#{msg['cancel']}"
+							oncomplete="entretienDialogInfo.hide()" />
+					</div>
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog closable="false" id="dialogProceed" showEffect="fade" draggable="false" resizable="false"
+			widgetVar="entretienDialogProceed" modal="true">
+			<h:form id="formProceed" styleClass="form-horizontal">
+
+				<p:outputPanel id="entretienPanelProceed">
+					<h2 class="page-header">#{msg['entretien.confirm.proceed.title']}</h2>
+					<p style="padding: 10px 40px;">
+						<h:outputText value="#{msg['entretien.confirm.proceed.text']}" />
+						<br /> <small><h:outputText value="#{msg['entretien.confirm.info']}" /></small>
+					</p>
+					<div class="form-actions">
+						<p:commandLink styleClass="btn btn-primary" update=":form:entretienTable"
+							oncomplete="entretienDialogProceed.hide()" value="#{msg['proceed']}"
+							actionListener="#{entretienBean.proceedEntretienRH}" />
+						<p:commandLink styleClass="btn btn-primary" process="@none" immediate="true"
+							value="#{msg['cancel']}" oncomplete="if(args)entretienDialogProceed.hide()" />
+					</div>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
