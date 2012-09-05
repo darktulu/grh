@@ -1,19 +1,16 @@
 package com.bull.grh.service.metier.impl;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import javax.inject.Inject;
 
 import org.dozer.DozerBeanMapper;
-import org.jbpm.task.Task;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.bull.grh.domaine.Candidature;
 import com.bull.grh.repos.metier.CandidatureDao;
 import com.bull.grh.service.metier.ConvocationService;
 import com.bull.grh.view.metier.vo.CandidatVO;
@@ -29,11 +26,11 @@ import com.bull.grh.view.metier.vo.EntretienVO;
 	"classpath:META-INF/spring/applicationContext-aop.xml", "classpath:META-INF/spring/applicationContext.xml" })
 public class ConvocationServiceImplTest {
 
-    @Autowired
+    @Inject
     private ConvocationService convocationService;
-    @Autowired
+    @Inject
     private CandidatureDao candidatureDao;
-    @Autowired
+    @Inject
     private DozerBeanMapper mapper;
     
     private final String email = "kecha.mohamed@simu.com";
@@ -41,7 +38,7 @@ public class ConvocationServiceImplTest {
     private DossierCandidatureVO dc = new DossierCandidatureVO();
     private CandidatureVO candidature = new CandidatureVO();
     private EntretienVO e = new EntretienVO();
-    private Map<String, Object> dataInput = new HashMap<String, Object>();
+    //private Map<String, Object> dataInput = new HashMap<String, Object>();
 
     @Before
     public void init() {

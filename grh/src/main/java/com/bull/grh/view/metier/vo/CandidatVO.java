@@ -13,214 +13,213 @@ import com.bull.grh.view.admin.vo.ValueVO;
 
 public class CandidatVO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Long id;
-    @Length(max = 35, min = 2)
-    private String nom;
-    @Length(max = 35, min = 2)
-    private String prenom;
-    private Gender sexe;
-    private int age;
-    @Length(max = 450, min = 2)
-    private String adresse;
-    @Email
-    @NotBlank
-    private String email;
-    @Length(max = 20, min = 2)
-    @NotBlank
-    private String username;
-    @Password
-    private String password;
-    @Phone
-    private String telephone;
-    private String reponseQuestionSecrete;
-    private String cv;
-    private String photo;
-    private String commentaireRH;
-    private String codeActivationCompte;
-    private boolean showDossierCandidature;
-    private boolean compteActive;
-    private ValueVO situationFamiliale;
-    private ValueVO ville;
-    private ValueVO pays;
-    private ValueVO nationalite;
-    private ValueVO questionSecrete;
+	@Length(max = 35, min = 2)
+	private String nom;
+	@Length(max = 35, min = 2)
+	private String prenom;
+	private Gender sexe;
+	private int age;
+	@Length(max = 450, min = 2)
+	private String adresse;
+	@Email
+	@NotBlank
+	private String email;
+	@Length(max = 20, min = 2)
+	@NotBlank
+	private String username;
+	@Password
+	private String password;
+	@Phone
+	private String telephone;
+	private String reponseQuestionSecrete;
+	private String cv;
+	private String photo;
+	private String commentaireRH;
+	private String codeActivationCompte;
+	private boolean showDossierCandidature;
+	private boolean compteActive;
+	private ValueVO situationFamiliale;
+	private ValueVO ville;
+	private ValueVO pays;
+	private ValueVO nationalite;
+	private ValueVO questionSecrete;
 
-    public Long getId() {
-	return id;
-    }
+	public String getNom() {
+		return nom;
+	}
 
-    public void setId(Long id) {
-	this.id = id;
-    }
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-    public String getNom() {
-	return nom;
-    }
+	public String getPrenom() {
+		return prenom;
+	}
 
-    public void setNom(String nom) {
-	this.nom = nom;
-    }
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
 
-    public String getPrenom() {
-	return prenom;
-    }
+	public Gender getSexe() {
+		return sexe;
+	}
 
-    public void setPrenom(String prenom) {
-	this.prenom = prenom;
-    }
+	public void setSexe(Gender sexe) {
+		this.sexe = sexe;
+	}
 
-    public Gender getSexe() {
-	return sexe;
-    }
+	public int getAge() {
+		return age;
+	}
 
-    public void setSexe(Gender sexe) {
-	this.sexe = sexe;
-    }
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-    public int getAge() {
-	return age;
-    }
+	public String getAdresse() {
+		return adresse;
+	}
 
-    public void setAge(int age) {
-	this.age = age;
-    }
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
 
-    public String getAdresse() {
-	return adresse;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setAdresse(String adresse) {
-	this.adresse = adresse;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getEmail() {
-	return email;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setEmail(String email) {
-	this.email = email;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getUsername() {
-	return username;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setUsername(String username) {
-	this.username = username;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getPassword() {
-	return password;
-    }
+	public String getTelephone() {
+		return telephone;
+	}
 
-    public void setPassword(String password) {
-	this.password = password;
-    }
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
 
-    public String getTelephone() {
-	return telephone;
-    }
+	public String getReponseQuestionSecrete() {
+		return reponseQuestionSecrete;
+	}
 
-    public void setTelephone(String telephone) {
-	this.telephone = telephone;
-    }
+	public void setReponseQuestionSecrete(String reponseQuestionSecrete) {
+		this.reponseQuestionSecrete = reponseQuestionSecrete;
+	}
 
-    public String getReponseQuestionSecrete() {
-	return reponseQuestionSecrete;
-    }
+	public String getCv() {
+		return cv;
+	}
 
-    public void setReponseQuestionSecrete(String reponseQuestionSecrete) {
-	this.reponseQuestionSecrete = reponseQuestionSecrete;
-    }
+	public void setCv(String cv) {
+		this.cv = cv;
+	}
 
-    public String getCv() {
-	return cv;
-    }
+	public String getPhoto() {
+		return photo;
+	}
 
-    public void setCv(String cv) {
-	this.cv = cv;
-    }
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 
-    public String getPhoto() {
-	return photo;
-    }
+	public String getCommentaireRH() {
+		return commentaireRH;
+	}
 
-    public void setPhoto(String photo) {
-	this.photo = photo;
-    }
+	public void setCommentaireRH(String commentaireRH) {
+		this.commentaireRH = commentaireRH;
+	}
 
-    public String getCommentaireRH() {
-	return commentaireRH;
-    }
+	public String getCodeActivationCompte() {
+		return codeActivationCompte;
+	}
 
-    public void setCommentaireRH(String commentaireRH) {
-	this.commentaireRH = commentaireRH;
-    }
+	public void setCodeActivationCompte(String codeActivationCompte) {
+		this.codeActivationCompte = codeActivationCompte;
+	}
 
-    public String getCodeActivationCompte() {
-	return codeActivationCompte;
-    }
+	public boolean isShowDossierCandidature() {
+		return showDossierCandidature;
+	}
 
-    public void setCodeActivationCompte(String codeActivationCompte) {
-	this.codeActivationCompte = codeActivationCompte;
-    }
+	public void setShowDossierCandidature(boolean showDossierCandidature) {
+		this.showDossierCandidature = showDossierCandidature;
+	}
 
-    public boolean isShowDossierCandidature() {
-	return showDossierCandidature;
-    }
+	public boolean isCompteActive() {
+		return compteActive;
+	}
 
-    public void setShowDossierCandidature(boolean showDossierCandidature) {
-	this.showDossierCandidature = showDossierCandidature;
-    }
+	public void setCompteActive(boolean compteActive) {
+		this.compteActive = compteActive;
+	}
 
-    public boolean isCompteActive() {
-	return compteActive;
-    }
+	public ValueVO getSituationFamiliale() {
+		return situationFamiliale;
+	}
 
-    public void setCompteActive(boolean compteActive) {
-	this.compteActive = compteActive;
-    }
+	public void setSituationFamiliale(ValueVO situationFamiliale) {
+		this.situationFamiliale = situationFamiliale;
+	}
 
-    public ValueVO getSituationFamiliale() {
-	return situationFamiliale;
-    }
+	public ValueVO getVille() {
+		return ville;
+	}
 
-    public void setSituationFamiliale(ValueVO situationFamiliale) {
-	this.situationFamiliale = situationFamiliale;
-    }
+	public void setVille(ValueVO ville) {
+		this.ville = ville;
+	}
 
-    public ValueVO getVille() {
-	return ville;
-    }
+	public ValueVO getPays() {
+		return pays;
+	}
 
-    public void setVille(ValueVO ville) {
-	this.ville = ville;
-    }
+	public void setPays(ValueVO pays) {
+		this.pays = pays;
+	}
 
-    public ValueVO getPays() {
-	return pays;
-    }
+	public ValueVO getNationalite() {
+		return nationalite;
+	}
 
-    public void setPays(ValueVO pays) {
-	this.pays = pays;
-    }
+	public void setNationalite(ValueVO nationalite) {
+		this.nationalite = nationalite;
+	}
 
-    public ValueVO getNationalite() {
-	return nationalite;
-    }
+	public ValueVO getQuestionSecrete() {
+		return questionSecrete;
+	}
 
-    public void setNationalite(ValueVO nationalite) {
-	this.nationalite = nationalite;
-    }
+	public void setQuestionSecrete(ValueVO questionSecrete) {
+		this.questionSecrete = questionSecrete;
+	}
 
-    public ValueVO getQuestionSecrete() {
-	return questionSecrete;
-    }
-
-    public void setQuestionSecrete(ValueVO questionSecrete) {
-	this.questionSecrete = questionSecrete;
-    }
+	@Override
+	public String toString() {
+		return "CandidatVO [" + (nom != null ? "nom=" + nom + ", " : "")
+				+ (prenom != null ? "prenom=" + prenom + ", " : "") + (email != null ? "email=" + email + ", " : "")
+				+ (username != null ? "username=" + username + ", " : "") + "showDossierCandidature="
+				+ showDossierCandidature + ", compteActive=" + compteActive + "]";
+	}
 
 }

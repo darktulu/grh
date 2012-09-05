@@ -11,7 +11,7 @@
 	<h:outputStylesheet library="css" name="bootstrap-responsive.css" />
 	<h:outputStylesheet library="css" name="bootstrap.css" />
 	<h:outputStylesheet library="css" name="docs.css" />
-	<h:outputScript library="jsf" name="jquery.js" />
+	<h:outputStylesheet library="css" name="custum.css" />
 	<h:outputScript library="js" name="bootstrap.js" />
 	<div class="row">
 		<div class="span6">
@@ -22,12 +22,12 @@
 						<h:inputText value="#{loginBean.username}" />
 						<h:outputText value="Mot de passe" />
 						<h:inputSecret value="#{loginBean.password}" />
-						<h:commandButton value="Connexion" action="#{loginBean.doLogin}"
-							styleClass="btn btn-primary" />
+						<p:commandLink value="Connexion" action="#{loginBean.doLogin}"
+							update="@form" styleClass="btn btn-primary" />
 					</h:panelGrid>
-					<div align="center" style="color: red;">
-						<p:messages />
-					</div>
+					
+						<p:messages autoUpdate="true" display="text" showDetail="true" />
+					
 				</h:form>
 			</div>
 		</div>

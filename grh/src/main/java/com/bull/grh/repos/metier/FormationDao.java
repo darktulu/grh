@@ -9,5 +9,5 @@ import com.bull.grh.domaine.Formation;
 
 @Repository("formationDao")
 public interface FormationDao extends JpaRepository<Formation, Long> {
-    public List<Formation> findByCandidat_username(String username);
+	public List<Formation> findByCandidat_username(String username);
 }

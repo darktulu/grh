@@ -19,42 +19,42 @@ import com.bull.grh.view.metier.vo.PersonneVO;
 @Service("authenticationService")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Inject
-    private AuthenticationManager authenticationManager;
+	@Inject
+	private AuthenticationManager authenticationManager;
 
-    @Inject
-    private PersonneDao personneDao;
+	@Inject
+	private PersonneDao personneDao;
 
-    @Inject
-    private CandidatDao candidatDao;
+	@Inject
+	private CandidatDao candidatDao;
 
-    @Inject
-    private DozerBeanMapper mapper;
+	@Inject
+	private DozerBeanMapper mapper;
 
-    @Override
-    public void login(String login, String password) throws AuthenticationException {
-	Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login,
-		password));
-	if (authenticate.isAuthenticated()) {
-	    SecurityContextHolder.getContext().setAuthentication(authenticate);
+	@Override
+	public void login(String login, String password) throws AuthenticationException {
+		Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login,
+				password));
+		if (authenticate.isAuthenticated()) {
+			SecurityContextHolder.getContext().setAuthentication(authenticate);
+		}
 	}
-    }
 
-    @Override
-    public void logout() {
-	SecurityContextHolder.getContext().setAuthentication(null);
-    }
+	@Override
+	public void logout() {
+		SecurityContextHolder.getContext().setAuthentication(null);
+	}
 
-    @Override
-    public PersonneVO getConnectedPersonne() {
-	return mapper.map(personneDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()),
-		PersonneVO.class);
-    }
+	@Override
+	public PersonneVO getConnectedPersonne() {
+		return mapper.map(personneDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()),
+				PersonneVO.class);
+	}
 
-    @Override
-    public CandidatVO getConnectedCandidat() {
-	return mapper.map(candidatDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()),
-		CandidatVO.class);
-    }
+	@Override
+	public CandidatVO getConnectedCandidat() {
+		return mapper.map(candidatDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()),
+				CandidatVO.class);
+	}
 
 }

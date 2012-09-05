@@ -5,11 +5,8 @@ import javax.inject.Inject;
 import org.dozer.DozerBeanMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bull.grh.domaine.Candidat;
 import com.bull.grh.view.metier.vo.CandidatVO;
@@ -24,7 +21,7 @@ import com.bull.grh.view.metier.vo.CandidatVO;
 // @Transactional
 public class CandidatDaoTest {
 
-    @Autowired
+    @Inject
     private CandidatDao candidatDao;
     @Inject
     private DozerBeanMapper mapper;

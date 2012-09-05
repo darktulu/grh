@@ -288,7 +288,8 @@ public class JbpmServiceImpl implements JbpmService {
 	return (Integer) (tasks == null ? 0 : tasks.get(0));
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Task> getTaskList(String taskName, String userID) {
 	BlockingQueryGenericResponseHandler responseHandler = new BlockingQueryGenericResponseHandler();
 	taskClient.query(
@@ -300,7 +301,8 @@ public class JbpmServiceImpl implements JbpmService {
 	return (List<Task>) responseHandler.getResults();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Task> getStartedTaskList(String taskName, String userID) {
 	BlockingQueryGenericResponseHandler responseHandler = new BlockingQueryGenericResponseHandler();
 	taskClient.query(

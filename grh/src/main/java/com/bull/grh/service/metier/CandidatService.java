@@ -11,6 +11,7 @@ import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CompetenceVO;
 import com.bull.grh.view.metier.vo.ExperienceVO;
 import com.bull.grh.view.metier.vo.FormationVO;
+import com.bull.grh.view.metier.vo.LangueVO;
 
 public interface CandidatService {
 
@@ -43,4 +44,10 @@ public interface CandidatService {
     public List<ExperienceVO> loadExperiences(String username);
 
     public ExperienceVO addorupdateExperience(@Valid ExperienceVO experience);
+
+	public LangueVO addorupdateLangue(@Valid LangueVO langue);
+
+	public void deleteLangue(LangueVO langue);
+
+	public List<LangueVO> loadLangues(String username);
 }

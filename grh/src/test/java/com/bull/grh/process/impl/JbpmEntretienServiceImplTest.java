@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.dozer.DozerBeanMapper;
 import org.jbpm.task.Task;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -33,13 +34,13 @@ import com.bull.grh.view.metier.vo.EntretienVO;
 	"classpath:META-INF/spring/applicationContext.xml" })
 public class JbpmEntretienServiceImplTest {
 
-    @Autowired
+    @Inject
     private JbpmEntretienService jbpmEntretienService;
-    @Autowired
+    @Inject
     private JbpmService jbpmService;
-    @Autowired
+    @Inject
     private EntretienDao entretienDao;
-    @Autowired
+    @Inject
     private DozerBeanMapper mapper;
     
     private final String email = "kecha.mohamed@simu.com";

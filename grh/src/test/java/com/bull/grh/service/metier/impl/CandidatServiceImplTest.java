@@ -1,8 +1,9 @@
 package com.bull.grh.service.metier.impl;
 
+import javax.inject.Inject;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -19,7 +20,7 @@ import com.bull.grh.view.metier.vo.CandidatVO;
 	"classpath:META-INF/spring/applicationContext-aop.xml", "classpath:META-INF/spring/applicationContext.xml" })
 public class CandidatServiceImplTest {
 
-    @Autowired
+    @Inject
     private CandidatService candidatService;
     private final String email = "kecha.mohamed@simu.com";
 

@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.jbpm.task.Task;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,9 +32,9 @@ import com.bull.grh.view.metier.vo.EntretienVO;
 	"classpath:META-INF/spring/applicationContext.xml" })
 public class JbpmConvocationServiceImplTest {
 
-    @Autowired
+    @Inject
     private JbpmConvocationService jbpmConvocationService;
-    @Autowired
+    @Inject
     private JbpmService jbpmService;
     
     private final String email = "kecha.mohamed@simu.com";

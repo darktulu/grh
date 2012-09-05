@@ -29,93 +29,96 @@ import com.bull.grh.view.metier.vo.EntretienVO;
 @Service("convocationService")
 public class ConvocationServiceImpl implements ConvocationService {
 
-    @Inject
-    private JbpmConvocationService jbpmConvocationService;
-    @Inject
-    private CandidatureDao candidatureDao;
-    @Inject
-    private DozerBeanMapper mapper;
-    @Inject
-    private EntretienDao entretienDao;
+	@Inject
+	private JbpmConvocationService jbpmConvocationService;
+	@Inject
+	private CandidatureDao candidatureDao;
+	@Inject
+	private DozerBeanMapper mapper;
+	@Inject
+	private EntretienDao entretienDao;
 
-    @Override
-    public void cancelConvocation(Task task, CandidatureVO candidature) {
-	// change the state of the appointment
-	candidature.setEtatCandidature(EtatCandidature.COMPLETED);
+	@Override
+	public void cancelConvocation(Task task, CandidatureVO candidature) {
+		// change the state of the appointment
+		candidature.setEtatCandidature(EtatCandidature.COMPLETED);
 
-	// update the state of the Entities
-	candidatureDao.save(mapper.map(candidature, Candidature.class));
+		// update the state of the Entities
+		candidatureDao.save(mapper.map(candidature, Candidature.class));
 
-	// complete task without any parameters (it will end the process for
-	// this candidate)
-	jbpmConvocationService.startAndCompleteTask("ROLE_RH", task, null, false);
-    }
-
-    @Override
-    public void startConvocation(Task task) {
-	jbpmConvocationService.startTask("ROLE_RH", task);
-    }
-
-    @Override
-    public void completeConvocation(Task task, CandidatureVO candidature, EntretienVO entretien) {
-	// Persist the appointment with new changes and creates evaluation for
-	// this appointment
-	entretien.setCandidature(candidature);
-	entretien.setEtat(EtatEntretien.NEW);
-	entretien.getEvaluation().setEtatEvaluation(EtatEvaluation.NEW);
-
-	Entretien newEntretien = mapper.map(entretien, Entretien.class);
-	newEntretien = entretienDao.save(newEntretien);
-	entretien = mapper.map(newEntretien, EntretienVO.class);
-
-	// continues the process by injecting the appointment
-	jbpmConvocationService.completeTask("ROLE_RH", task, entretien, true);
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Map<CandidatureVO, Task> loadTaskList() {
-	CandidatureVO candidatureVO = new CandidatureVO();
-	List<Task> tasks = new ArrayList<Task>();
-	Map<CandidatureVO, Task> map = new HashMap<CandidatureVO, Task>();
-	tasks = jbpmConvocationService.getTaskList("ROLE_RH");
-	for (Task task : tasks) {
-	    candidatureVO = getCandidatureFromTask(task);
-	    map.put(candidatureVO, task);
+		// complete task without any parameters (it will end the process for
+		// this candidate)
+		jbpmConvocationService.startAndCompleteTask("ROLE_RH", task, null,
+				false);
 	}
-	return map;
-    }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Map<CandidatureVO, Task> loadStartedTaskList() {
-	CandidatureVO candidatureVO = new CandidatureVO();
-	List<Task> tasks = new ArrayList<Task>();
-	Map<CandidatureVO, Task> map = new HashMap<CandidatureVO, Task>();
-	tasks = jbpmConvocationService.getStartedTaskList("ROLE_RH");
-	for (Task task : tasks) {
-	    candidatureVO = getCandidatureFromTask(task);
-	    map.put(candidatureVO, task);
+	@Override
+	public void startConvocation(Task task) {
+		jbpmConvocationService.startTask("ROLE_RH", task);
 	}
-	return map;
-    }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Long getCountTaskList() {
-	return jbpmConvocationService.getCountTaskList("ROLE_RH");
-    }
+	@Override
+	public void completeConvocation(Task task, CandidatureVO candidature,
+			EntretienVO entretien) {
+		// Persist the appointment with new changes and creates evaluation for
+		// this appointment
+		entretien.setCandidature(candidature);
+		entretien.setEtat(EtatEntretien.NEW);
+		entretien.getEvaluation().setEtatEvaluation(EtatEvaluation.NEW);
 
-    @Override
-    @Transactional(readOnly = true)
-    public Long getCountStartedTaskList() {
-	return jbpmConvocationService.getCountStartedTaskList("ROLE_RH");
-    }
+		Entretien newEntretien = mapper.map(entretien, Entretien.class);
+		newEntretien = entretienDao.save(newEntretien);
+		entretien = mapper.map(newEntretien, EntretienVO.class);
 
-    @Transactional(readOnly = true)
-    private CandidatureVO getCandidatureFromTask(Task task) {
-	return (CandidatureVO) jbpmConvocationService.getTaskContent(task).get(ProcessConst.CONVOCATION_CANDIDATURE);
-    }
+		// continues the process by injecting the appointment
+		jbpmConvocationService.completeTask("ROLE_RH", task, entretien, true);
+
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Map<CandidatureVO, Task> loadTaskList() {
+		CandidatureVO candidatureVO = new CandidatureVO();
+		List<Task> tasks = new ArrayList<Task>();
+		Map<CandidatureVO, Task> map = new HashMap<CandidatureVO, Task>();
+		tasks = jbpmConvocationService.getTaskList("ROLE_RH");
+		for (Task task : tasks) {
+			candidatureVO = getCandidatureFromTask(task);
+			map.put(candidatureVO, task);
+		}
+		return map;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Map<CandidatureVO, Task> loadStartedTaskList() {
+		CandidatureVO candidatureVO = new CandidatureVO();
+		List<Task> tasks = new ArrayList<Task>();
+		Map<CandidatureVO, Task> map = new HashMap<CandidatureVO, Task>();
+		tasks = jbpmConvocationService.getStartedTaskList("ROLE_RH");
+		for (Task task : tasks) {
+			candidatureVO = getCandidatureFromTask(task);
+			map.put(candidatureVO, task);
+		}
+		return map;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long getCountTaskList() {
+		return jbpmConvocationService.getCountTaskList("ROLE_RH");
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long getCountStartedTaskList() {
+		return jbpmConvocationService.getCountStartedTaskList("ROLE_RH");
+	}
+
+	@Transactional(readOnly = true)
+	private CandidatureVO getCandidatureFromTask(Task task) {
+		return (CandidatureVO) jbpmConvocationService.getTaskContent(task).get(
+				ProcessConst.CONVOCATION_CANDIDATURE);
+	}
 
 }

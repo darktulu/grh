@@ -1,7 +1,6 @@
 package com.bull.grh.view.admin;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,319 +26,320 @@ import com.bull.grh.view.admin.vo.ValueVO;
 @Scope("view")
 public class AdminListOfValueBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private TreeNode root;
-    private TreeNode rootValue;
-    private TypeVO selectedType = new TypeVO();
-    private TypeVO addedType = new TypeVO();
-    private ValueVO selectedValue = new ValueVO();
-    private ValueVO addedValue = new ValueVO();
-    private List<TypeVO> types;
-    private List<ValueVO> parentvalues;
-    private String nomType;
-    private String nomValue;
-    private boolean showValueTree;
+	private TreeNode root;
+	private TreeNode rootValue;
+	private TypeVO selectedType = new TypeVO();
+	private TypeVO addedType = new TypeVO();
+	private ValueVO selectedValue = new ValueVO();
+	private ValueVO addedValue = new ValueVO();
+	private List<TypeVO> types;
+	private List<ValueVO> parentvalues;
+	private String nomType;
+	private String nomValue;
+	private boolean showValueTree;
 
-    transient private UITree componentType;
-    transient HtmlSelectOneMenu htmlSelectOneMenu;
+	transient private UITree componentType;
+	transient HtmlSelectOneMenu htmlSelectOneMenu;
 
-    @Inject
-    private transient AdminValueService adminValueService;
+	@Inject
+	private transient AdminValueService adminValueService;
 
-    public String add() {
-	System.out.println("eeeeee");
-	return null;
-    }
-
-    public void validateType(FacesContext context, UIComponent component, Object object) throws ValidatorException {
-	TypeVO type = (TypeVO) object;
-	if (type == null) {
-	    throw new ValidatorException(new FacesMessage("Type obligatoire"));
+	public String add() {
+		System.out.println("eeeeee");
+		return null;
 	}
-    }
 
-    public void validateParent(FacesContext context, UIComponent component, Object object) throws ValidatorException {
-	ValueVO parent = (ValueVO) object;
-	if (parent == null && parentvalues.size() > 1) {
-	    throw new ValidatorException(new FacesMessage("Parent obligatoire"));
+	public void validateType(FacesContext context, UIComponent component, Object object) throws ValidatorException {
+		TypeVO type = (TypeVO) object;
+		if (type == null) {
+			throw new ValidatorException(new FacesMessage("Type obligatoire"));
+		}
 	}
-    }
 
-    public String capitalize(String str) {
-	if (str.length() == 0)
-	    return str;
-	return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
-    }
-
-    public void treeBuilderValue(ValueVO value, TreeNode parent) {
-	TreeNode treeNode = new DefaultTreeNode(value, parent);
-	// if (value.getParent() != null) {
-	List<ValueVO> children = getAdminValueService().loadValuesChildren(value.getValue());
-	for (ValueVO child : children) {
-	    treeBuilderValue(child, treeNode);
+	public void validateParent(FacesContext context, UIComponent component, Object object) throws ValidatorException {
+		ValueVO parent = (ValueVO) object;
+		if (parent == null && parentvalues.size() > 1) {
+			throw new ValidatorException(new FacesMessage("Parent obligatoire"));
+		}
 	}
-	// }
-    }
 
-    public void treeBuilder(TypeVO type, TreeNode parent) {
-
-	TreeNode treeNode = new DefaultTreeNode(type, parent);
-	// if (type.getParent() != null) {
-	List<TypeVO> children = getAdminValueService().loadTypeChildren(type.getNom());
-
-	for (TypeVO child : children) {
-	    treeBuilder(child, treeNode);
+	public String capitalize(String str) {
+		if (str.length() == 0)
+			return str;
+		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
 	}
-	// }
-    }
 
-    public void buildTypeTree() {
-	root = new DefaultTreeNode("root", null);
-	List<TypeVO> typeValues = getAdminValueService().loadTypesRoot();
-	for (TypeVO typeValue : typeValues) {
-	    treeBuilder(typeValue, root);
+	public void treeBuilderValue(ValueVO value, TreeNode parent) {
+		TreeNode treeNode = new DefaultTreeNode(value, parent);
+		// if (value.getParent() != null) {
+		List<ValueVO> children = getAdminValueService().loadValuesChildren(value.getValue());
+		for (ValueVO child : children) {
+			treeBuilderValue(child, treeNode);
+		}
+		// }
 	}
-    }
 
-    public void buildValueTree() {
-	rootValue = new DefaultTreeNode("rootValue", null);
-	List<ValueVO> valueList = getAdminValueService().loadValuesByDefName(selectedType.getNom());
-	if (valueList.size() > 0) {
-	    for (ValueVO type : valueList) {
-		treeBuilderValue(type, rootValue);
-	    }
-	    showValueTree = true;
-	} else
-	    showValueTree = false;
-    }
+	public void treeBuilder(TypeVO type, TreeNode parent) {
 
-    @PostConstruct
-    public void init() {
-	buildTypeTree();
-    }
+		TreeNode treeNode = new DefaultTreeNode(type, parent);
+		// if (type.getParent() != null) {
+		List<TypeVO> children = getAdminValueService().loadTypeChildren(type.getNom());
 
-    public void showSelectedType() {
-	selectedType = (TypeVO) componentType.getRowNode().getData();
-	buildValueTree();
-    }
-
-    public void updateSelectedType() {
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	if (getAdminValueService().typeExists(addedType))
-	    context.addMessage(null, new FacesMessage("Type déjà existant !"));
-
-	else {
-	    getAdminValueService().updateType(selectedType);
-	    buildTypeTree();
+		for (TypeVO child : children) {
+			treeBuilder(child, treeNode);
+		}
+		// }
 	}
-	selectedType = new TypeVO();
-    }
 
-    public void updateSelectedValue() {
-
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	if (nomValue.length() > 25)
-	    context.addMessage(null, new FacesMessage("Invalid value !"));
-	else if (nomValue.equals(""))
-	    context.addMessage(null, new FacesMessage("Value required !"));
-	else if (getAdminValueService().valueExists(selectedValue))
-	    context.addMessage(null, new FacesMessage("Value already exists !"));
-
-	else {
-
-	    getAdminValueService().updateValue(selectedValue);
-	    buildValueTree();
+	public void buildTypeTree() {
+		root = new DefaultTreeNode("root", null);
+		List<TypeVO> typeValues = getAdminValueService().loadTypesRoot();
+		for (TypeVO typeValue : typeValues) {
+			treeBuilder(typeValue, root);
+		}
 	}
-	selectedValue = new ValueVO();
-    }
 
-    public void deleteSelectedType() {
-	FacesContext context = FacesContext.getCurrentInstance();
-	if (getAdminValueService().loadTypeChildren(selectedType.getNom()).size() == 0) {
-
-	    getAdminValueService().deleteType(selectedType);
-	    types = getAdminValueService().loadTypes();
-	    buildTypeTree();
-	    buildValueTree();
-
-	} else
-	    context.addMessage(null, new FacesMessage("Le type ne peut pas être supprimé, supprimez dabord ses fils !"));
-	selectedType = new TypeVO();
-    }
-
-    public void remplirParent() {
-	TypeVO value = (TypeVO) htmlSelectOneMenu.getValue();
-	if (value.getParent() != null)
-	    parentvalues = getAdminValueService().loadValuesByDefName(value.getParent().getNom());
-    }
-
-    public void deleteSelectedValue() {
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	if (getAdminValueService().loadValuesChildren(selectedValue.getValue()).size() == 0) {
-	    getAdminValueService().deleteValue(selectedValue);
-	    buildValueTree();
-	} else
-	    context.addMessage(null, new FacesMessage(
-		    "La valeur ne peut pas être supprimée, supprimez dabord ses fils !"));
-	selectedValue = new ValueVO();
-    }
-
-    public void ajouterType() {
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	if (adminValueService.typeExists(addedType))
-	    context.addMessage(null, new FacesMessage("Type déjà existant !"));
-
-	else {
-	    adminValueService.save(addedType);
-	    types = adminValueService.loadTypes();
-	    buildTypeTree();
-	    buildValueTree();
+	public void buildValueTree() {
+		rootValue = new DefaultTreeNode("rootValue", null);
+		List<ValueVO> valueList = getAdminValueService().loadValuesByDefName(selectedType.getNom());
+		if (valueList.size() > 0) {
+			for (ValueVO type : valueList) {
+				treeBuilderValue(type, rootValue);
+			}
+			showValueTree = true;
+		} else
+			showValueTree = false;
 	}
-	addedType = new TypeVO();
-	addedValue = new ValueVO();
-	selectedType = new TypeVO();
-	selectedValue = new ValueVO();
-    }
 
-    public void ajouterValue() {
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	if (getAdminValueService().valueExists(addedValue))
-	    context.addMessage(null, new FacesMessage("Valeur déjà existante !"));
-
-	else {
-	    getAdminValueService().addValue(addedValue);
-	    types = getAdminValueService().loadTypes();
-	    buildValueTree();
-
+	@PostConstruct
+	public void init() {
+		buildTypeTree();
 	}
-	addedType = new TypeVO();
-	addedValue = new ValueVO();
-	selectedValue = new ValueVO();
-    }
 
-    public void remplirParent(AjaxBehaviorEvent e) {
-	TypeVO value = (TypeVO) htmlSelectOneMenu.getValue();
-	if (value.getParent() != null)
-	    parentvalues = getAdminValueService().loadValuesByDefName(value.getParent().getNom());
-    }
+	public void showSelectedType() {
+		selectedType = (TypeVO) componentType.getRowNode().getData();
+		buildValueTree();
+	}
 
-    public TreeNode getRoot() {
-	return root;
-    }
+	public void updateSelectedType() {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public void setRoot(TreeNode root) {
-	this.root = root;
-    }
+		if (getAdminValueService().typeExists(addedType))
+			context.addMessage(null, new FacesMessage("Type déjà existant !"));
 
-    public TreeNode getRootValue() {
-	return rootValue;
-    }
+		else {
+			getAdminValueService().updateType(selectedType);
+			buildTypeTree();
+		}
+		selectedType = new TypeVO();
+	}
 
-    public void setRootValue(TreeNode rootValue) {
-	this.rootValue = rootValue;
-    }
+	public void updateSelectedValue() {
 
-    public TypeVO getSelectedType() {
-	return selectedType;
-    }
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public void setSelectedType(TypeVO selectedType) {
-	this.selectedType = selectedType;
-    }
+		if (nomValue.length() > 25)
+			context.addMessage(null, new FacesMessage("Invalid value !"));
+		else if (nomValue.equals(""))
+			context.addMessage(null, new FacesMessage("Value required !"));
+		else if (getAdminValueService().valueExists(selectedValue))
+			context.addMessage(null, new FacesMessage("Value already exists !"));
 
-    public TypeVO getAddedType() {
-	return addedType;
-    }
+		else {
 
-    public void setAddedType(TypeVO addedType) {
-	this.addedType = addedType;
-    }
+			getAdminValueService().updateValue(selectedValue);
+			buildValueTree();
+		}
+		selectedValue = new ValueVO();
+	}
 
-    public ValueVO getSelectedValue() {
-	return selectedValue;
-    }
+	public void deleteSelectedType() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (getAdminValueService().loadTypeChildren(selectedType.getNom()).size() == 0) {
 
-    public void setSelectedValue(ValueVO selectedValue) {
-	this.selectedValue = selectedValue;
-    }
+			getAdminValueService().deleteType(selectedType);
+			types = getAdminValueService().loadTypes();
+			buildTypeTree();
+			buildValueTree();
 
-    public ValueVO getAddedValue() {
-	return addedValue;
-    }
+		} else
+			context.addMessage(null, new FacesMessage("Le type ne peut pas être supprimé, supprimez dabord ses fils !"));
+		selectedType = new TypeVO();
+	}
 
-    public void setAddedValue(ValueVO addedValue) {
-	this.addedValue = addedValue;
-    }
+	public void remplirParent() {
+		TypeVO value = (TypeVO) htmlSelectOneMenu.getValue();
+		if (value.getParent() != null)
+			parentvalues = getAdminValueService().loadValuesByDefName(value.getParent().getNom());
+	}
 
-    public List<TypeVO> getTypes() {
-	if(types == null || types.isEmpty()) types = adminValueService.loadTypes();
-	return types;
-    }
+	public void deleteSelectedValue() {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public void setTypes(List<TypeVO> types) {
-	this.types = types;
-    }
+		if (getAdminValueService().loadValuesChildren(selectedValue.getValue()).size() == 0) {
+			getAdminValueService().deleteValue(selectedValue);
+			buildValueTree();
+		} else
+			context.addMessage(null, new FacesMessage(
+					"La valeur ne peut pas être supprimée, supprimez dabord ses fils !"));
+		selectedValue = new ValueVO();
+	}
 
-    public List<ValueVO> getParentvalues() {
-	return parentvalues;
-    }
+	public void ajouterType() {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public void setParentvalues(List<ValueVO> parentvalues) {
-	this.parentvalues = parentvalues;
-    }
+		if (adminValueService.typeExists(addedType))
+			context.addMessage(null, new FacesMessage("Type déjà existant !"));
 
-    public String getNomType() {
-	return nomType;
-    }
+		else {
+			adminValueService.save(addedType);
+			types = adminValueService.loadTypes();
+			buildTypeTree();
+			buildValueTree();
+		}
+		addedType = new TypeVO();
+		addedValue = new ValueVO();
+		selectedType = new TypeVO();
+		selectedValue = new ValueVO();
+	}
 
-    public void setNomType(String nomType) {
-	this.nomType = nomType;
-    }
+	public void ajouterValue() {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public String getNomValue() {
-	return nomValue;
-    }
+		if (getAdminValueService().valueExists(addedValue))
+			context.addMessage(null, new FacesMessage("Valeur déjà existante !"));
 
-    public void setNomValue(String nomValue) {
-	this.nomValue = nomValue;
-    }
+		else {
+			getAdminValueService().addValue(addedValue);
+			types = getAdminValueService().loadTypes();
+			buildValueTree();
 
-    public boolean isShowValueTree() {
-	return showValueTree;
-    }
+		}
+		addedType = new TypeVO();
+		addedValue = new ValueVO();
+		selectedValue = new ValueVO();
+	}
 
-    public void setShowValueTree(boolean showValueTree) {
-	this.showValueTree = showValueTree;
-    }
+	public void remplirParent(AjaxBehaviorEvent e) {
+		TypeVO value = (TypeVO) htmlSelectOneMenu.getValue();
+		if (value.getParent() != null)
+			parentvalues = getAdminValueService().loadValuesByDefName(value.getParent().getNom());
+	}
 
-    public UITree getComponentType() {
-	return componentType;
-    }
+	public TreeNode getRoot() {
+		return root;
+	}
 
-    public void setComponentType(UITree componentType) {
-	this.componentType = componentType;
-    }
+	public void setRoot(TreeNode root) {
+		this.root = root;
+	}
 
-    public HtmlSelectOneMenu getHtmlSelectOneMenu() {
-	return htmlSelectOneMenu;
-    }
+	public TreeNode getRootValue() {
+		return rootValue;
+	}
 
-    public void setHtmlSelectOneMenu(HtmlSelectOneMenu htmlSelectOneMenu) {
-	this.htmlSelectOneMenu = htmlSelectOneMenu;
-    }
+	public void setRootValue(TreeNode rootValue) {
+		this.rootValue = rootValue;
+	}
 
-    public AdminValueService getAdminValueService() {
-	return adminValueService;
-    }
+	public TypeVO getSelectedType() {
+		return selectedType;
+	}
 
-    public void setAdminValueService(AdminValueService adminValueService) {
-	this.adminValueService = adminValueService;
-    }
+	public void setSelectedType(TypeVO selectedType) {
+		this.selectedType = selectedType;
+	}
+
+	public TypeVO getAddedType() {
+		return addedType;
+	}
+
+	public void setAddedType(TypeVO addedType) {
+		this.addedType = addedType;
+	}
+
+	public ValueVO getSelectedValue() {
+		return selectedValue;
+	}
+
+	public void setSelectedValue(ValueVO selectedValue) {
+		this.selectedValue = selectedValue;
+	}
+
+	public ValueVO getAddedValue() {
+		return addedValue;
+	}
+
+	public void setAddedValue(ValueVO addedValue) {
+		this.addedValue = addedValue;
+	}
+
+	public List<TypeVO> getTypes() {
+		if (types == null || types.isEmpty())
+			types = adminValueService.loadTypes();
+		return types;
+	}
+
+	public void setTypes(List<TypeVO> types) {
+		this.types = types;
+	}
+
+	public List<ValueVO> getParentvalues() {
+		return parentvalues;
+	}
+
+	public void setParentvalues(List<ValueVO> parentvalues) {
+		this.parentvalues = parentvalues;
+	}
+
+	public String getNomType() {
+		return nomType;
+	}
+
+	public void setNomType(String nomType) {
+		this.nomType = nomType;
+	}
+
+	public String getNomValue() {
+		return nomValue;
+	}
+
+	public void setNomValue(String nomValue) {
+		this.nomValue = nomValue;
+	}
+
+	public boolean isShowValueTree() {
+		return showValueTree;
+	}
+
+	public void setShowValueTree(boolean showValueTree) {
+		this.showValueTree = showValueTree;
+	}
+
+	public UITree getComponentType() {
+		return componentType;
+	}
+
+	public void setComponentType(UITree componentType) {
+		this.componentType = componentType;
+	}
+
+	public HtmlSelectOneMenu getHtmlSelectOneMenu() {
+		return htmlSelectOneMenu;
+	}
+
+	public void setHtmlSelectOneMenu(HtmlSelectOneMenu htmlSelectOneMenu) {
+		this.htmlSelectOneMenu = htmlSelectOneMenu;
+	}
+
+	public AdminValueService getAdminValueService() {
+		return adminValueService;
+	}
+
+	public void setAdminValueService(AdminValueService adminValueService) {
+		this.adminValueService = adminValueService;
+	}
 
 }

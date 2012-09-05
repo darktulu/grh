@@ -3,9 +3,10 @@ package com.bull.grh.service.admin.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.dozer.DozerBeanMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +24,13 @@ public class AdminValueServiceImpl implements AdminValueService {
 
     protected static Logger logger = Logger.getLogger("AdminValueService");
 
-    @Autowired
+    @Inject
     private DozerBeanMapper mapper;
 
-    @Autowired
+    @Inject
     private TypeValueDao typeValueDao;
 
-    @Autowired
+    @Inject
     private ValueListDao valueListDao;
 
     @Override

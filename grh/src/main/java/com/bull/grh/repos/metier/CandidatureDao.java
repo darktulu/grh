@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.bull.grh.domaine.Candidat;
 import com.bull.grh.domaine.Candidature;
 import com.bull.grh.domaine.types.EtatCandidature;
 
+@Repository("candidatureDao")
 public interface CandidatureDao extends JpaRepository<Candidature, Long> {
 
     @Query("FROM Candidature c WHERE c.demande.id = :idDemande ")

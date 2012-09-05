@@ -7,41 +7,43 @@ import com.bull.grh.domaine.types.Gender;
 
 public class EnfantVO implements Serializable {
 
-    private String prenom;
-    private Gender gender;
-    private Date dateNais;
-    private String nomMere;
+	private static final long serialVersionUID = 1L;
 
-    public String getPrenom() {
-	return prenom;
-    }
+	private String prenom;
+	private Gender gender;
+	private Date dateNais;
+	private String nomMere;
 
-    public void setPrenom(String prenom) {
-	this.prenom = prenom;
-    }
+	public String getPrenom() {
+		return prenom;
+	}
 
-    public Gender getGender() {
-	return gender;
-    }
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
 
-    public void setGender(Gender gender) {
-	this.gender = gender;
-    }
+	public Gender getGender() {
+		return gender;
+	}
 
-    public Date getDateNais() {
-	return dateNais;
-    }
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
-    public void setDateNais(Date dateNais) {
-	this.dateNais = dateNais;
-    }
+	public Date getDateNais() {
+		return dateNais;
+	}
 
-    public String getNomMere() {
-	return nomMere;
-    }
+	public void setDateNais(Date dateNais) {
+		this.dateNais = dateNais;
+	}
 
-    public void setNomMere(String nomMere) {
-	this.nomMere = nomMere;
-    }
+	public String getNomMere() {
+		return nomMere;
+	}
+
+	public void setNomMere(String nomMere) {
+		this.nomMere = nomMere;
+	}
 
 }

@@ -16,69 +16,75 @@ import com.bull.grh.view.metier.vo.DemandeVO;
 
 @Component
 @Scope("session")
-public class DemandeSessionBean implements Serializable{
+public class DemandeSessionBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    
-    @Inject
-    private DemandeService demandeService;
-    
-    @Inject
-    private I18nMessageBean i18nMessageBean;
-    
-    private DemandeVO demande = new DemandeVO();
-    private CandidatVO candidat = new CandidatVO();
-    private long countCandidats;
+	private static final long serialVersionUID = 1L;
 
-    public void addCandidat() {
-	try {
-	    demandeService.addCandidateToDemand(candidat, demande);
-	} catch (AlreadyHaveCandidatureException e) {
-	    // TODO Faces message
-	    i18nMessageBean.showErrorMessage("impossible d'ajouter dandidat");
+	@Inject
+	private DemandeService demandeService;
+
+	@Inject
+	private I18nMessageBean i18nMessageBean;
+
+	private DemandeVO demande = new DemandeVO();
+	private CandidatVO candidat = new CandidatVO();
+	private long countCandidats;
+
+	public void init() {
+		demande = new DemandeVO();
+		candidat = new CandidatVO();
 	}
-    }
 
-    public void removeCandidat() {
-	try {
-	    demandeService.removeCandidateFromDemand(candidat, demande);
-	} catch (CandidatureNotFoundException e) {
-	    // TODO Faces message
-	    i18nMessageBean.showErrorMessage("impossible de supprimer dandidat");
+	public void addCandidat() {
+		try {
+			demandeService.addCandidateToDemand(candidat, demande);
+		} catch (AlreadyHaveCandidatureException e) {
+			// TODO Faces message
+			i18nMessageBean.showErrorMessage("impossible d'ajouter dandidat");
+		}
 	}
-    }
 
-    public DemandeService getDemandeService() {
-	return demandeService;
-    }
+	public void removeCandidat() {
+		try {
+			demandeService.removeCandidateFromDemand(candidat, demande);
+		} catch (CandidatureNotFoundException e) {
+			// TODO Faces message
+			i18nMessageBean
+					.showErrorMessage("impossible de supprimer dandidat");
+		}
+	}
 
-    public void setDemandeService(DemandeService demandeService) {
-	this.demandeService = demandeService;
-    }
+	public DemandeService getDemandeService() {
+		return demandeService;
+	}
 
-    public DemandeVO getDemande() {
-	return demande;
-    }
+	public void setDemandeService(DemandeService demandeService) {
+		this.demandeService = demandeService;
+	}
 
-    public void setDemande(DemandeVO demande) {
-	this.demande = demande;
-    }
+	public DemandeVO getDemande() {
+		return demande;
+	}
 
-    public CandidatVO getCandidat() {
-	return candidat;
-    }
+	public void setDemande(DemandeVO demande) {
+		this.demande = demande;
+	}
 
-    public void setCandidat(CandidatVO candidat) {
-	this.candidat = candidat;
-    }
+	public CandidatVO getCandidat() {
+		return candidat;
+	}
 
-    public long getCountCandidats() {
-	countCandidats = demandeService.getCountCandidatures(demande);
-	return countCandidats;
-    }
+	public void setCandidat(CandidatVO candidat) {
+		this.candidat = candidat;
+	}
 
-    public void setCountCandidats(long countCandidats) {
-	this.countCandidats = countCandidats;
-    }
+	public long getCountCandidats() {
+		countCandidats = demandeService.getCountCandidatures(demande);
+		return countCandidats;
+	}
+
+	public void setCountCandidats(long countCandidats) {
+		this.countCandidats = countCandidats;
+	}
 
 }

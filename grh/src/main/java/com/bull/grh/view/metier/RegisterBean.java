@@ -21,87 +21,86 @@ import com.bull.grh.view.utils.FacesUtils;
 @Scope("request")
 public class RegisterBean {
 
-    @Inject
-    private CandidatService candidatService;
+	@Inject
+	private CandidatService candidatService;
 
-    @Inject
-    private I18nMessageBean i18nMessageBean;
+	@Inject
+	private I18nMessageBean i18nMessageBean;
 
-    @Value("${activationURI}")
-    private String link;
+	@Value("${activationURI}")
+	private String link;
 
-    @NotBlank
-    @Password
-    private String rePassword;
-    @Valid
-    private CandidatVO newUser = new CandidatVO(); 
+	@NotBlank
+	@Password
+	private String rePassword;
+	@Valid
+	private CandidatVO newUser = new CandidatVO();
 
-    public void register() {
-	if (rePassword.equals(newUser.getPassword()))
-	    try {
-		candidatService.register(newUser);
-	    } catch (CannotRegisterException e) {
-		// TODO facesMessage
-		e.printStackTrace();
-	    }
-	else {
-	    // TODO facesMessage password don't match
+	public void register() {
+		if (rePassword.equals(newUser.getPassword()))
+			try {
+				candidatService.register(newUser);
+			} catch (CannotRegisterException e) {
+				// TODO facesMessage
+				e.printStackTrace();
+			}
+		else {
+			// TODO facesMessage password don't match
+		}
 	}
-    }
 
-    @PostConstruct
-    public void validateAccount() {
-	if (FacesUtils.getRequest().getRequestURI().equals(link)) {
-	    String token = FacesUtils.getRequest().getParameter("token");
-	    try {
-		candidatService.activateAccount(token);
-		i18nMessageBean.showInfoMessage("{account.activated.info}");
-	    } catch (InvalidActivationTokenException e) {
-		// TODO No task to validate or time out
-		i18nMessageBean.showErrorMessage("{account.activated.exception}");
-		e.printStackTrace();
-	    }
+	@PostConstruct
+	public void validateAccount() {
+		if (FacesUtils.getRequest().getRequestURI().equals(link)) {
+			String token = FacesUtils.getRequest().getParameter("token");
+			try {
+				candidatService.activateAccount(token);
+				i18nMessageBean.showInfoMessage("account.activated.info");
+			} catch (InvalidActivationTokenException e) {
+				// TODO No task to validate or time out
+				i18nMessageBean.showErrorMessage("account.activated.exception");
+			}
+		}
 	}
-    }
 
-    public CandidatService getCandidatService() {
-	return candidatService;
-    }
+	public CandidatService getCandidatService() {
+		return candidatService;
+	}
 
-    public void setCandidatService(CandidatService candidatService) {
-	this.candidatService = candidatService;
-    }
+	public void setCandidatService(CandidatService candidatService) {
+		this.candidatService = candidatService;
+	}
 
-    public CandidatVO getNewUser() {
-	return newUser;
-    }
+	public CandidatVO getNewUser() {
+		return newUser;
+	}
 
-    public void setNewUser(CandidatVO newUser) {
-	this.newUser = newUser;
-    }
+	public void setNewUser(CandidatVO newUser) {
+		this.newUser = newUser;
+	}
 
-    public String getRePassword() {
-	return rePassword;
-    }
+	public String getRePassword() {
+		return rePassword;
+	}
 
-    public void setRePassword(String rePassword) {
-	this.rePassword = rePassword;
-    }
+	public void setRePassword(String rePassword) {
+		this.rePassword = rePassword;
+	}
 
-    public I18nMessageBean getI18nMessageBean() {
-	return i18nMessageBean;
-    }
+	public I18nMessageBean getI18nMessageBean() {
+		return i18nMessageBean;
+	}
 
-    public void setI18nMessageBean(I18nMessageBean i18nMessageBean) {
-	this.i18nMessageBean = i18nMessageBean;
-    }
+	public void setI18nMessageBean(I18nMessageBean i18nMessageBean) {
+		this.i18nMessageBean = i18nMessageBean;
+	}
 
-    public String getLink() {
-	return link;
-    }
+	public String getLink() {
+		return link;
+	}
 
-    public void setLink(String link) {
-	this.link = link;
-    }
+	public void setLink(String link) {
+		this.link = link;
+	}
 
 }

@@ -52,7 +52,7 @@
 									<i class="icon-pencil"></i>
 									<f:setPropertyActionListener value="#{demande}" target="#{demandeSessionBean.demande}" />
 								</p:commandLink>
-								<p:commandLink styleClass="btn btn-primary" style="color:white" oncomplete="confirmationSend.show()">
+								<p:commandLink styleClass="btn btn-primary" style="color:white" oncomplete="confirmationSend.show()" actionListener="#{demandeSessionBean.init}">
 									<i class="icon-share icon-white"></i>
 									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
 								</p:commandLink>
@@ -72,7 +72,8 @@
 						message="Voullez-vous vraiment soumettre cette demande ? cette action est irréversible">
 						<p:commandLink id="confirmSend" value="Soumettre" oncomplete="confirmationSend.hide()"
 							actionListener="#{demandeBean.completeDemandeRH}" styleClass="btn btn-primary" style="color:white;"
-							update=":formDemande" />
+							update=":formDemande" >
+							</p:commandLink>
 						<p:commandLink id="declineSend" value="Annuler" onclick="confirmationSend.hide()" type="button" styleClass="btn" />
 					</p:confirmDialog>
 

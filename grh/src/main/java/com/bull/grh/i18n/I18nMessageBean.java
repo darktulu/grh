@@ -48,7 +48,7 @@ public class I18nMessageBean implements MessageSourceAware {
 
     public void showInfoMessage(String message) {
 	FacesContext facesContext = FacesContext.getCurrentInstance();
-	FacesMessage facesMessage = new FacesMessage(message);
+	FacesMessage facesMessage = new FacesMessage();
 	facesMessage.setSeverity(FacesMessage.SEVERITY_INFO);
 	facesMessage.setDetail(new MessageBuilder().code(message).build()
 		.resolveMessage(messageSource, Locale.FRANCE).getText());

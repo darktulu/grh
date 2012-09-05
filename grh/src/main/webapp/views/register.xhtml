@@ -1,8 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 <h:head>
 
 	<title>#{msg['title.register']}</title>
@@ -10,24 +8,22 @@
 <h:body>
 	<h:outputStylesheet library="css" name="bootstrap-responsive.css" />
 	<h:outputStylesheet library="css" name="bootstrap.css" />
-	<h:outputScript library="js" name="jquery.js" />
+	<h:outputStylesheet library="css" name="docs.css" />
+	<h:outputStylesheet library="css" name="custum.css" />
 	<h:outputScript library="js" name="bootstrap.js" />
-	
+
 	<ui:define name="header">
-	<ui:include src="/templates/headers/header.xhtml"></ui:include>
+		<ui:include src="/templates/headers/header.xhtml"></ui:include>
 	</ui:define>
-	
+
 	<h1>#{msg['title.register']}</h1>
-	<h:form id="formRegister" prependId="false"
-		styleClass="form-horizontal">
+	<h:form id="formRegister" prependId="false" styleClass="form-horizontal">
 		<h3>#{msg['register.account']}</h3>
 		<div class="control-group">
-		
-			<h:outputLabel styleClass="control-label" for="username"
-				value="#{msg['register.username']}" />
+
+			<h:outputLabel styleClass="control-label" for="username" value="#{msg['register.username']}" />
 			<div class="controls">
-				<p:inputText id="username" required="true"
-					requiredMessage="Nom d'utilisateur obligatoire !"
+				<p:inputText id="username" required="true" requiredMessage="Nom d'utilisateur obligatoire !"
 					validatorMessage="Le nom d'utilisateur doit être compris entre 2 et 25 caractères !"
 					value="#{registerBean.newUser.username}">
 					<f:validateLength maximum="35" minimum="2" />
@@ -37,8 +33,7 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="email"
-				value="#{msg['register.mail']}" />
+			<h:outputLabel styleClass="control-label" for="email" value="#{msg['register.mail']}" />
 			<div class="controls">
 				<p:inputText id="email" value="#{registerBean.newUser.email}" />
 				<h:message styleClass="help-inline" id="emailMsg" for="email" />
@@ -46,8 +41,7 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="password"
-				value="#{msg['register.password']}" />
+			<h:outputLabel styleClass="control-label" for="password" value="#{msg['register.password']}" />
 			<div class="controls">
 				<p:inputText id="password" value="#{registerBean.newUser.password}" />
 				<h:message styleClass="help-inline" id="passwordMsg" for="password" />
@@ -55,38 +49,31 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="rePassword"
-				value="#{msg['register.rePassword']}" />
+			<h:outputLabel styleClass="control-label" for="rePassword" value="#{msg['register.rePassword']}" />
 			<div class="controls">
 				<p:inputText id="rePassword" value="#{registerBean.rePassword}" />
-				<h:message styleClass="help-inline" id="rePasswordMsg"
-					for="rePassword" />
+				<h:message styleClass="help-inline" id="rePasswordMsg" for="rePassword" />
 			</div>
 		</div>
 
 		<h3>#{msg['register.personal']}</h3>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="firstName"
-				value="#{msg['register.firstName']}" />
+			<h:outputLabel styleClass="control-label" for="firstName" value="#{msg['register.firstName']}" />
 			<div class="controls">
-				<p:inputText id="firstName" required="true"
-					requiredMessage="Nom obligatoire !"
+				<p:inputText id="firstName" required="true" requiredMessage="Nom obligatoire !"
 					validatorMessage="Le nom doit être compris entre 2 et 25 caractères !"
 					value="#{registerBean.newUser.nom}">
 					<f:validateLength maximum="35" minimum="2" />
 				</p:inputText>
-				<h:message styleClass="help-inline" id="firstNameMsg"
-					for="firstName" />
+				<h:message styleClass="help-inline" id="firstNameMsg" for="firstName" />
 			</div>
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="lastName"
-				value="#{msg['register.lastName']}" />
+			<h:outputLabel styleClass="control-label" for="lastName" value="#{msg['register.lastName']}" />
 			<div class="controls">
-				<p:inputText id="lastName" required="true"
-					requiredMessage="Prénom obligatoire !"
+				<p:inputText id="lastName" required="true" requiredMessage="Prénom obligatoire !"
 					validatorMessage="Le Prénom doit être compris entre 2 et 25 caractères !"
 					value="#{registerBean.newUser.prenom}">
 					<f:validateLength maximum="35" minimum="2" />
@@ -96,8 +83,7 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="adresse"
-				value="#{msg['register.adresse']}" />
+			<h:outputLabel styleClass="control-label" for="adresse" value="#{msg['register.adresse']}" />
 			<div class="controls">
 				<p:inputTextarea id="adresse" value="#{registerBean.newUser.adresse}" />
 				<h:message styleClass="help-inline" id="adresseMsg" for="adresse" />
@@ -105,8 +91,7 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="phone"
-				value="#{msg['register.phone']}" />
+			<h:outputLabel styleClass="control-label" for="phone" value="#{msg['register.phone']}" />
 			<div class="controls">
 				<p:inputText id="phone" value="#{registerBean.newUser.telephone}" />
 				<h:message styleClass="help-inline" id="phoneMsg" for="phone" />
@@ -114,8 +99,7 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="age"
-				value="#{msg['register.age']}" />
+			<h:outputLabel styleClass="control-label" for="age" value="#{msg['register.age']}" />
 			<div class="controls">
 				<p:inputText id="age" value="#{registerBean.newUser.age}" />
 				<h:message styleClass="help-inline" id="ageMsg" for="age" />
@@ -123,21 +107,20 @@
 		</div>
 
 		<div class="control-group">
-			<h:outputLabel styleClass="control-label" for="gender"
-				value="#{msg['register.age']}" />
+			<h:outputLabel styleClass="control-label" for="gender" value="#{msg['register.age']}" />
 			<div class="controls">
 				<p:selectOneMenu id="gender" value="#{registerBean.newUser.sexe}">
-					<f:selectItems value="#{enumsBean.sexes}" var="sexe"
-						itemValue="#{sexe}" itemLabel="#{sexe.label}" />
+					<f:selectItems value="#{enumsBean.sexes}" var="sexe" itemValue="#{sexe}"
+						itemLabel="#{sexe.label}" />
 				</p:selectOneMenu>
 				<h:message styleClass="help-inline" id="genderMsg" for="gender" />
 			</div>
 		</div>
 		<div class="form-actions">
-						<p:commandButton value="register" styleClass="btn btn-primary btn-small"
-							action="#{registerBean.register}" update="formRegister" ajax="false"/>
-						<p:commandButton value="Annuler" styleClass="btn btn-small" />
-					</div>
+			<p:commandButton value="register" styleClass="btn btn-primary btn-small"
+				action="#{registerBean.register}" update="formRegister" ajax="false" />
+			<p:commandButton value="Annuler" styleClass="btn btn-small" />
+		</div>
 	</h:form>
 
 </h:body>

@@ -117,7 +117,7 @@ System.out.println("test de variable candidat"+candidat);</script>
     </userTask>
     <scriptTask id="_5" name="Annulation du compte" scriptFormat="http://www.java.com/java" >
       <script>System.out.println("\n\n");
-System.out.println("Appele au service de superssion de compte pour le candidat avec ID: "+candidat.getId());
+System.out.println("Appele au service de superssion de compte pour le candidat avec ID: "+candidat);
 Candidat c = candidatDao.findOne(candidat.getUsername());
 c.setCompteActive(false);
 candidatDao.delete(c);</script>
@@ -127,12 +127,11 @@ candidatDao.delete(c);</script>
     </endEvent>
     <scriptTask id="_8" name="Activation du compte" scriptFormat="http://www.java.com/java" >
       <script>System.out.println("\n\n");
-System.out.println("Appele au service d'activation de compte pour le candidat avec ID: "+candidat.getId());
+System.out.println("Appele au service d'activation de compte pour le candidat avec ID: "+candidat.getUsername());
 Candidat c = candidatDao.findOne(candidat.getUsername());
 c.setCompteActive(true);
 candidatDao.save(c);
-System.out.println("Candidat compte actif ?  " + c.isCompteActive());
-System.out.println("\n\n");</script>
+System.out.println("Candidat compte actif ?  " + c.isCompteActive());</script>
     </scriptTask>
     <parallelGateway id="_9" name="Gateway" gatewayDirection="Diverging" />
     <task id="_10" name="Email de confirmation" tns:taskName="Email" >
@@ -198,7 +197,7 @@ System.out.println("\n\n");</script>
         <tns:onExit-script scriptFormat="http://www.java.com/java">
           <script>relance = relance + 1;
 kcontext.setVariable("relance", relance);
-System.out.println("L'email de relance N : " + relance + "pour le Candidat avec ID :" + candidat.getId());</script>
+System.out.println("L'email de relance N : " + relance + "pour le Candidat avec ID :" + candidat);</script>
         </tns:onExit-script>
       </extensionElements>
       <ioSpecification>

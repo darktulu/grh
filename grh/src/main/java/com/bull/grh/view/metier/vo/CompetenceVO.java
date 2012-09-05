@@ -11,64 +11,74 @@ import com.bull.grh.domaine.types.NiveauCompetence;
 
 public class CompetenceVO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Long id;
-    @NotBlank
-    @Length(max=50)
-    private String libelle;
-    private String description;
-    private CandidatVO candidat;
-    @NotNull
-    private NiveauCompetence niveauCompetence;
+	private static final long serialVersionUID = 1L;
+	private Long id;
+	@NotBlank
+	@Length(max = 50)
+	private String libelle;
+	private String description;
+	private CandidatVO candidat = new CandidatVO();
+	@NotNull
+	private NiveauCompetence niveauCompetence;
 
-    private String niveau;
+	private String niveau;
 
-    public Long getId() {
-	return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-	this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getLibelle() {
-	return libelle;
-    }
+	public String getLibelle() {
+		return libelle;
+	}
 
-    public void setLibelle(String libelle) {
-	this.libelle = libelle;
-    }
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
 
-    public NiveauCompetence getNiveauCompetence() {
-	return niveauCompetence;
-    }
+	public NiveauCompetence getNiveauCompetence() {
+		return niveauCompetence;
+	}
 
-    public void setNiveauCompetence(NiveauCompetence niveauCompetence) {
-	this.niveauCompetence = niveauCompetence;
-    }
+	public void setNiveauCompetence(NiveauCompetence niveauCompetence) {
+		this.niveauCompetence = niveauCompetence;
+	}
 
-    public String getNiveau() {
-	return niveau;
-    }
+	public String getNiveau() {
+		return niveau;
+	}
 
-    public void setNiveau(String niveau) {
-	this.niveau = niveau;
-    }
+	public void setNiveau(String niveau) {
+		this.niveau = niveau;
+	}
 
-    public String getDescription() {
-	return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-	this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public CandidatVO getCandidat() {
-        return candidat;
-    }
+	public CandidatVO getCandidat() {
+		return candidat;
+	}
 
-    public void setCandidat(CandidatVO candidat) {
-        this.candidat = candidat;
-    }
+	public void setCandidat(CandidatVO candidat) {
+		this.candidat = candidat;
+	}
+
+	@Override
+	public String toString() {
+		return "CompetenceVO [" + (id != null ? "id=" + id + ", " : "")
+				+ (libelle != null ? "libelle=" + libelle + ", " : "")
+				+ (description != null ? "description=" + description + ", " : "")
+				+ (candidat != null ? "candidat=" + candidat + ", " : "")
+				+ (niveauCompetence != null ? "niveauCompetence=" + niveauCompetence + ", " : "")
+				+ (niveau != null ? "niveau=" + niveau : "") + "]";
+	}
 
 }

@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/templates/template.xhtml">
+
+	<ui:define name="title">
+		#{msg['candidat.langue.title']}
+    </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/templates/headers/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="/templates/siders/siderCandidat.xhtml" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="form">
+			<div class="page-header"> 
+				<p:commandLink styleClass="btn btn-primary pull-right"
+					immediate="true" value="Ajouter une langue"
+					update=":formAdd:languePanelAdd"
+					oncomplete="langueDialogAdd.show()" title="Ajouter une langue" />
+				<h1>#{msg['candidat.langue.subtitle']}</h1>
+			</div>
+			<p:dataTable styleClass="table table-striped"
+				rendered="#{not empty informationBean.langues}" id="langueTable"
+				var="langue" value="#{informationBean.langues}">
+
+				<p:column style="max-width : 180px">
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.langue.langue']}" />
+					</f:facet>
+					<h:outputText value="#{langue.value}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.langue.lvlLu']}" />
+					</f:facet>
+					<h:outputText value="#{langue.niveauLu}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.langue.lvlEcrit']}" />
+					</f:facet>
+					<h:outputText value="#{langue.niveauEcrit}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['candidat.langue.lvlParle']}" />
+					</f:facet>
+					<h:outputText value="#{langue.niveauParle}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['action']}" />
+					</f:facet>
+					<p:commandLink styleClass="icon-pencil" immediate="true"
+						oncomplete="langueDialogEdit.show()"
+						update=":formEdit:languePanelEdit">
+						<f:setPropertyActionListener target="#{informationBean.langue}"
+							value="#{langue}" />
+					</p:commandLink>
+
+					<h:outputText value=" / " />
+
+					<p:commandLink styleClass="icon-remove" immediate="true"
+						oncomplete="langueDialogDelete.show()">
+						<f:setPropertyActionListener target="#{informationBean.langue}"
+							value="#{langue}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog closable="false" id="dialogDelete"
+				header="Supprimer la langue" showEffect="fade"
+				widgetVar="langueDialogDelete" modal="true">
+
+				<h:outputText value="Voulez vous vraiment supprimer la langue ?" />
+				<br />
+				<p:commandLink style="color : white; margin : 5px"
+					styleClass="btn btn-primary" update="@form" value="#{msg['yes']}"
+					actionListener="#{informationBean.deleteLangue}"
+					oncomplete="langueDialogDelete.hide()" />
+				<p:commandLink style="color : white; margin : 5px"
+					styleClass="btn btn-primary" immediate="true" value="#{msg['no']}"
+					oncomplete="langueDialogDelete.hide()" />
+
+			</p:dialog>
+
+		</h:form>
+
+
+		<h:form id="formAdd">
+			<p:dialog closable="false" id="dialogAdd" showEffect="fade"
+				widgetVar="langueDialogAdd" modal="true">
+				<h3>#{msg['candidat.langue.add']}</h3>
+				<p:outputPanel id="languePanelAdd">
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="libelle"
+							value="#{msg['candidat.langue.langue']}" />
+						<h:inputText id="libelle" value="#{informationBean.langue.value}"
+							required="true" requiredMessage="langue obligatoire">
+						</h:inputText>
+
+
+						<h:outputLabel for="niveauEcrit"
+							value="#{msg['candidat.langue.lvlEcrit']}" />
+						<h:selectOneMenu id="niveauEcrit"
+							value="#{informationBean.langue.niveauEcrit}">
+							<f:selectItems value="#{enumsBean.lvlLangues}" var="#{niveau}"
+								itemValue="#{niveau}" itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+						<h:outputLabel for="niveauLu"
+							value="#{msg['candidat.langue.lvlLu']}" />
+						<h:selectOneMenu id="niveauLu"
+							value="#{informationBean.langue.niveauLu}">
+							<f:selectItems value="#{enumsBean.lvlLangues}" var="#{niveau}"
+								itemValue="#{niveau}" itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+						<h:outputLabel for="niveauParle"
+							value="#{msg['candidat.langue.lvlParle']}" />
+						<h:selectOneMenu id="niveauParle"
+							value="#{informationBean.langue.niveauParle}">
+							<f:selectItems value="#{enumsBean.lvlLangues}" var="#{niveau}"
+								itemValue="#{niveau}" itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+
+					</h:panelGrid>
+					<p:commandLink style="color : white; margin : 5px"
+						styleClass="btn btn-primary"
+						update=":form:langueTable,:formAdd:languePanelAdd,:form"
+						oncomplete="if(!args.validationFailed)langueDialogAdd.hide()"
+						value="#{msg['add']}"
+						actionListener="#{informationBean.addLangue}" />
+					<p:commandLink style="color : white; margin : 5px"
+						styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}" oncomplete="langueDialogAdd.hide()"
+						actionListener="#{informationBean.initLangue}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formEdit">
+
+			<p:dialog closable="false" id="dialogEdit" showEffect="fade"
+				draggable="false" resizable="false" widgetVar="langueDialogEdit"
+				modal="true">
+				<h3>#{msg['candidat.langue.update']}</h3>
+				<p:outputPanel id="languePanelEdit">
+					<p:messages id="errorMessagesU" />
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputLabel for="libelle"
+							value="#{msg['candidat.langue.langue']}" />
+						<h:inputText id="libelle" value="#{informationBean.langue.value}"
+							required="true" requiredMessage="langue obligatoire">
+						</h:inputText>
+
+						<h:outputLabel for="niveauEcrit"
+							value="#{msg['candidat.langue.lvlEcrit']}" />
+						<h:selectOneMenu id="niveauEcrit"
+							value="#{informationBean.langue.niveauEcrit}">
+							<f:selectItems value="#{enumsBean.lvlLangues}" var="#{niveau}"
+								itemValue="#{niveau}" itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+						<h:outputLabel for="niveauLu"
+							value="#{msg['candidat.langue.lvlLu']}" />
+						<h:selectOneMenu id="niveauLu"
+							value="#{informationBean.langue.niveauLu}">
+							<f:selectItems value="#{enumsBean.lvlLangues}" var="#{niveau}"
+								itemValue="#{niveau}" itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+						<h:outputLabel for="niveauParle"
+							value="#{msg['candidat.langue.lvlParle']}" />
+						<h:selectOneMenu id="niveauParle"
+							value="#{informationBean.langue.niveauParle}">
+							<f:selectItems value="#{enumsBean.lvlLangues}" var="#{niveau}"
+								itemValue="#{niveau}" itemLabel="#{niveau.value}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<p:commandLink style="color : white; margin : 5px"
+						styleClass="btn btn-primary"
+						update=":form:langueTable,:formEdit:languePanelEdit,:form"
+						oncomplete="if(!args.validationFailed)langueDialogEdit.hide()"
+						value="#{msg['update']}"
+						actionListener="#{informationBean.updateLangue}" />
+					<p:commandLink style="color : white; margin : 5px"
+						styleClass="btn btn-primary" process="@none" immediate="true"
+						value="#{msg['cancel']}"
+						oncomplete="if(args)langueDialogEdit.hide()"
+						actionListener="#{informationBean.initLangue}" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
