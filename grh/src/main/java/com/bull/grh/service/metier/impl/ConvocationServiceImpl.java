@@ -78,8 +78,8 @@ public class ConvocationServiceImpl implements ConvocationService {
 	@Override
 	@Transactional(readOnly = true)
 	public Map<CandidatureVO, Task> loadTaskList() {
-		CandidatureVO candidatureVO = new CandidatureVO();
-		List<Task> tasks = new ArrayList<Task>();
+		CandidatureVO candidatureVO;
+		List<Task> tasks;
 		Map<CandidatureVO, Task> map = new HashMap<CandidatureVO, Task>();
 		tasks = jbpmConvocationService.getTaskList("ROLE_RH");
 		for (Task task : tasks) {
@@ -92,8 +92,8 @@ public class ConvocationServiceImpl implements ConvocationService {
 	@Override
 	@Transactional(readOnly = true)
 	public Map<CandidatureVO, Task> loadStartedTaskList() {
-		CandidatureVO candidatureVO = new CandidatureVO();
-		List<Task> tasks = new ArrayList<Task>();
+		CandidatureVO candidatureVO;
+		List<Task> tasks;
 		Map<CandidatureVO, Task> map = new HashMap<CandidatureVO, Task>();
 		tasks = jbpmConvocationService.getStartedTaskList("ROLE_RH");
 		for (Task task : tasks) {

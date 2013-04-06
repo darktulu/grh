@@ -1,23 +1,18 @@
 package com.bull.grh.repos.admin;
 
+import com.bull.grh.domaine.ValueList;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import com.bull.grh.domaine.ValueList;
-
-@Repository("valueListDao")
 public interface ValueListDao extends JpaRepository<ValueList, Long> {
+    ValueList findByValue(String value);
 
-    public ValueList findByValue(String value);
+    List<ValueList> findByParent(long id);
 
-    public List<ValueList> findByParent(long id);
+    List<ValueList> findByParentIsNull();
 
-    public List<ValueList> findByParentIsNull();
+    List<ValueList> findByParent_value(String parentNom);
 
-    public List<ValueList> findByParent_value(String parentNom);
-
-    public List<ValueList> findByTypeValue_nom(String nom);
-
+    List<ValueList> findByTypeValue_nom(String nom);
 }

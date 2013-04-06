@@ -1,15 +1,13 @@
 package com.bull.grh.service.admin;
 
-import java.util.List;
-
 import com.bull.grh.view.admin.vo.EmailTemplateVO;
 
+import java.util.List;
+
 public interface AdminTemplateService {
+    EmailTemplateVO addorupdatEmailTemplate(EmailTemplateVO emailTemplate);
 
-    public EmailTemplateVO addorupdatEmailTemplate(EmailTemplateVO emailTemplate);
+    void deleteEmailTemplate(EmailTemplateVO emailTemplate);
 
-    public void deleteEmailTemplate(EmailTemplateVO emailTemplate);
-
-    public List<EmailTemplateVO> loadEmailTemplates();
-
+    List<EmailTemplateVO> loadEmailTemplates();
 }

@@ -1,15 +1,11 @@
 package com.bull.grh.repos.metier;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.bull.grh.domaine.DossierCandidature;
 import com.bull.grh.domaine.Enfant;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository("enfantDao")
+import java.util.List;
+
 public interface EnfantDao extends JpaRepository<Enfant, Long> {
-
-	public List<Enfant> findByDossierCandidature(DossierCandidature dossierCandidature);
+    List<Enfant> findByDossierCandidature(DossierCandidature dossierCandidature);
 }

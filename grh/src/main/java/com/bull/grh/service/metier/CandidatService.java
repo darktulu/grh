@@ -14,40 +14,39 @@ import com.bull.grh.view.metier.vo.FormationVO;
 import com.bull.grh.view.metier.vo.LangueVO;
 
 public interface CandidatService {
+    // TODO comment
+    void register(CandidatVO candidatVO) throws CannotRegisterException;
 
     // TODO comment
-    public void register(CandidatVO candidatVO) throws CannotRegisterException;
+    void activateAccount(String token) throws InvalidActivationTokenException;
 
     // TODO comment
-    public void activateAccount(String token) throws InvalidActivationTokenException;
-
-    // TODO comment
-    public CandidatVO findCandidat(String username) throws CandidatNotFoundException;
+    CandidatVO findCandidat(String username) throws CandidatNotFoundException;
 
     // Competence CRUD
-    public CompetenceVO addorupdatecompetence(@Valid CompetenceVO competence);
+    CompetenceVO addorupdatecompetence(@Valid CompetenceVO competence);
 
-    public void deletecompetence(CompetenceVO competence);
+    void deletecompetence(CompetenceVO competence);
 
-    public List<CompetenceVO> loadCompetences(String username);
+    List<CompetenceVO> loadCompetences(String username);
 
     // Formation CRUD
-    public FormationVO addorupdateFormation(@Valid FormationVO formation);
+    FormationVO addorupdateFormation(@Valid FormationVO formation);
 
-    public void deleteFormation(FormationVO formation);
+    void deleteFormation(FormationVO formation);
 
-    public List<FormationVO> loadFormations(String username);
+    List<FormationVO> loadFormations(String username);
 
     // Experience CRUD
-    public void deleteExperience(ExperienceVO experience);
+    void deleteExperience(ExperienceVO experience);
 
-    public List<ExperienceVO> loadExperiences(String username);
+    List<ExperienceVO> loadExperiences(String username);
 
-    public ExperienceVO addorupdateExperience(@Valid ExperienceVO experience);
+    ExperienceVO addorupdateExperience(@Valid ExperienceVO experience);
 
-	public LangueVO addorupdateLangue(@Valid LangueVO langue);
+	LangueVO addorupdateLangue(@Valid LangueVO langue);
 
-	public void deleteLangue(LangueVO langue);
+	void deleteLangue(LangueVO langue);
 
-	public List<LangueVO> loadLangues(String username);
+	List<LangueVO> loadLangues(String username);
 }

@@ -1,12 +1,8 @@
 package com.bull.grh.repos.utils;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.bull.grh.domaine.WebPage;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository("webPageDao")
-public interface WebPageDao extends JpaRepository<WebPage, Long>{
-
-    public WebPage findByUrl(String url);
+public interface WebPageDao extends JpaRepository<WebPage, Long> {
+    WebPage findByUrl(String url);
 }

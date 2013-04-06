@@ -1,26 +1,21 @@
 package com.bull.grh.repos.admin;
 
-import java.io.Serializable;
-import java.util.List;
-
+import com.bull.grh.domaine.TypeValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-import com.bull.grh.domaine.TypeValue;
+import java.io.Serializable;
+import java.util.List;
 
-@Repository("typeValueDao")
 public interface TypeValueDao extends JpaRepository<TypeValue, Serializable> {
+    TypeValue findByNom(String nom);
 
-    public TypeValue findByNom(String nom);
+    List<TypeValue> findByParentIsNull();
 
-    public List<TypeValue> findByParentIsNull();
-
-    public List<TypeValue> findByParent_nom(String nom);
+    List<TypeValue> findByParent_nom(String nom);
 
     @Modifying
     @Query("update TypeValue t set t.nom = ?1 where t.id= ?2")
-    public void updateType(String nom, Long id);
-
+    void updateType(String nom, Long id);
 }

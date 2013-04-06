@@ -1,16 +1,14 @@
 package com.bull.grh.view.admin;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.bull.grh.service.admin.AdminTemplateService;
+import com.bull.grh.view.admin.vo.EmailTemplateVO;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bull.grh.service.admin.AdminTemplateService;
-import com.bull.grh.view.admin.vo.EmailTemplateVO;
+import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.List;
 
 @Scope("view")
 @Component
@@ -26,35 +24,35 @@ public class AdminEmailTemplateBean implements Serializable {
     private transient AdminTemplateService templateEmailService;
 
     public void updateEmailTemplate() {
-	logger.debug("Update Email template");
-	try {
-	    templateEmailService.addorupdatEmailTemplate(emailtemplate);
-	} catch (Exception e) {
-	    logger.error("error updating Email Template");
-	}
+        logger.debug("Update Email template");
+        try {
+            templateEmailService.addorupdatEmailTemplate(emailtemplate);
+        } catch (Exception e) {
+            logger.error("error updating Email Template");
+        }
     }
 
     public void deleteEmailTemplate() {
-	logger.debug("Delete Email template");
-	try {
-	    templateEmailService.deleteEmailTemplate(emailtemplate);
-	} catch (Exception e) {
-	    logger.error("error deleting Email Template");
-	}
+        logger.debug("Delete Email template");
+        try {
+            templateEmailService.deleteEmailTemplate(emailtemplate);
+        } catch (Exception e) {
+            logger.error("error deleting Email Template");
+        }
     }
 
     public void createEmailTemplate() {
-	logger.debug("Create Email template");
-	try {
-	    templateEmailService.addorupdatEmailTemplate(emailtemplate);
-	} catch (Exception e) {
-	    logger.error("error creating Email Template");
-	}
+        logger.debug("Create Email template");
+        try {
+            templateEmailService.addorupdatEmailTemplate(emailtemplate);
+        } catch (Exception e) {
+            logger.error("error creating Email Template");
+        }
     }
 
     public List<EmailTemplateVO> getTemplates() {
-	if(templates == null || templates.isEmpty())
-	    templates = templateEmailService.loadEmailTemplates();
+        if (templates == null || templates.isEmpty())
+            templates = templateEmailService.loadEmailTemplates();
         return templates;
     }
 
@@ -77,6 +75,6 @@ public class AdminEmailTemplateBean implements Serializable {
     public void setTemplateEmailService(AdminTemplateService templateEmailService) {
         this.templateEmailService = templateEmailService;
     }
-    
-    
+
+
 }

@@ -1,18 +1,13 @@
 package com.bull.grh.repos.metier;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.bull.grh.domaine.Demande;
 import com.bull.grh.domaine.types.EtatDemande;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository("demandeDao")
+import java.util.List;
+
 public interface DemandeDao extends JpaRepository<Demande, Long> {
+    Demande findByIntitulePoste(String intitule);
 
-	public Demande findByIntitulePoste(String intitule);
-
-	public List<Demande> findByEtatDemande(EtatDemande etatDemande);
-
+    List<Demande> findByEtatDemande(EtatDemande etatDemande);
 }

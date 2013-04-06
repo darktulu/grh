@@ -16,51 +16,51 @@ import com.bull.grh.view.metier.vo.DemandeVO;
 
 public interface DemandeService {
 
-    public void createDemande(@Valid DemandeVO demande);
+    void createDemande(@Valid DemandeVO demande);
 
-    public void startTaskDemandeOP(Task task, @Valid DemandeVO demande);
+    void startTaskDemandeOP(Task task, @Valid DemandeVO demande);
 
-    public void startTaskDemandeRH(Task task, @Valid DemandeVO demande);
+    void startTaskDemandeRH(Task task, @Valid DemandeVO demande);
 
-    public Map<DemandeVO, Task> loadDemandesNouveau();
+    Map<DemandeVO, Task> loadDemandesNouveau();
 
-    public Map<DemandeVO, Task> loadDemandesTraite();
+    Map<DemandeVO, Task> loadDemandesTraite();
 
-    public Map<DemandeVO, Task> loadDemandesSoumise();
+    Map<DemandeVO, Task> loadDemandesSoumise();
 
-    public Map<DemandeVO, Task> loadStartedDemandesTraite();
+    Map<DemandeVO, Task> loadStartedDemandesTraite();
 
-    public Map<DemandeVO, Task> loadStartedDemandesSoumise();
+    Map<DemandeVO, Task> loadStartedDemandesSoumise();
 
-    public Long getCountDemandesTraite();
+    Long getCountDemandesTraite();
 
-    public Long getCountDemandesSoumise();
+    Long getCountDemandesSoumise();
 
-    public Long getCountStartedDemandesTraite();
+    Long getCountStartedDemandesTraite();
 
-    public Long getCountStartedDemandesSoumise();
+    Long getCountStartedDemandesSoumise();
 
-    public Long getCountDemandesNouveau();
+    Long getCountDemandesNouveau();
 
-    public void sendDemande(Task task, @Valid DemandeVO demande);
+    void sendDemande(Task task, @Valid DemandeVO demande);
 
-    public void deleteDemande(Task task, DemandeVO demande);
+    void deleteDemande(Task task, DemandeVO demande);
 
-    public void rejectDemande(Task task, DemandeVO demande);
+    void rejectDemande(Task task, DemandeVO demande);
 
-    public void completeDemande(Task task, @Valid DemandeVO demande) throws DemandeHaveNoCandidatureException;
+    void completeDemande(Task task, @Valid DemandeVO demande) throws DemandeHaveNoCandidatureException;
 
-    public void completeDemande(Task task, @Valid DemandeVO demande, List<CandidatureVO> candidatureList)
+    void completeDemande(Task task, @Valid DemandeVO demande, List<CandidatureVO> candidatureList)
 	    throws DemandeHaveNoCandidatureException;
 
-    public void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException;
+    void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException;
 
-    public void removeCandidateFromDemand(CandidatVO candidat, DemandeVO demand) throws CandidatureNotFoundException;
+    void removeCandidateFromDemand(CandidatVO candidat, DemandeVO demand) throws CandidatureNotFoundException;
 
-    public List<CandidatureVO> loadCandidatures(DemandeVO demande);
+    List<CandidatureVO> loadCandidatures(DemandeVO demande);
 
-    public void rejectDemandeAfterAccepting(Task task, DemandeVO demande);
+    void rejectDemandeAfterAccepting(Task task, DemandeVO demande);
 
-    public Long getCountCandidatures(DemandeVO demande);
+    Long getCountCandidatures(DemandeVO demande);
 
 }

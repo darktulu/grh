@@ -1,40 +1,38 @@
 package com.bull.grh.service.admin;
 
-import java.util.List;
-
 import com.bull.grh.view.admin.vo.TypeVO;
 import com.bull.grh.view.admin.vo.ValueVO;
 
+import java.util.List;
+
 public interface AdminValueService {
+    void save(TypeVO typeVO);
 
-	public void save(TypeVO typeVO);
+    void updateType(TypeVO typeVO);
 
-	public void updateType(TypeVO typeVO);
+    void deleteType(TypeVO typeVO);
 
-	public void deleteType(TypeVO typeVO);
+    void addValue(ValueVO valueVo);
 
-	public void addValue(ValueVO valueVo);
+    void updateValue(ValueVO valueVO);
 
-	public void updateValue(ValueVO valueVO);
+    void deleteValue(ValueVO valueVo);
 
-	public void deleteValue(ValueVO valueVo);
+    List<ValueVO> loadValuesByDefName(String name);
 
-	public List<ValueVO> loadValuesByDefName(String name);
+    List<ValueVO> loadValuesByType(String typeName);
 
-	public List<ValueVO> loadValuesByType(String typeName);
+    List<ValueVO> loadValuesRoot();
 
-	public List<ValueVO> loadValuesRoot();
+    List<ValueVO> loadValuesChildren(String parentName);
 
-	public List<ValueVO> loadValuesChildren(String parentName);
-	
-	public boolean valueExists(ValueVO valueVO);
+    boolean valueExists(ValueVO valueVO);
 
-	public List<TypeVO> loadTypeChildren(String parentNom);
+    List<TypeVO> loadTypeChildren(String parentNom);
 
-	public List<TypeVO> loadTypesRoot();
+    List<TypeVO> loadTypesRoot();
 
-	public List<TypeVO> loadTypes();
-	
-	public boolean typeExists(TypeVO typeVO);
+    List<TypeVO> loadTypes();
 
+    boolean typeExists(TypeVO typeVO);
 }
