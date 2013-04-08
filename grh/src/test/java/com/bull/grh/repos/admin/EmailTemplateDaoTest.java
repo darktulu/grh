@@ -16,7 +16,6 @@ import com.bull.grh.domaine.types.EmailCode;
 @ContextConfiguration(locations = {
 	"classpath:META-INF/spring/applicationContext-data.xml",
 	"classpath:META-INF/spring/applicationContext-mail.xml",
-	"classpath:META-INF/spring/applicationContext-jbpm.xml",
 	"classpath:META-INF/spring/applicationContext-security.xml",
 	"classpath:META-INF/spring/applicationContext-aop.xml",
 	"classpath:META-INF/spring/applicationContext.xml" })
@@ -27,10 +26,10 @@ public class EmailTemplateDaoTest {
     @Inject
     private EmailTemplateDao emailTemplateDao;
     
-    @Test
-    public void test() {
-	EmailTemplate email = emailTemplateDao.findByCode(EmailCode.REGISTER_NEW_ACCOUNT);
-	System.out.println(email.getMessage());
-    }
+//    @Test
+//    public void test() {
+//	EmailTemplate email = emailTemplateDao.findByCode(EmailCode.REGISTER_NEW_ACCOUNT);
+//	System.out.println(email.getMessage());
+//    }
 
 }

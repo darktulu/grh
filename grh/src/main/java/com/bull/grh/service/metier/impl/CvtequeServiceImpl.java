@@ -21,10 +21,8 @@ import java.util.Map;
 @Service
 @Transactional
 public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService {
-
     @Inject
     private CandidatDao candidatDao;
-
     @Inject
     private DozerBeanMapper mapper;
 
@@ -41,7 +39,7 @@ public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService 
 
     @Override
     public List<CandidatVO> loadCandidats(Map<String, String> query) {
-        Specification<Candidat> sp = null;
+        Specification<Candidat> sp;
 
         // always search for name cause if "" it will return all the candidats
         if (query.get(NOM) == null || "".equals(query.get(NOM))) {
@@ -65,7 +63,7 @@ public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService 
 
     @Override
     public List<CandidatVO> loadCandidats(int page, int size, Map<String, String> query) {
-        Specification<Candidat> sp = null;
+        Specification<Candidat> sp;
 
         // always search for name cause if "" it will return all the candidats
         if (query.get(NOM) == null || "".equals(query.get(NOM))) {
@@ -90,7 +88,7 @@ public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService 
 
     @Override
     public Page<Candidat> loadPageCandidats(int page, int size, Map<String, String> query) {
-        Specification<Candidat> sp = null;
+        Specification<Candidat> sp;
 
         // always search for name cause if "" it will return all the candidats
         if (query.get(NOM) == null || "".equals(query.get(NOM))) {

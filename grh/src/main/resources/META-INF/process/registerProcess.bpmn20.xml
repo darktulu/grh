@@ -1,0 +1,67 @@
+<definitions id="definitions"
+             targetNamespace="http://activiti.org/bpmn20"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:activiti="http://activiti.org/bpmn">
+
+    <signal id="mailNotReceivedId" name="mailNotReceived"/>
+
+    <process id="register" isExecutable="true" name="test">
+
+        <boundaryEvent id="notreceived" attachedToRef="sub" cancelActivity="false" >
+            <signalEventDefinition signalRef="mailNotReceivedId"/>
+        </boundaryEvent>
+
+        <sequenceFlow sourceRef="notreceived" targetRef="sendActivationMailAgain"/>
+
+        <serviceTask id="sendActivationMailAgain" name="sendmail task"
+                     activiti:expression="#{registerProcessNestedService.sendActivationMailAgain(email)}"/>
+
+        <sequenceFlow sourceRef="sendActivationMailAgain" targetRef="terminateState"/>
+
+        <intermediateThrowEvent id="terminateState"/>
+
+        <startEvent id="start"/>
+
+        <sequenceFlow sourceRef="start" targetRef="sub"/>
+
+        <subProcess id="sub">
+
+            <startEvent id="substart"/>
+            <sequenceFlow sourceRef="substart" targetRef="activationTask"/>
+
+            <userTask id="activationTask" activiti:assignee="${token}"/>
+            <boundaryEvent id="timerDelete" attachedToRef="activationTask" cancelActivity="false">
+                <timerEventDefinition>
+                    <timeDuration>P5D</timeDuration>
+                </timerEventDefinition>
+            </boundaryEvent>
+            <boundaryEvent id="timerRelance" attachedToRef="activationTask" cancelActivity="false">
+                <timerEventDefinition>
+                    <timeDuration>P2D</timeDuration>
+                </timerEventDefinition>
+            </boundaryEvent>
+
+            <sequenceFlow sourceRef="activationTask" targetRef="getActivationMail"/>
+
+            <serviceTask id="getActivationMail"
+                         activiti:expression="#{registerProcessNestedService.sendActivationMail(userId,email)}"/>
+
+            <sequenceFlow sourceRef="getActivationMail" targetRef="end"/>
+            <endEvent id="end"/>
+
+            <sequenceFlow sourceRef="timerRelance" targetRef="getRelanceMail"/>
+            <serviceTask id="getRelanceMail"
+                         activiti:expression="#{registerProcessNestedService.sendRelanceMail(userId,link,email)}"/>
+
+            <sequenceFlow sourceRef="getRelanceMail" targetRef="relanceEnd"/>
+            <intermediateThrowEvent id="relanceEnd"/>
+
+            <sequenceFlow sourceRef="timerDelete" targetRef="deleteTask"/>
+            <serviceTask id="deleteTask" activiti:expression="#{registerProcessNestedService.deleteAccount(userId)}"/>
+            <sequenceFlow sourceRef="deleteTask" targetRef="deleteEnd"/>
+            <endEvent id="deleteEnd"/>
+        </subProcess>
+        <sequenceFlow sourceRef="sub" targetRef="veryend"/>
+        <endEvent id="veryend"/>
+    </process>
+</definitions>

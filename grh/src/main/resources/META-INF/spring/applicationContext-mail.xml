@@ -19,11 +19,8 @@
 	</bean>
 	
 	<!-- Task Executor configuration -->
-<!-- 	<task:annotation-driven executor="taskExecutor" scheduler="scheduler"/> -->
-	
-<!-- 	<task:executor id="taskExecutor" rejection-policy="CALLER_RUNS" -->
-<!-- 		queue-capacity="100" pool-size="5-25" /> -->
-		
+ 	<task:annotation-driven executor="taskExecutor" scheduler="scheduler"/>
+ 	<task:executor id="taskExecutor" queue-capacity="100" pool-size="5-25" />
 	<task:scheduler id="scheduler" pool-size="10"/>
 	
 	<!-- Java mail configuration -->

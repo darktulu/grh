@@ -16,7 +16,6 @@ import com.bull.grh.view.metier.vo.CandidatVO;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/spring/applicationContext-data.xml",
 	"classpath:META-INF/spring/applicationContext-mail.xml",
-	"classpath:META-INF/spring/applicationContext-jbpm.xml",
 	"classpath:META-INF/spring/applicationContext-security.xml",
 	"classpath:META-INF/spring/applicationContext-aop.xml", "classpath:META-INF/spring/applicationContext.xml" })
 public class CvtequeServiceImplTest {

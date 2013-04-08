@@ -6,7 +6,6 @@ import com.bull.grh.domaine.Demande;
 import com.bull.grh.domaine.DossierCandidature;
 import com.bull.grh.domaine.types.EtatDemande;
 import com.bull.grh.domaine.types.ProcessConst;
-import com.bull.grh.process.JbpmDemandeService;
 import com.bull.grh.repos.metier.CandidatureDao;
 import com.bull.grh.repos.metier.DemandeDao;
 import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
@@ -16,8 +15,10 @@ import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.dozer.DozerBeanMapper;
-import org.jbpm.task.Task;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,169 +34,179 @@ import java.util.Map;
 public class DemandeServiceImpl implements DemandeService {
 
     @Inject
-    private JbpmDemandeService jbpmDemandeService;
-    @Inject
     private CandidatureDao candidatureDao;
     @Inject
     private DozerBeanMapper mapper;
     @Inject
     private DemandeDao demandeDao;
+    @Inject
+    private RuntimeService runtimeService;
+    @Inject
+    private TaskService taskService;
 
     @Override
     public void createDemande(DemandeVO demande) {
         demande.setEtatDemande(EtatDemande.NEW);
         demande.getPersonne().setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        demande = mapper.map(demandeDao.save(mapper.map(demande, Demande.class)), DemandeVO.class);
-        jbpmDemandeService.startProcess("ROLE_OP", demande);
+        demandeDao.save(mapper.map(demande, Demande.class));
     }
 
     @Override
-    public void startTaskDemandeRH(Task task, DemandeVO demande) {
-        jbpmDemandeService.startTask("ROLE_RH", task);
+    public void startTaskDemandeRH(DemandeVO demande) {
+        Task task = taskService.createTaskQuery()
+                .processInstanceBusinessKey(demande.getId().toString())
+                .taskCandidateGroup("ROLE_RH").singleResult();
+        taskService.claim(task.getId(), SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override
-    public void startTaskDemandeOP(Task task, DemandeVO demande) {
-        jbpmDemandeService.startTask(SecurityContextHolder.getContext().getAuthentication().getName(), task);
+    public void startTaskDemandeOP(DemandeVO demande) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(ProcessConst.DEMANDE_DEMANDE, demande.getId());
+
+        Task task = taskService.createTaskQuery()
+                .processInstanceBusinessKey(demande.getId().toString())
+                .taskCandidateGroup("ROLE_RH").singleResult();
+        taskService.claim(task.getId(), SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Map<DemandeVO, Task> loadDemandesNouveau() {
-        DemandeVO demandeVO = new DemandeVO();
-        List<Task> tasks = new ArrayList<Task>();
-        Map<DemandeVO, Task> map = new HashMap<DemandeVO, Task>();
-        tasks = jbpmDemandeService.getTaskList(ProcessConst.DEMANDE_TASK_OP_INIT, SecurityContextHolder.getContext()
-                .getAuthentication().getName());
-        for (Task task : tasks) {
-            demandeVO = getDemandeFromTask(task);
-            map.put(demandeVO, task);
+    public List<DemandeVO> loadDemandesNouveau() {
+        List<DemandeVO> list = new ArrayList<DemandeVO>();
+        List<Demande> demandes = demandeDao.findAll();
+        for (Demande demande : demandes) {
+            list.add(mapper.map(demande, DemandeVO.class));
         }
-        return map;
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Map<DemandeVO, Task> loadDemandesTraite() {
-        DemandeVO demandeVO = new DemandeVO();
-        List<Task> tasks = new ArrayList<Task>();
-        Map<DemandeVO, Task> map = new HashMap<DemandeVO, Task>();
-        tasks = jbpmDemandeService.getTaskList(ProcessConst.DEMANDE_TASK_OP_CHOICE, SecurityContextHolder.getContext()
-                .getAuthentication().getName());
+    public List<DemandeVO> loadDemandesTraite() {
+        List<Task> tasks = taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .list();
+
+        DemandeVO demandeVO;
+        List<DemandeVO> list = new ArrayList<DemandeVO>();
         for (Task task : tasks) {
-            demandeVO = getDemandeFromTask(task);
-            map.put(demandeVO, task);
+            Long demandeId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.DEMANDE_DEMANDE);
+            demandeVO = mapper.map(demandeDao.findOne(demandeId), DemandeVO.class);
+            list.add(demandeVO);
         }
-        return map;
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Map<DemandeVO, Task> loadDemandesSoumise() {
-        DemandeVO demandeVO = new DemandeVO();
-        List<Task> tasks = new ArrayList<Task>();
-        Map<DemandeVO, Task> map = new HashMap<DemandeVO, Task>();
-        tasks = jbpmDemandeService.getTaskList(ProcessConst.DEMANDE_TASK_RH_VALIDATION, "ROLE_RH");
+    public List<DemandeVO> loadDemandesSoumise() {
+        List<Task> tasks = taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_RH_VALIDATION)
+                .taskCandidateGroup("ROLE_RH")
+                .list();
+
+        DemandeVO demandeVO;
+        List<DemandeVO> list = new ArrayList<DemandeVO>();
         for (Task task : tasks) {
-            demandeVO = getDemandeFromTask(task);
-            map.put(demandeVO, task);
+            Long demandeId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.DEMANDE_DEMANDE);
+            demandeVO = mapper.map(demandeDao.findOne(demandeId), DemandeVO.class);
+            list.add(demandeVO);
         }
-        return map;
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Map<DemandeVO, Task> loadStartedDemandesTraite() {
-        DemandeVO demandeVO = new DemandeVO();
-        List<Task> tasks = new ArrayList<Task>();
-        Map<DemandeVO, Task> map = new HashMap<DemandeVO, Task>();
-        tasks = jbpmDemandeService.getStartedTaskList(ProcessConst.DEMANDE_TASK_OP_CHOICE, SecurityContextHolder
-                .getContext().getAuthentication().getName());
+    public List<DemandeVO> loadStartedDemandesSoumise() {
+        List<Task> tasks = taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_RH_VALIDATION)
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .list();
+
+        DemandeVO demandeVO;
+        List<DemandeVO> list = new ArrayList<DemandeVO>();
         for (Task task : tasks) {
-            demandeVO = getDemandeFromTask(task);
-            map.put(demandeVO, task);
+            Long demandeId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.DEMANDE_DEMANDE);
+            demandeVO = mapper.map(demandeDao.findOne(demandeId), DemandeVO.class);
+            list.add(demandeVO);
         }
-        return map;
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Map<DemandeVO, Task> loadStartedDemandesSoumise() {
-        DemandeVO demandeVO = new DemandeVO();
-        List<Task> tasks = new ArrayList<Task>();
-        Map<DemandeVO, Task> map = new HashMap<DemandeVO, Task>();
-        tasks = jbpmDemandeService.getStartedTaskList(ProcessConst.DEMANDE_TASK_RH_VALIDATION, "ROLE_RH");
-        for (Task task : tasks) {
-            demandeVO = getDemandeFromTask(task);
-            map.put(demandeVO, task);
-        }
-        return map;
+    public Integer getCountDemandesTraite() {
+        return taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .list().size();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Long getCountDemandesTraite() {
-        return jbpmDemandeService.getCountTaskList(ProcessConst.DEMANDE_TASK_OP_CHOICE, SecurityContextHolder
-                .getContext().getAuthentication().getName());
+    public Integer getCountDemandesSoumise() {
+        return taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_RH_VALIDATION)
+                .taskCandidateGroup("ROLE_RH")
+                .list().size();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Long getCountDemandesSoumise() {
-        return jbpmDemandeService.getCountTaskList(ProcessConst.DEMANDE_TASK_RH_VALIDATION, "ROLE_RH");
+    public Integer getCountStartedDemandesSoumise() {
+        return taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_RH_VALIDATION)
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .list().size();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Long getCountStartedDemandesTraite() {
-        return jbpmDemandeService.getCountStartedTaskList(ProcessConst.DEMANDE_TASK_OP_CHOICE, SecurityContextHolder
-                .getContext().getAuthentication().getName());
+    public Integer getCountDemandesNouveau() {
+        return demandeDao.findAll().size();
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Long getCountStartedDemandesSoumise() {
-        return jbpmDemandeService.getCountStartedTaskList(ProcessConst.DEMANDE_TASK_RH_VALIDATION, "ROLE_RH");
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Long getCountDemandesNouveau() {
-        return jbpmDemandeService.getCountTaskList(ProcessConst.DEMANDE_TASK_OP_INIT, SecurityContextHolder
-                .getContext().getAuthentication().getName());
-    }
-
-    @Override
-    public void sendDemande(Task task, DemandeVO demande) {
+    public void sendDemande(DemandeVO demande) {
         demande.setEtatDemande(EtatDemande.SENT);
         demandeDao.save(mapper.map(demande, Demande.class));
 
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(ProcessConst.DEMANDE_DEMANDE, demande.getId());
+
         // proceed by completing the task
-        jbpmDemandeService.startAndCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName(), task,
-                demande);
+        runtimeService.startProcessInstanceByKey(ProcessConst.PROCESS_ID_DEMANDE_RECRUTEMENT, demande.getId().toString(), params);
     }
 
     @Override
-    public void deleteDemande(Task task, DemandeVO demande) {
+    public void deleteDemande(DemandeVO demande) {
         demande.setEtatDemande(EtatDemande.DELETED);
-        demandeDao.save(mapper.map(demande, Demande.class));
-
-        // proceed by completing the task
-        jbpmDemandeService.startAndCompleteTask(SecurityContextHolder.getContext().getAuthentication().getName(), task,
-                demande);
+        demandeDao.delete(mapper.map(demande, Demande.class));
     }
 
     @Override
-    public void rejectDemande(Task task, DemandeVO demande) {
+    public void rejectDemande(DemandeVO demande) {
         demande.setEtatDemande(EtatDemande.REJECTED);
         demandeDao.save(mapper.map(demande, Demande.class));
 
         // proceed by completing the task
-        jbpmDemandeService.startAndCompleteTask("ROLE_RH", task, demande);
+        Task task = taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_RH_VALIDATION)
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .processInstanceBusinessKey(demande.getId().toString())
+                .singleResult();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(ProcessConst.DEMANDE_DEMANDE, demande.getId());
+        params.put("valide", false);
+
+        taskService.complete(task.getId(), params);
     }
 
     @Override
-    public void rejectDemandeAfterAccepting(Task task, DemandeVO demande) {
+    public void rejectDemandeAfterAccepting(DemandeVO demande) {
         demande.setEtatDemande(EtatDemande.REJECTED);
         demandeDao.save(mapper.map(demande, Demande.class));
 
@@ -207,12 +218,21 @@ public class DemandeServiceImpl implements DemandeService {
                 candidatureDao.delete(candidature);
             }
         }
+
         // proceed by completing the task
-        jbpmDemandeService.completeTask("ROLE_RH", task, demande);
+        Task task = taskService.createTaskQuery()
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .processInstanceBusinessKey(demande.getId().toString())
+                .singleResult();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("annuler", true);
+
+        taskService.complete(task.getId(), params);
     }
 
     @Override
-    public void completeDemande(Task task, DemandeVO demande) throws DemandeHaveNoCandidatureException {
+    public void completeDemande(DemandeVO demande) throws DemandeHaveNoCandidatureException {
 
         List<Candidature> candidatures = candidatureDao.findByDemand(demande.getId());
 
@@ -225,12 +245,20 @@ public class DemandeServiceImpl implements DemandeService {
         demandeDao.save(mapper.map(demande, Demande.class));
 
         // proceed by completing the task
-        jbpmDemandeService.completeTask("ROLE_RH", task, demande);
+        Task task = taskService.createTaskQuery()
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .processInstanceBusinessKey(demande.getId().toString())
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_RH_VALIDATION)
+                .singleResult();
 
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("annuler", true);
+
+        taskService.complete(task.getId(), params);
     }
 
     @Override
-    public void completeDemande(Task task, DemandeVO demande, List<CandidatureVO> candidatureList)
+    public void completeDemande(DemandeVO demande, List<CandidatureVO> candidatureList)
             throws DemandeHaveNoCandidatureException {
         List<Candidature> candidatures = candidatureDao.findByDemand(demande.getId());
 
@@ -243,8 +271,20 @@ public class DemandeServiceImpl implements DemandeService {
 
         // proceed by completing the task
         // start a calling process for every candidate in the the demand
-        jbpmDemandeService.completeTask(SecurityContextHolder.getContext().getAuthentication().getName(), task,
-                demande, candidatureList);
+        Task task = taskService.createTaskQuery()
+                .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .processInstanceBusinessKey(demande.getId().toString())
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
+                .singleResult();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        List<Long> candidaturesId = new ArrayList<Long>();
+        for (Candidature candidature : candidatures) {
+            candidaturesId.add(candidature.getId());
+        }
+        params.put("candidatures", candidaturesId);
+
+        taskService.complete(task.getId(), params);
 
     }
 
@@ -288,10 +328,5 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public Long getCountCandidatures(DemandeVO demande) {
         return candidatureDao.findByDemandeIdCount(demande.getId());
-    }
-
-    @Transactional(readOnly = true)
-    private DemandeVO getDemandeFromTask(Task task) {
-        return (DemandeVO) jbpmDemandeService.getTaskContent(task).get(ProcessConst.DEMANDE_DEMANDE);
     }
 }

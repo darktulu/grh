@@ -31,7 +31,7 @@ public interface ProcessConst {
     static final String CONVOCATION_ENTRETIEN = "entretien";
     static final String CONVOCATION_CANDIDATURE = "candidature";
     static final String CONVOCATION_DISPONIBLE = "disponible";
-    static final String CONVOCATION_TASK_CONVOCATION = "convocationTask";
+    static final String CONVOCATION_TASK_CONVOCATION = "disponibilite";
 
     // Entretien Process variables
     static final String APPOINTMENT_USERNAME_CE = "usernameCE";
@@ -42,8 +42,8 @@ public interface ProcessConst {
     // Demande Process variables
     static final String DEMANDE_TASK_OP_CHOICE = "choixConvocationTask";
     static final String DEMANDE_DEMANDE = "demande";
-    static final String DEMANDE_CANDIDATURE_LIST = "candidatureList";
+    static final String DEMANDE_CANDIDATURE_LIST = "candidatures";
     static final String DEMANDE_TASK_RH_VALIDATION = "validationDemandeTask";
-    static final String DEMANDE_TASK_OP_INIT = "demandeInitTask";
+    static final String DEMANDE_TASK_OP_INIT = "updateDemandeTask";
 
 }

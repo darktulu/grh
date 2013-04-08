@@ -102,5 +102,4 @@ public class RegisterBean {
 	public void setLink(String link) {
 		this.link = link;
 	}
-
 }

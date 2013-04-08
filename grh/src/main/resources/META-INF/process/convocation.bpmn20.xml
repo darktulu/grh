@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/grh">
+
+    <process id="convocation" isExecutable="true">
+        <userTask id="disponibilite" name="Verification de la disponibilite du candidat"/>
+        <exclusiveGateway id="choice"/>
+        <endEvent id="endBad"/>
+        <serviceTask id="verificationDossier" name="Verification dossier de candidature"
+                     activiti:expression="#{convocationService.verify(candidature)}"/>
+        <endEvent id="endGood"/>
+        <startEvent id="toConvoque" name="message de convocation"/>
+        <sequenceFlow id="start_dispo" sourceRef="toConvoque" targetRef="disponibilite"/>
+        <sequenceFlow id="choice_verif" name="${disponible}" sourceRef="choice" targetRef="verificationDossier">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${disponible}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="dispo_choice" sourceRef="disponibilite" targetRef="choice"/>
+        <sequenceFlow id="verif_end" sourceRef="verificationDossier" targetRef="endGood"/>
+        <sequenceFlow id="choice_notDispo" name="${!disponible}" sourceRef="choice" targetRef="endBad">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!disponible}]]></conditionExpression>
+        </sequenceFlow>
+    </process>
+
+    <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+        <bpmndi:BPMNPlane bpmnElement="convocation" id="BPMNPlane_process">
+            <bpmndi:BPMNShape bpmnElement="disponibilite" id="BPMNShape_disponibilite">
+                <omgdc:Bounds height="76.0" width="123.0" x="112.0" y="100.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="choice" id="BPMNShape_choice">
+                <omgdc:Bounds height="40.0" width="40.0" x="268.0" y="116.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="endBad" id="BPMNShape_endBad">
+                <omgdc:Bounds height="28.0" width="28.0" x="420.0" y="122.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="verificationDossier" id="BPMNShape_verificationDossier">
+                <omgdc:Bounds height="80.0" width="100.0" x="238.0" y="255.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="endGood" id="BPMNShape_endGood">
+                <omgdc:Bounds height="28.0" width="28.0" x="420.0" y="281.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="toConvoque" id="BPMNShape_toConvoque">
+                <omgdc:Bounds height="30.0" width="30.0" x="158.75" y="15.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="choice_notDispo" id="BPMNEdge_choice_notDispo">
+                <omgdi:waypoint x="307.5655172413793" y="136.4344827586207"></omgdi:waypoint>
+                <omgdi:waypoint x="420.00008266243907" y="136.04810968157238"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="start_dispo" id="BPMNEdge_start_dispo">
+                <omgdi:waypoint x="173.93301810840813" y="45.254071032717306"></omgdi:waypoint>
+                <omgdi:waypoint x="173.67741682360327" y="100.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="choice_verif" id="BPMNEdge_choice_verif">
+                <omgdi:waypoint x="288.4398734177215" y="155.56012658227849"></omgdi:waypoint>
+                <omgdi:waypoint x="288.1261829652997" y="255.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="verif_end" id="BPMNEdge_verif_end">
+                <omgdi:waypoint x="338.0" y="295.0"></omgdi:waypoint>
+                <omgdi:waypoint x="420.0" y="295.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="dispo_choice" id="BPMNEdge_dispo_choice">
+                <omgdi:waypoint x="235.0" y="137.19782608695652"></omgdi:waypoint>
+                <omgdi:waypoint x="268.7575107296137" y="136.75751072961373"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

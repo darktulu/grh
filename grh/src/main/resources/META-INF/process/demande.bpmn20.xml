@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/grh">
+    <process id="demande" isExecutable="true">
+        <startEvent id="start"/>
+        <userTask id="validationDemandeTask" name="Validation de la demande"/>
+        <exclusiveGateway id="exclu"/>
+        <userTask id="choixConvocationTask" name="Choix des candidat a convoquer"/>
+        <userTask id="updateDemandeTask" name="Mise a jour de la demande"/>
+        <callActivity id="convocationSub" name="Sous process de convocation" calledElement="convocation">
+            <extensionElements>
+                <activiti:in source="${candidature}" target="candidature"/>
+            </extensionElements>
+            <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${candidatures}"
+                                              activiti:elementVariable="candidature"/>
+        </callActivity>
+        <endEvent id="sid-6D64A07E-EC8F-4631-B000-8CDD6ADB401E"/>
+        <sequenceFlow id="convocatoinSuub_end" sourceRef="convocationSub"
+                      targetRef="sid-6D64A07E-EC8F-4631-B000-8CDD6ADB401E"/>
+        <inclusiveGateway id="sid-944BB06E-04EE-43EA-B22A-52979E02DDB3"/>
+        <sequenceFlow id="start_inclu" sourceRef="start" targetRef="sid-944BB06E-04EE-43EA-B22A-52979E02DDB3"/>
+        <sequenceFlow id="incluAnalyse" sourceRef="sid-944BB06E-04EE-43EA-B22A-52979E02DDB3"
+                      targetRef="validationDemandeTask"/>
+        <sequenceFlow id="convocationChoice_convocationSub" sourceRef="choixConvocationTask"
+                      targetRef="convocationSub"/>
+        <sequenceFlow id="validation_exclu" sourceRef="validationDemandeTask" targetRef="exclu"/>
+        <exclusiveGateway id="exclu2"/>
+        <endEvent id="end2"/>
+        <sequenceFlow id="update_exclu2" sourceRef="updateDemandeTask" targetRef="exclu2"/>
+        <sequenceFlow id="exclu2_end2" name="${annuler}" sourceRef="exclu2" targetRef="end2">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${annuler}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="exclu2_inclu" name="${!annuler}" sourceRef="exclu2"
+                      targetRef="sid-944BB06E-04EE-43EA-B22A-52979E02DDB3">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!annuler}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="exclu_choix" name="${valide}" sourceRef="exclu" targetRef="choixConvocationTask">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${valide}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="exclu_modif" name="${!valide}" sourceRef="exclu" targetRef="updateDemandeTask">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!valide}]]></conditionExpression>
+        </sequenceFlow>
+    </process>
+
+
+    <bpmndi:BPMNDiagram id="BPMNDiagram_demande">
+        <bpmndi:BPMNPlane bpmnElement="demande" id="BPMNPlane_demande">
+            <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+                <omgdc:Bounds height="30.0" width="30.0" x="75.0" y="250.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="validationDemandeTask" id="BPMNShape_validationDemandeTask">
+                <omgdc:Bounds height="80.0" width="100.0" x="276.0" y="225.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="exclu" id="BPMNShape_exclu">
+                <omgdc:Bounds height="40.0" width="40.0" x="421.0" y="245.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="choixConvocationTask" id="BPMNShape_choixConvocationTask">
+                <omgdc:Bounds height="79.0" width="126.0" x="541.0" y="225.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="updateDemandeTask" id="BPMNShape_updateDemandeTask">
+                <omgdc:Bounds height="80.0" width="100.0" x="276.0" y="370.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="convocationSub" id="BPMNShape_convocationSub">
+                <omgdc:Bounds height="80.0" width="100.0" x="750.0" y="224.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-6D64A07E-EC8F-4631-B000-8CDD6ADB401E"
+                              id="BPMNShape_sid-6D64A07E-EC8F-4631-B000-8CDD6ADB401E">
+                <omgdc:Bounds height="28.0" width="28.0" x="915.0" y="250.5"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-944BB06E-04EE-43EA-B22A-52979E02DDB3"
+                              id="BPMNShape_sid-944BB06E-04EE-43EA-B22A-52979E02DDB3">
+                <omgdc:Bounds height="40.0" width="40.0" x="191.0" y="245.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="exclu2" id="BPMNShape_exclu2">
+                <omgdc:Bounds height="40.0" width="40.0" x="191.0" y="390.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="end2" id="BPMNShape_end2">
+                <omgdc:Bounds height="28.0" width="28.0" x="76.0" y="396.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="update_exclu2" id="BPMNEdge_update_exclu2">
+                <omgdi:waypoint x="276.0" y="410.2183406113537"></omgdi:waypoint>
+                <omgdi:waypoint x="230.58333333333334" y="410.4166666666667"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="start_inclu" id="BPMNEdge_start_inclu">
+                <omgdi:waypoint x="104.99987298845465" y="265.06172787238046"></omgdi:waypoint>
+                <omgdi:waypoint x="191.41735537190084" y="265.41735537190084"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="exclu2_inclu" id="BPMNEdge_exclu2_inclu">
+                <omgdi:waypoint x="211.43103448275863" y="390.4310344827586"></omgdi:waypoint>
+                <omgdi:waypoint x="211.06849315068493" y="284.93150684931504"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="exclu_modif" id="BPMNEdge_exclu_modif">
+                <omgdi:waypoint x="441.5" y="284.5"></omgdi:waypoint>
+                <omgdi:waypoint x="441.5" y="410.0"></omgdi:waypoint>
+                <omgdi:waypoint x="376.0" y="410.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="exclu_choix" id="BPMNEdge_exclu_choix">
+                <omgdi:waypoint x="460.5" y="265.5"></omgdi:waypoint>
+                <omgdi:waypoint x="501.0" y="265.5"></omgdi:waypoint>
+                <omgdi:waypoint x="501.0" y="264.5"></omgdi:waypoint>
+                <omgdi:waypoint x="541.0" y="264.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="incluAnalyse" id="BPMNEdge_incluAnalyse">
+                <omgdi:waypoint x="230.58333333333334" y="265.4166666666667"></omgdi:waypoint>
+                <omgdi:waypoint x="276.0" y="265.2183406113537"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="exclu2_end2" id="BPMNEdge_exclu2_end2">
+                <omgdi:waypoint x="191.41735537190084" y="410.41735537190084"></omgdi:waypoint>
+                <omgdi:waypoint x="103.999881455891" y="410.05761268088844"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="validation_exclu" id="BPMNEdge_validation_exclu">
+                <omgdi:waypoint x="376.0" y="265.2164502164502"></omgdi:waypoint>
+                <omgdi:waypoint x="421.4130434782609" y="265.4130434782609"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="convocatoinSuub_end" id="BPMNEdge_convocatoinSuub_end">
+                <omgdi:waypoint x="850.0" y="264.5"></omgdi:waypoint>
+                <omgdi:waypoint x="915.0" y="264.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="convocationChoice_convocationSub"
+                             id="BPMNEdge_convocationChoice_convocationSub">
+                <omgdi:waypoint x="667.0" y="264.5"></omgdi:waypoint>
+                <omgdi:waypoint x="750.0" y="264.5"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,13 +1,13 @@
 package com.bull.grh.domaine;
 
-import java.io.Serializable;
+import com.bull.grh.domaine.types.EmailType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-
-import com.bull.grh.domaine.types.EmailCode;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 public class EmailTemplate implements Serializable {
@@ -17,40 +17,67 @@ public class EmailTemplate implements Serializable {
     @Id
     private Long id;
     @Enumerated
-    private EmailCode code;
-    private String subject;
+    private EmailType code;
     @Column(length = 1000)
     private String message;
+    private String subject;
+    private Date created;
+    private Date updated;
+    private String definition;
 
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
-    public EmailCode getCode() {
-	return code;
+    public EmailType getCode() {
+        return code;
     }
 
-    public void setCode(EmailCode code) {
-	this.code = code;
-    }
-
-    public String getSubject() {
-	return subject;
-    }
-
-    public void setSubject(String subject) {
-	this.subject = subject;
+    public void setCode(EmailType code) {
+        this.code = code;
     }
 
     public String getMessage() {
-	return message;
+        return message;
     }
 
     public void setMessage(String message) {
-	this.message = message;
+        this.message = message;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public String getDefinition() {
+        return definition;
+    }
+
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 }

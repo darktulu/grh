@@ -1,44 +1,32 @@
 package com.bull.grh.service.metier;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
-import org.jbpm.task.Task;
-
 import com.bull.grh.view.metier.vo.EntretienVO;
 
+import javax.validation.Valid;
+import java.util.List;
+
 public interface EntretienService {
-    void startCETask(Task task);
+    void startRHTask(@Valid EntretienVO entretien);
 
-    void startRHTask(Task task);
+    void completeTaskRH(@Valid EntretienVO entretien);
 
-    void completeTaskCE(Task task, @Valid EntretienVO entretien);
+    List<EntretienVO> loadCETaskList();
 
-    void completeTaskRH(Task task, @Valid EntretienVO entretien);
+    List<EntretienVO> loadRHTaskList();
 
-    Map<EntretienVO, Task> loadCETaskList();
+    List<EntretienVO> loadRHStartedTaskList();
 
-    Map<EntretienVO, Task> loadRHTaskList();
+    Integer getCountCETaskList();
 
-    Map<EntretienVO, Task> loadRHStartedTaskList();
+    Integer getCountRHTaskList();
 
-    Map<EntretienVO, Task> loadCEStartedTaskList();
+    Integer getCountCEEntretiens();
 
-    Long getCountCETaskList();
-
-    Long getCountCEStartedTaskList();
-
-    Long getCountRHTaskList();
-    
-    Long getCountCEEntretiens();
-
-    Long getCountRHStartedTaskList();
+    Integer getCountRHStartedTaskList();
 
     void startProcess(EntretienVO entretien);
-    
+
     List<EntretienVO> loadEntretiensCE();
 
-    void startAndCompleteTask(Task task, EntretienVO entretien);
+    void startAndCompleteTask(EntretienVO entretien);
 }

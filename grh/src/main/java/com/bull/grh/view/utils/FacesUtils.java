@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 public class FacesUtils {
 
     public static ExternalContext getExternalContext() {
-	return FacesContext.getCurrentInstance().getExternalContext();
+        return FacesContext.getCurrentInstance().getExternalContext();
     }
 
     public static HttpServletRequest getRequest() {
-	return (HttpServletRequest) getExternalContext().getRequest();
+        return (HttpServletRequest) getExternalContext().getRequest();
     }
 }

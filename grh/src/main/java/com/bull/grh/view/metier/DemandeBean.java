@@ -1,20 +1,15 @@
 package com.bull.grh.view.metier;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.jbpm.task.Task;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.bull.grh.service.exception.DemandeHaveNoCandidatureException;
 import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.List;
 
 @Component
 @Scope("view")
@@ -25,162 +20,143 @@ public class DemandeBean implements Serializable {
     @Inject
     transient private DemandeService demandeService;
 
-    private List<DemandeVO> demandesTraite, startedDemandesTraite, demandesNouveau, demandesRH, startedDemandesRH;
-    private Map<DemandeVO, Task> demandesMap;
+    private List<DemandeVO> demandesTraite;
+    private List<DemandeVO> startedDemandesTraite;
+    private List<DemandeVO> demandesNouveau;
+    private List<DemandeVO> demandesRH;
+    private List<DemandeVO> startedDemandesRH;
     private DemandeVO demande = new DemandeVO();
     private List<CandidatureVO> candidatureList;
 
     public void createDemande() {
-	demandeService.createDemande(demande);
+        demandeService.createDemande(demande);
     }
 
     public void sendDemande() {
-	Task task = demandesMap.get(demande);
-	demandeService.sendDemande(task, demande);
-	demandesNouveau.remove(demande);
+        demandeService.sendDemande(demande);
+        demandesNouveau.remove(demande);
     }
 
     public void deleteDemande() {
-	Task task = demandesMap.get(demande);
-	demandeService.deleteDemande(task, demande);
-	demandesNouveau.remove(demande);
+        demandeService.deleteDemande(demande);
+        demandesNouveau.remove(demande);
     }
 
     public void rejectDemande() {
-	Task task = demandesMap.get(demande);
-	demandeService.rejectDemande(task, demande);
-	demandesRH.remove(demande);
+        demandeService.rejectDemande(demande);
+        demandesRH.remove(demande);
     }
 
     public void rejectDemandeAfterAccepting() {
-	Task task = demandesMap.get(demande);
-	demandeService.rejectDemandeAfterAccepting(task, demande);
-	startedDemandesRH.remove(demande);
+        demandeService.rejectDemandeAfterAccepting(demande);
+        startedDemandesRH.remove(demande);
     }
 
     public void proceedDemandeOP() {
-	Task task = demandesMap.get(demande);
-	demandeService.startTaskDemandeOP(task, demande);
-	demandesTraite.remove(demande);
+        demandeService.startTaskDemandeOP(demande);
+        demandesTraite.remove(demande);
     }
 
     public void completeDemandeOP() {
-	try {
-	    Task task = demandesMap.get(demande);
-	    demandeService.completeDemande(task, demande, candidatureList);
-	    startedDemandesTraite.remove(demande);
-	} catch (DemandeHaveNoCandidatureException e) {
-	    // TODO faces message
-	}
+        try {
+            demandeService.completeDemande(demande, candidatureList);
+            startedDemandesTraite.remove(demande);
+        } catch (DemandeHaveNoCandidatureException e) {
+            // TODO faces message
+        }
     }
 
     public void proceedDemandeRH() {
-	Task task = demandesMap.get(demande);
-	demandeService.startTaskDemandeRH(task, demande);
-	demandesRH.remove(demande);
+        demandeService.startTaskDemandeRH(demande);
+        demandesRH.remove(demande);
     }
 
     public void completeDemandeRH() {
-	try {
-	    Task task = demandesMap.get(demande);
-	    demandeService.completeDemande(task, demande);
-	    startedDemandesRH.remove(demande);
-	} catch (DemandeHaveNoCandidatureException e) {
-	    // TODO faces message
-	}
+        try {
+            demandeService.completeDemande(demande);
+            startedDemandesRH.remove(demande);
+        } catch (DemandeHaveNoCandidatureException e) {
+            // TODO faces message
+        }
     }
 
     public DemandeService getDemandeService() {
-	return demandeService;
+        return demandeService;
     }
 
     public void setDemandeService(DemandeService demandeService) {
-	this.demandeService = demandeService;
+        this.demandeService = demandeService;
     }
 
     public List<DemandeVO> getDemandesTraite() {
-	if (demandesTraite == null || demandesTraite.isEmpty()) {
-	    demandesMap = demandeService.loadDemandesTraite();
-	    demandesTraite = new ArrayList<DemandeVO>(demandesMap.keySet());
-	}
-	return demandesTraite;
+        if (demandesTraite == null || demandesTraite.isEmpty()) {
+            demandesTraite = demandeService.loadDemandesTraite();
+        }
+        return demandesTraite;
     }
 
     public void setDemandesTraite(List<DemandeVO> demandesTraite) {
-	this.demandesTraite = demandesTraite;
+        this.demandesTraite = demandesTraite;
     }
 
     public List<DemandeVO> getStartedDemandesTraite() {
-	if (startedDemandesTraite == null || startedDemandesTraite.isEmpty()) {
-	    demandesMap = demandeService.loadStartedDemandesTraite();
-	    startedDemandesTraite = new ArrayList<DemandeVO>(demandesMap.keySet());
-	}
-	return startedDemandesTraite;
+        if (startedDemandesTraite == null || startedDemandesTraite.isEmpty()) {
+            startedDemandesTraite = demandeService.loadDemandesTraite();
+        }
+        return startedDemandesTraite;
     }
 
     public void setStartedDemandesTraite(List<DemandeVO> startedDemandesTraite) {
-	this.startedDemandesTraite = startedDemandesTraite;
+        this.startedDemandesTraite = startedDemandesTraite;
     }
 
     public List<DemandeVO> getDemandesNouveau() {
-	if (demandesNouveau == null || demandesNouveau.isEmpty()) {
-	    demandesMap = demandeService.loadDemandesNouveau();
-	    demandesNouveau = new ArrayList<DemandeVO>(demandesMap.keySet());
-	}
-	return demandesNouveau;
+        if (demandesNouveau == null || demandesNouveau.isEmpty()) {
+            demandesNouveau = demandeService.loadDemandesNouveau();
+        }
+        return demandesNouveau;
     }
 
     public void setDemandesNouveau(List<DemandeVO> demandesNouveau) {
-	this.demandesNouveau = demandesNouveau;
+        this.demandesNouveau = demandesNouveau;
     }
 
     public List<DemandeVO> getDemandesRH() {
-	if (demandesRH == null || demandesRH.isEmpty()) {
-	    demandesMap = demandeService.loadDemandesSoumise();
-	    demandesRH = new ArrayList<DemandeVO>(demandesMap.keySet());
-	}
-	return demandesRH;
+        if (demandesRH == null || demandesRH.isEmpty()) {
+            demandesRH = demandeService.loadDemandesSoumise();
+        }
+        return demandesRH;
     }
 
     public void setDemandesRH(List<DemandeVO> demandesRH) {
-	this.demandesRH = demandesRH;
+        this.demandesRH = demandesRH;
     }
 
     public List<DemandeVO> getStartedDemandesRH() {
-	if (startedDemandesRH == null || startedDemandesRH.isEmpty()) {
-	    demandesMap = demandeService.loadStartedDemandesSoumise();
-	    startedDemandesRH = new ArrayList<DemandeVO>(demandesMap.keySet());
-	}
-	return startedDemandesRH;
+        if (startedDemandesRH == null || startedDemandesRH.isEmpty()) {
+            startedDemandesRH = demandeService.loadStartedDemandesSoumise();
+        }
+        return startedDemandesRH;
     }
 
     public void setStartedDemandesRH(List<DemandeVO> startedDemandesRH) {
-	this.startedDemandesRH = startedDemandesRH;
-    }
-
-    public Map<DemandeVO, Task> getDemandesMap() {
-	return demandesMap;
-    }
-
-    public void setDemandesMap(Map<DemandeVO, Task> demandesMap) {
-	this.demandesMap = demandesMap;
+        this.startedDemandesRH = startedDemandesRH;
     }
 
     public DemandeVO getDemande() {
-	return demande;
+        return demande;
     }
 
     public void setDemande(DemandeVO demande) {
-	this.demande = demande;
+        this.demande = demande;
     }
 
     public List<CandidatureVO> getCandidatureList() {
-	candidatureList = demandeService.loadCandidatures(demande);
-	return candidatureList;
+        candidatureList = demandeService.loadCandidatures(demande);
+        return candidatureList;
     }
 
     public void setCandidatureList(List<CandidatureVO> candidatureList) {
-	this.candidatureList = candidatureList;
+        this.candidatureList = candidatureList;
     }
-
 }
