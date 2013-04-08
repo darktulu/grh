@@ -34,7 +34,7 @@ public class SecureResourceFilterService implements FilterInvocationSecurityMeta
 	FilterInvocation filterinvocation = (FilterInvocation) filter;
 	String url = filterinvocation.getRequestUrl();
 	List<String> list = getAuthorities(url);
-	String[] roles = (String[]) list.toArray(new String[list.size()]);
+	String[] roles = list.toArray(new String[list.size()]);
 	if (roles.length == 0) {
 	    return null;
 	}

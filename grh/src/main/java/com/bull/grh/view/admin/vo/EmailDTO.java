@@ -3,6 +3,9 @@ package com.bull.grh.view.admin.vo;
 import java.io.Serializable;
 
 public class EmailDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String from;
     private String to;
     private String cc;
