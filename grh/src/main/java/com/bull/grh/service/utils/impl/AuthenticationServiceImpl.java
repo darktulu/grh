@@ -18,23 +18,19 @@ import com.bull.grh.view.metier.vo.PersonneVO;
 
 @Service("authenticationService")
 public class AuthenticationServiceImpl implements AuthenticationService {
-
 	@Inject
 	private AuthenticationManager authenticationManager;
-
 	@Inject
 	private PersonneDao personneDao;
-
 	@Inject
 	private CandidatDao candidatDao;
-
 	@Inject
 	private DozerBeanMapper mapper;
 
 	@Override
 	public void login(String login, String password) throws AuthenticationException {
-		Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login,
-				password));
+		Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(login, password));
 		if (authenticate.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
 		}

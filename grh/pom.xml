@@ -9,20 +9,18 @@
     <version>1.0.0-BUILD-SNAPSHOT</version>
     <properties>
         <java-version>1.6</java-version>
-        <org.aspectj-version>1.6.9</org.aspectj-version>
+        <org.aspectj-version>1.7.2</org.aspectj-version>
         <org.slf4j-version>1.6.1</org.slf4j-version>
-        <apache.myfaces>2.1.6</apache.myfaces>
-        <hibernate.version>3.6.10.Final</hibernate.version>
+        <apache.myfaces>2.1.10</apache.myfaces>
+        <hibernate.version>4.2.0.Final</hibernate.version>
         <activiti.version>5.12</activiti.version>
 
-        <hibernate.version>4.1.9.Final</hibernate.version>
         <hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
         <spring.version>3.2.2.RELEASE</spring.version>
         <spring-security.version>3.1.3.RELEASE</spring-security.version>
-        <spring-data.version>1.2.0.RELEASE</spring-data.version>
+        <spring-data.version>1.3.0.RELEASE</spring-data.version>
         <spring-webflow.version>2.3.1.RELEASE</spring-webflow.version>
         <spring.amqp.version>1.1.4.RELEASE</spring.amqp.version>
-
     </properties>
 
     <repositories>
@@ -228,19 +226,19 @@
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>3.6.0</version>
+            <version>4.2.0</version>
         </dependency>
         <dependency>
             <artifactId>solr-core</artifactId>
             <groupId>org.apache.solr</groupId>
-            <version>3.6.0</version>
+            <version>4.2.0</version>
         </dependency>
 
         <!-- Dozer dependencies -->
         <dependency>
             <groupId>net.sf.dozer</groupId>
             <artifactId>dozer</artifactId>
-            <version>5.1</version>
+            <version>5.4.0</version>
         </dependency>
 
         <!-- @Inject -->
@@ -273,7 +271,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
 
@@ -319,12 +317,12 @@
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
+            <version>20030825.184428</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.18</version>
+            <version>5.1.22</version>
         </dependency>
 
         <!-- Apache MyFaces -->
@@ -351,7 +349,7 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.7</version>
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
@@ -402,7 +400,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>3.2</version>
+            <version>3.5</version>
         </dependency>
         <!-- Commons FileUpload -->
         <dependency>
