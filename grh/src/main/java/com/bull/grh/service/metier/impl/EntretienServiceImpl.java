@@ -86,6 +86,7 @@ public class EntretienServiceImpl implements EntretienService {
                 .singleResult();
 
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("candidature", entretien.getCandidature().getId());
         params.put("decision", entretien.getDecisionEntretien().toString());
 
         taskService.complete(task.getId(), params);

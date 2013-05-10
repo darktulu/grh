@@ -5,19 +5,19 @@ public interface ProcessConst {
     /**
      * ID of the registration process it has a value of PROCESS_INSCRIPTION
      */
-    static final String PROCESS_ID_INSCRIPTION = "PROCESS_INSCRIPTION";
+    static final String PROCESS_ID_INSCRIPTION = "register";
     /**
      * ID of the demand process it has a value of PROCESS_DEMANDE_RECRUTEMENT
      */
-    static final String PROCESS_ID_DEMANDE_RECRUTEMENT = "PROCESS_DEMANDE_RECRUTEMENT";
+    static final String PROCESS_ID_DEMANDE_RECRUTEMENT = "demande";
     /**
      * ID of the calling process it has a value of PROCESS_CONVOCATION
      */
-    static final String PROCESS_ID_CONVOCATION = "PROCESS_CONVOCATION";
+    static final String PROCESS_ID_CONVOCATION = "convocation";
     /**
      * ID of the appointment process it has a value of PROCESS_ENTRETIEN
      */
-    static final String PROCESS_ID_ENTRETIEN = "PROCESS_ENTRETIEN";
+    static final String PROCESS_ID_ENTRETIEN = "entretien";
 
     // Register Process variables
     static final String REGISTER_PROCESS_CANDIDAT = "candidat";

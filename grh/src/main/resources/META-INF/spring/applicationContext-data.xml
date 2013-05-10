@@ -42,12 +42,12 @@
           p:databasePlatform="org.hibernate.dialect.MySQL5InnoDBDialect"/>
 
     <!-- EntityManager Transaction manager -->
-    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager" >
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
     <!-- Transaction advice configured using annotation -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj" />
 
     <!-- Scanning JPA repositories -->
     <jpa:repositories base-package="com.bull.grh.repos"/>
