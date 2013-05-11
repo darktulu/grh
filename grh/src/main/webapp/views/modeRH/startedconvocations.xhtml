@@ -158,7 +158,7 @@
 					<div class="form-actions">
 						<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
 							update=":form:convocationTable,:formProceed:convocationPanelProceed,:form:convocationTable"
-							oncomplete="if(!args.validationFailed)competenceDialogProceed.hide()" value="#{msg['update']}"
+							oncomplete="if(!args.validationFailed)convocationDialogProceed.hide()" value="#{msg['update']}"
 							actionListener="#{convocationBean.completeConvocation}" />
 						<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"
 							value="#{msg['cancel']}" oncomplete="if(args)convocationDialogProceed.hide()"

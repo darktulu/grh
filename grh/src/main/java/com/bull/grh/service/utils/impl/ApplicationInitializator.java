@@ -41,7 +41,7 @@ public class ApplicationInitializator {
 
             emailTemplate.setId(2L);
             emailTemplate.setCode(EmailType.ACTIVATION);
-            emailTemplate.setMessage("<html><body>Bonjour $firstname $lastname, <br /> <br />Votre compte chez simu Maroc est activé.<br />Votre login est $login <br />Votre mot de passe est $password <br />Cordialement.</body></html>");
+            emailTemplate.setMessage("<html><body>Bonjour $firstname $lastname, <br /> <br />Votre compte chez simu Maroc est activé.<br />Votre login est $login <br />Cordialement.</body></html>");
             emailTemplate.setSubject("Compte activé simu Maroc");
             emailTemplate.setCreated(new Date());
             emailTemplateDao.save(emailTemplate);
@@ -55,7 +55,7 @@ public class ApplicationInitializator {
 
             emailTemplate.setId(4L);
             emailTemplate.setCode(EmailType.CALL_APPOINTMENT);
-            emailTemplate.setMessage("<html><body>Bonjour $firstname $lastname, <br /> <br />Suite à notre conversation de ce jour le $dateAujourdhui, merci de trouver ci-après, les informations relatives à votre entretien chez simu Maroc : <br /> <br />Date	: $date <br />Heure	: $heure <br />Contact sur place	: $contactSurPlace <br />Adresse	: $adresse <br />Poste ciblé	: $posteCible <br /> <br />$dossier <br /></body></html>");
+            emailTemplate.setMessage("<html><body>Bonjour $firstname $lastname, <br /> <br />Suite à notre conversation de ce jour le $today, merci de trouver ci-après, les informations relatives à votre entretien chez simu Maroc : <br /> <br />Date	: $date <br />Heure	: $heure <br />Contact sur place	: $contact <br />Adresse	: $adresse <br />Poste ciblé	: $poste <br /> <br />$dossier <br /></body></html>");
             emailTemplate.setSubject("Convocation Entretien simu Maroc");
             emailTemplate.setCreated(new Date());
             emailTemplateDao.save(emailTemplate);

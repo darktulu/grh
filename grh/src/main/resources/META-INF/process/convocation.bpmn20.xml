@@ -6,11 +6,11 @@
              targetNamespace="http://www.activiti.org/grh">
 
     <process id="convocation" isExecutable="true">
-        <userTask id="disponibilite" name="Verification de la disponibilite du candidat"/>
+        <userTask id="disponibilite" name="Verification de la disponibilite du candidat" activiti:candidateGroups="ROLE_RH"/>
         <exclusiveGateway id="choice"/>
         <endEvent id="endBad"/>
         <serviceTask id="verificationDossier" name="Verification dossier de candidature"
-                     activiti:expression="#{convocationService.verify(candidature)}"/>
+                     activiti:expression="#{convocationService.verify(entretien)}"/>
         <endEvent id="endGood"/>
         <startEvent id="toConvoque" name="message de convocation"/>
         <sequenceFlow id="start_dispo" sourceRef="toConvoque" targetRef="disponibilite"/>

@@ -38,6 +38,14 @@
 							</f:facet>
 							<h:outputText value="#{demande.date}" />
 						</p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Statut demande" />
+                            </f:facet>
+                            <h:outputText value="#{demande.etatDemande}" />
+                        </p:column>
+
 						<p:column>
 							<f:facet name="header">
 								<h:outputText value="Actions" />

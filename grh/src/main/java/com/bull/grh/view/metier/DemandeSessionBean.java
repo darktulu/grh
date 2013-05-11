@@ -1,90 +1,91 @@
 package com.bull.grh.view.metier;
 
-import java.io.Serializable;
-
-import javax.inject.Inject;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.bull.grh.i18n.I18nMessageBean;
 import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
 import com.bull.grh.service.exception.CandidatureNotFoundException;
+import com.bull.grh.service.exception.NoDemandeSelectedException;
 import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.io.Serializable;
 
 @Component
 @Scope("session")
 public class DemandeSessionBean implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Inject
-	private DemandeService demandeService;
+    @Inject
+    private DemandeService demandeService;
 
-	@Inject
-	private I18nMessageBean i18nMessageBean;
+    @Inject
+    private I18nMessageBean i18nMessageBean;
 
-	private DemandeVO demande = new DemandeVO();
-	private CandidatVO candidat = new CandidatVO();
-	private long countCandidats;
+    private DemandeVO demande = new DemandeVO();
+    private CandidatVO candidat = new CandidatVO();
+    private long countCandidats;
 
-	public void init() {
-		demande = new DemandeVO();
-		candidat = new CandidatVO();
-	}
+    public void init() {
+        demande = new DemandeVO();
+        candidat = new CandidatVO();
+    }
 
-	public void addCandidat() {
-		try {
-			demandeService.addCandidateToDemand(candidat, demande);
-		} catch (AlreadyHaveCandidatureException e) {
-			// TODO Faces message
-			i18nMessageBean.showErrorMessage("impossible d'ajouter dandidat");
-		}
-	}
+    public void addCandidat() {
+        try {
+            demandeService.addCandidateToDemand(candidat, demande);
+        } catch (AlreadyHaveCandidatureException e) {
+            i18nMessageBean.showErrorMessage("impossible d'ajouter dandidat");
+        } catch (NoDemandeSelectedException e) {
+            i18nMessageBean.showErrorMessage("Pas de demande selectionnée");
+        }
 
-	public void removeCandidat() {
-		try {
-			demandeService.removeCandidateFromDemand(candidat, demande);
-		} catch (CandidatureNotFoundException e) {
-			// TODO Faces message
-			i18nMessageBean
-					.showErrorMessage("impossible de supprimer dandidat");
-		}
-	}
+    }
 
-	public DemandeService getDemandeService() {
-		return demandeService;
-	}
+    public void removeCandidat() {
+        try {
+            demandeService.removeCandidateFromDemand(candidat, demande);
+        } catch (CandidatureNotFoundException e) {
+            // TODO Faces message
+            i18nMessageBean
+                    .showErrorMessage("impossible de supprimer dandidat");
+        }
+    }
 
-	public void setDemandeService(DemandeService demandeService) {
-		this.demandeService = demandeService;
-	}
+    public DemandeService getDemandeService() {
+        return demandeService;
+    }
 
-	public DemandeVO getDemande() {
-		return demande;
-	}
+    public void setDemandeService(DemandeService demandeService) {
+        this.demandeService = demandeService;
+    }
 
-	public void setDemande(DemandeVO demande) {
-		this.demande = demande;
-	}
+    public DemandeVO getDemande() {
+        return demande;
+    }
 
-	public CandidatVO getCandidat() {
-		return candidat;
-	}
+    public void setDemande(DemandeVO demande) {
+        this.demande = demande;
+    }
 
-	public void setCandidat(CandidatVO candidat) {
-		this.candidat = candidat;
-	}
+    public CandidatVO getCandidat() {
+        return candidat;
+    }
 
-	public long getCountCandidats() {
-		countCandidats = demandeService.getCountCandidatures(demande);
-		return countCandidats;
-	}
+    public void setCandidat(CandidatVO candidat) {
+        this.candidat = candidat;
+    }
 
-	public void setCountCandidats(long countCandidats) {
-		this.countCandidats = countCandidats;
-	}
+    public long getCountCandidats() {
+        countCandidats = demandeService.getCountCandidatures(demande);
+        return countCandidats;
+    }
+
+    public void setCountCandidats(long countCandidats) {
+        this.countCandidats = countCandidats;
+    }
 
 }

@@ -51,8 +51,8 @@ public class ConvocationProcessNestedImpl {
 
         try {
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put("prenom", entretien.getCandidature().getCandidat().getPrenom());
-            params.put("nom", entretien.getCandidature().getCandidat().getNom());
+            params.put("lastname", entretien.getCandidature().getCandidat().getPrenom());
+            params.put("firstname", entretien.getCandidature().getCandidat().getNom());
             params.put("date", formatter.format(entretien.getDate()));
             params.put("heure", entretien.getHeure());
             params.put("today", formatter.format(new Date()));

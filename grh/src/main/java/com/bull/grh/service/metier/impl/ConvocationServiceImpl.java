@@ -53,7 +53,9 @@ public class ConvocationServiceImpl implements ConvocationService {
         // complete task without any parameters (it will end the process for
         // this candidate)
         Task task = taskService.createTaskQuery()
-                .processInstanceBusinessKey(candidature.getId().toString()).singleResult();
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
+                .processVariableValueEquals(ProcessConst.CONVOCATION_CANDIDATURE, candidature.getId())
+                .singleResult();
         if (task == null) return;
 
         Map<String, Object> params  = new HashMap<String, Object>();
@@ -64,13 +66,17 @@ public class ConvocationServiceImpl implements ConvocationService {
 
     @Override
     public void startConvocation(CandidatureVO candidatureVO) {
-        Task task = taskService.createTaskQuery().processInstanceBusinessKey(candidatureVO.getId().toString()).singleResult();
+        Task task = taskService.createTaskQuery()
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
+                .processVariableValueEquals(ProcessConst.CONVOCATION_CANDIDATURE, candidatureVO.getId())
+                .singleResult();
         taskService.claim(task.getId(), authenticationService.getConnectedPersonne().getEmail());
     }
 
     @Override
     public void completeConvocation(CandidatureVO candidature,
                                     EntretienVO entretien) {
+
         // Persist the appointment with new changes and creates evaluation for
         // this appointment
         entretien.setCandidature(candidature);
@@ -83,7 +89,9 @@ public class ConvocationServiceImpl implements ConvocationService {
 
         // continues the process by injecting the appointment
         Task task = taskService.createTaskQuery()
-                .processInstanceBusinessKey(candidature.getId().toString()).singleResult();
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
+                .processVariableValueEquals(ProcessConst.CONVOCATION_CANDIDATURE, candidature.getId())
+                .singleResult();
         if (task == null) return;
 
         Map<String, Object> params  = new HashMap<String, Object>();
@@ -99,6 +107,7 @@ public class ConvocationServiceImpl implements ConvocationService {
         CandidatureVO candidatureVO;
         List<CandidatureVO> result = new ArrayList<CandidatureVO>();
         List<Task> tasks = taskService.createTaskQuery()
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
                 .taskCandidateGroup("ROLE_RH")
                 .taskDefinitionKey(ProcessConst.CONVOCATION_TASK_CONVOCATION).list();
 
@@ -118,6 +127,7 @@ public class ConvocationServiceImpl implements ConvocationService {
         List<CandidatureVO> result = new ArrayList<CandidatureVO>();
         List<Task> tasks = taskService.createTaskQuery()
                 .taskAssignee(authenticationService.getConnectedPersonne().getEmail())
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
                 .taskDefinitionKey(ProcessConst.CONVOCATION_TASK_CONVOCATION).list();
 
         for (Task task : tasks) {
@@ -134,6 +144,7 @@ public class ConvocationServiceImpl implements ConvocationService {
     public Integer getCountTaskList() {
         return taskService.createTaskQuery()
                 .taskCandidateGroup("ROLE_RH")
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
                 .taskDefinitionKey(ProcessConst.CONVOCATION_TASK_CONVOCATION).list().size();
     }
 
@@ -142,6 +153,7 @@ public class ConvocationServiceImpl implements ConvocationService {
     public Integer getCountStartedTaskList() {
         return taskService.createTaskQuery()
                 .taskAssignee(authenticationService.getConnectedPersonne().getEmail())
+                .processDefinitionKey(ProcessConst.PROCESS_ID_CONVOCATION)
                 .taskDefinitionKey(ProcessConst.CONVOCATION_TASK_CONVOCATION).list().size();
     }
 }

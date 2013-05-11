@@ -37,11 +37,13 @@ public class EntretienProcessNestedImpl {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("firstname", user.getPrenom());
             params.put("lastname", user.getNom());
+            params.put("poste", entretien.getCandidature().getDemande().getIntitulePoste());
             try {
                 EmailDTO email = emailService.populateEmail(EmailType.REJECTED_AFTER_APP, user.getEmail(), sender, params, "", "");
                 emailService.prepare(email);
             } catch (Exception e) {
                 log.error("Error sending email refus for entretien : " + entretienId);
+                e.printStackTrace();
             }
         } else {
             log.debug("No Entretien or user Found");
@@ -56,11 +58,13 @@ public class EntretienProcessNestedImpl {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("lastname", user.getNom());
             params.put("firstname", user.getPrenom());
+            params.put("poste", entretien.getCandidature().getDemande().getIntitulePoste());
             try {
                 EmailDTO email = emailService.populateEmail(EmailType.CALL_WORK, user.getEmail(), sender, params, "", "");
                 emailService.prepare(email);
             } catch (Exception e) {
                 log.error("Error sending email refus for entretien : " + entretienId);
+                e.printStackTrace();
             }
         } else {
             log.debug("No Entretien or user Found");

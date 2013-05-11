@@ -11,6 +11,7 @@ import com.bull.grh.repos.metier.DemandeDao;
 import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
 import com.bull.grh.service.exception.CandidatureNotFoundException;
 import com.bull.grh.service.exception.DemandeHaveNoCandidatureException;
+import com.bull.grh.service.exception.NoDemandeSelectedException;
 import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CandidatureVO;
@@ -61,9 +62,6 @@ public class DemandeServiceImpl implements DemandeService {
 
     @Override
     public void startTaskDemandeOP(DemandeVO demande) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(ProcessConst.DEMANDE_DEMANDE, demande.getId());
-
         Task task = taskService.createTaskQuery()
                 .processInstanceBusinessKey(demande.getId().toString())
                 .taskCandidateGroup("ROLE_RH").singleResult();
@@ -74,7 +72,7 @@ public class DemandeServiceImpl implements DemandeService {
     @Transactional(readOnly = true)
     public List<DemandeVO> loadDemandesNouveau() {
         List<DemandeVO> list = new ArrayList<DemandeVO>();
-        List<Demande> demandes = demandeDao.findAll();
+        List<Demande> demandes = demandeDao.findByEtatDemande(EtatDemande.NEW);
         for (Demande demande : demandes) {
             list.add(mapper.map(demande, DemandeVO.class));
         }
@@ -175,6 +173,8 @@ public class DemandeServiceImpl implements DemandeService {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(ProcessConst.DEMANDE_DEMANDE, demande.getId());
+        params.put(ProcessConst.DEMANDE_OWNER, SecurityContextHolder.getContext().getAuthentication().getName());
+        params.put(ProcessConst.DEMANDE_ANNULATION, false);
 
         // proceed by completing the task
         runtimeService.startProcessInstanceByKey(ProcessConst.PROCESS_ID_DEMANDE_RECRUTEMENT, demande.getId().toString(), params);
@@ -200,7 +200,7 @@ public class DemandeServiceImpl implements DemandeService {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(ProcessConst.DEMANDE_DEMANDE, demande.getId());
-        params.put("valide", false);
+        params.put(ProcessConst.DEMANDE_VALIDE, false);
 
         taskService.complete(task.getId(), params);
     }
@@ -226,7 +226,7 @@ public class DemandeServiceImpl implements DemandeService {
                 .singleResult();
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("annuler", true);
+        params.put(ProcessConst.DEMANDE_ANNULATION, true);
 
         taskService.complete(task.getId(), params);
     }
@@ -252,7 +252,7 @@ public class DemandeServiceImpl implements DemandeService {
                 .singleResult();
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("annuler", true);
+        params.put(ProcessConst.DEMANDE_VALIDE, true);
 
         taskService.complete(task.getId(), params);
     }
@@ -282,14 +282,17 @@ public class DemandeServiceImpl implements DemandeService {
         for (Candidature candidature : candidatures) {
             candidaturesId.add(candidature.getId());
         }
-        params.put("candidatures", candidaturesId);
+        params.put(ProcessConst.DEMANDE_CANDIDATURE_LIST, candidaturesId);
 
         taskService.complete(task.getId(), params);
 
     }
 
     @Override
-    public void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException {
+    public void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException, NoDemandeSelectedException {
+        if (demand.getId() == null)
+            throw new NoDemandeSelectedException();
+
         List<Candidature> candidatures = candidatureDao.findByDemandeIdAndCandidatUsername(demand.getId(),
                 candidat.getUsername());
         if (candidatures != null && candidatures.size() > 0)

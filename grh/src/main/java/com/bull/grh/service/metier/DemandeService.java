@@ -3,6 +3,7 @@ package com.bull.grh.service.metier;
 import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
 import com.bull.grh.service.exception.CandidatureNotFoundException;
 import com.bull.grh.service.exception.DemandeHaveNoCandidatureException;
+import com.bull.grh.service.exception.NoDemandeSelectedException;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
@@ -45,7 +46,7 @@ public interface DemandeService {
     void completeDemande(@Valid DemandeVO demande, List<CandidatureVO> candidatureList)
             throws DemandeHaveNoCandidatureException;
 
-    void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException;
+    void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException, NoDemandeSelectedException;
 
     void removeCandidateFromDemand(CandidatVO candidat, DemandeVO demand) throws CandidatureNotFoundException;
 

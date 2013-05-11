@@ -42,6 +42,9 @@ public interface ProcessConst {
     // Demande Process variables
     static final String DEMANDE_TASK_OP_CHOICE = "choixConvocationTask";
     static final String DEMANDE_DEMANDE = "demande";
+    static final String DEMANDE_OWNER = "owner";
+    static final String DEMANDE_ANNULATION = "annuler";
+    static final String DEMANDE_VALIDE = "valide";
     static final String DEMANDE_CANDIDATURE_LIST = "candidatures";
     static final String DEMANDE_TASK_RH_VALIDATION = "validationDemandeTask";
     static final String DEMANDE_TASK_OP_INIT = "updateDemandeTask";

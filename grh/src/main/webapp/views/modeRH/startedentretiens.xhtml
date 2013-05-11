@@ -45,7 +45,7 @@
 						<h:outputText value="#{msg['action']}" />
 					</f:facet>
 					<p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="entretienDialogProceed.show()"
-						update=":formProceed:entretienPanelProceed">
+						update=":formProceed">
 						<f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}" />
 					</p:commandLink>
 
@@ -78,7 +78,7 @@
 			<h:form id="formProceed" styleClass="form">
 				<h2 class="page-header">#{msg['candidat.competence.update']}</h2>
 
-				<p:outputPanel id="entretienPanelProceed" styleClass="span7">
+				<div id="entretienPanelProceed" class="span7">
 
 					<dl class="span3">
 						<dt>#{msg['evaluation.pointFortFormation']}</dt>
@@ -139,7 +139,7 @@
 						<p:commandLink styleClass="btn btn-primary" process="@none" immediate="true" value="#{msg['cancel']}"
 							oncomplete="if(args)entretienDialogProceed.hide()" actionListener="#{entretienBean.initEvaluation}" />
 					</div>
-				</p:outputPanel>
+				</div>
 
 			</h:form>
 		</p:dialog>

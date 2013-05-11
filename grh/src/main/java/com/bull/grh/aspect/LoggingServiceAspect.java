@@ -31,10 +31,24 @@ public class LoggingServiceAspect implements Serializable {
         Object retVal = joinPoint.proceed();
 
         stopWatch.stop();
-        StringBuffer logMessage = new StringBuffer();
+        StringBuilder logMessage = new StringBuilder();
         logMessage.append(joinPoint.getTarget().getClass().getName());
         logMessage.append(".");
         logMessage.append(joinPoint.getSignature().getName());
+
+        logMessage.append("(");
+        // append args
+        Object[] args = joinPoint.getArgs();
+        for (Object arg : args) {
+            logMessage.append(arg).append(",");
+        }
+        if (args.length > 0) {
+            logMessage.deleteCharAt(logMessage.length() - 1);
+        }
+
+        logMessage.append(")");
+
+        logMessage.append(" return : ").append(retVal);
 
         logMessage.append(" execution time: ");
         logMessage.append(stopWatch.getTotalTimeMillis());
@@ -43,7 +57,7 @@ public class LoggingServiceAspect implements Serializable {
         return retVal;
     }
 
-    @Before("execution(* com.bull.grh.service..*(..))")
+//    @Before("execution(* com.bull.grh.service..*(..))")
     public void beforeService(JoinPoint joinPoint) {
 
         StringBuffer logMessage = new StringBuffer();
@@ -64,7 +78,7 @@ public class LoggingServiceAspect implements Serializable {
         logger.info(logMessage.toString());
     }
 
-    @AfterReturning(pointcut = "execution(* com.bull.grh.service..*(..))", returning = "result")
+//    @AfterReturning(pointcut = "execution(* com.bull.grh.service..*(..))", returning = "result")
     public void afterService(JoinPoint joinPoint, Object result) {
 
         StringBuffer logMessage = new StringBuffer();

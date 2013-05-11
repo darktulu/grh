@@ -8,8 +8,8 @@
 	
 	<bean id="customizableTraceInterceptor"
 		class="com.bull.grh.aspect.LoggingReposAspect">
-		<property name="enterMessage" value="Invoque $[methodName]($[arguments])" />
-		<property name="exitMessage" value="Return $[methodName](): $[returnValue]" />
+		<!--<property name="enterMessage" value="Invoque $[methodName]($[arguments])" />-->
+		<property name="exitMessage" value="Return $[methodName]($[arguments]) : $[returnValue]" />
 	</bean>
 
 	<aop:config>

@@ -54,7 +54,6 @@ public class RegisterProcessNestedServiceImpl implements RegisterProcessNestedSe
         Candidat user = candidatDao.findOne(username);
         if (user != null) {
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put("gender", user.getSexe().toString());
             params.put("lastname", user.getPrenom());
             params.put("firstname", user.getNom());
             params.put("link", link);
@@ -73,9 +72,9 @@ public class RegisterProcessNestedServiceImpl implements RegisterProcessNestedSe
     public void sendActivationMail(String username, EmailDTO email) {
         Candidat user = candidatDao.findOne(username);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("gender", user.getSexe().toString());
         params.put("lastname", user.getPrenom());
         params.put("firstname", user.getNom());
+        params.put("login", user.getUsername());
 
         try {
             email = emailService.populateEmail(EmailType.ACTIVATION, user.getEmail(), email.getFrom(), params, "", "");

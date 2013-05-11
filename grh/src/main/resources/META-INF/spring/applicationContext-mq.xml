@@ -14,8 +14,8 @@
 
     <!-- Spring RabbitMQ Template configuration -->
     <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"
-                     routing-key="com.myschool.mail"
-                     queue="com.myschool.mail"/>
+                     routing-key="com.grh.mail"
+                     queue="com.grh.mail"/>
 
     <!-- RabbitMQ Admin operation configuration -->
     <rabbit:admin connection-factory="connectionFactory"/>
@@ -24,7 +24,7 @@
     <rabbit:queue name="com.grh.mail"/>
 
     <!-- Mail Asynchronous Consumer configuration -->
-    <rabbit:listener-container connection-factory="connectionFactory" transaction-manager="rabbitTxManager">
+    <rabbit:listener-container connection-factory="connectionFactory" transaction-manager="rabbitTxManager" channel-transacted="true">
         <rabbit:listener queues="com.grh.mail" ref="mailService" method="send"/>
     </rabbit:listener-container>
 

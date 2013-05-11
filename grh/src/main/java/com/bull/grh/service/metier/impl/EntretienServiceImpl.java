@@ -46,6 +46,9 @@ public class EntretienServiceImpl implements EntretienService {
 
     @Override
     public void startAndCompleteTask(EntretienVO entretien) {
+        // save the evaluation for this appointment
+        entretienDao.save(mapper.map(entretien, Entretien.class));
+
         Task task = taskService.createTaskQuery()
                 .processInstanceBusinessKey(entretien.getId().toString())
                 .processDefinitionKey(ProcessConst.PROCESS_ID_ENTRETIEN)
@@ -55,7 +58,7 @@ public class EntretienServiceImpl implements EntretienService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("decision", entretien.getDecisionEntretien().toString());
 
-        taskService.complete(task.getId());
+        taskService.complete(task.getId(), params);
     }
 
     @Override
