@@ -1,173 +1,208 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
-	template="/templates/template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">
-		#{msg['convocation.title']}
+    <ui:define name="title">
+        #{msg['convocation.title']}
     </ui:define>
 
-	<ui:define name="header">
-		<ui:include src="/templates/headers/header.xhtml" />
-	</ui:define>
+    <ui:define name="header">
+        <ui:include src="/templates/headers/header.xhtml"/>
+    </ui:define>
 
-	<ui:define name="sider">
-		<ui:include src="/templates/siders/siderCE.xhtml" />
-	</ui:define>
+    <ui:define name="sider">
+        <ui:include src="/templates/siders/siderCE.xhtml"/>
+    </ui:define>
 
-	<ui:define name="body">
-		<h:form id="form">
-			<div class="page-header">
-				<h1>#{msg['convocation.subtitle.own']}</h1>
-			</div>
-			<p:dataTable styleClass="table table-striped" id="entretienTable" var="entretien"
-				value="#{entretienBean.entretiensTask}">
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['convocation.demande.titlejob']}" />
-					</f:facet>
-					<h:outputText value="#{entretien.date}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['convocation.candidat.fullname']}" />
-					</f:facet>
-					<h:outputText value="#{entretien.candidature.candidat.nom} #{entretien.candidature.candidat.prenom}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['convocation.candidat.email']}" />
-					</f:facet>
-					<h:outputText value="#{entretien.candidature.demande.intitulePoste}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['action']}" />
-					</f:facet>
-					<p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="entretienDialogProceed.show()"
-						update=":formProceed:entretienPanelProceed">
-						<f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}" />
-					</p:commandLink>
+    <ui:define name="body">
+        <h:form id="form">
+            <div class="page-header">
+                <h1>#{msg['convocation.subtitle.own']}</h1>
+            </div>
+            <p:dataTable styleClass="table table-striped" id="entretienTable" var="entretien"
+                         value="#{entretienBean.entretiensTask}">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['convocation.demande.titlejob']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.date}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['convocation.candidat.fullname']}"/>
+                    </f:facet>
+                    <h:outputText
+                            value="#{entretien.candidature.candidat.nom} #{entretien.candidature.candidat.prenom}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['convocation.candidat.email']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.candidature.demande.intitulePoste}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['action']}"/>
+                    </f:facet>
+                    <p:commandLink styleClass="icon-pencil" immediate="true" oncomplete="entretienDialogProceed.show()"
+                                   update=":formProceed:entretienPanelProceed">
+                        <f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}"/>
+                    </p:commandLink>
 
-					<h:outputText value=" / " />
+                    <h:outputText value=" / "/>
 
-					<p:commandLink styleClass="icon-search" immediate="true" oncomplete="entretienDialogInfo.show()" update=":formInfo">
-						<f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}" />
-					</p:commandLink>
+                    <p:commandLink styleClass="icon-search" immediate="true" oncomplete="entretienDialogInfo.show()"
+                                   update=":formInfo">
+                        <f:setPropertyActionListener target="#{entretienBean.entretien}" value="#{entretien}"/>
+                    </p:commandLink>
 
-				</p:column>
-			</p:dataTable>
+                </p:column>
+            </p:dataTable>
 
-		</h:form>
-		<p:dialog id="dialogInfo" showEffect="fade" draggable="false" resizable="false" widgetVar="entretienDialogInfo"
-			modal="true">
-			<h:form id="formInfo" styleClass="form-horizontal">
-				<div class="span6">
-					<h2 class="page-header">#{msg['convocation.candidat.contact']}</h2>
-					<p>des infos depuis la base</p>
-					<div class="form-actions" style="display: block; float: none;">
-						<p:commandLink styleClass="btn btn-primary" immediate="true" value="#{msg['cancel']}"
-							oncomplete="entretienDialogInfo.hide()" />
-					</div>
-				</div>
-			</h:form>
-		</p:dialog>
+        </h:form>
+        <p:dialog id="dialogInfo" showEffect="fade" draggable="false" resizable="false" widgetVar="entretienDialogInfo"
+                  modal="true">
+            <h:form id="formInfo" styleClass="form-horizontal">
+                <div class="span6">
+                    <h2 class="page-header">#{msg['convocation.candidat.contact']}</h2>
 
-		<p:dialog closable="false" id="dialogProceed" showEffect="fade" draggable="false" resizable="false"
-			widgetVar="entretienDialogProceed" modal="true">
-			<h:form id="formProceed" styleClass="form">
-				<h2 class="page-header">#{msg['candidat.competence.update']}</h2>
-				<p:outputPanel id="entretienPanelProceed" styleClass="span7">
-<div class="controls-row">
-					<div class="control-group span3">
-						<h:outputLabel for="_0" value="#{msg['evaluation.pointFortFormation']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_0" value="#{entretienBean.evaluation.pointFortFormation}" />
-							<h:message id="msg_0" for="_0" styleClass="help-inline" />
-						</div>
-					</div>
+                    <p>des infos depuis la base</p>
 
-					<div class="control-group span3">
-						<h:outputLabel for="_1" value="#{msg['evaluation.pointFaibleFormation']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_1" value="#{entretienBean.evaluation.pointFaibleFormation}" />
-							<h:message id="msg_1" for="_1" styleClass="help-inline" />
-						</div>
-					</div>
-</div><div class="controls-row">
-					<div class="control-group span3">
-						<h:outputLabel for="_2" value="#{msg['evaluation.pointFortExpProf']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_2" value="#{entretienBean.evaluation.pointFortExpProf}" />
-							<h:message id="msg_2" for="_2" styleClass="help-inline" />
-						</div>
-					</div>
-					<div class="control-group span3">
-						<h:outputLabel for="_3" value="#{msg['evaluation.pointFaibleExpProf']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_3" value="#{entretienBean.evaluation.pointFaibleExpProf}" />
-							<h:message id="msg_3" for="_3" styleClass="help-inline" />
-						</div>
-					</div>
-					</div><div class="controls-row">
-					<div class="control-group span3">
-						<h:outputLabel for="_4" value="#{msg['evaluation.pointFortQualitePerso']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_4" value="#{entretienBean.evaluation.pointFortQualitePerso}" />
-							<h:message id="msg_4" for="_4" styleClass="help-inline" />
-						</div>
-					</div>
-					<div class="control-group span3">
-						<h:outputLabel for="_5" value="#{msg['evaluation.pointFaibleQualitePerso']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_5" value="#{entretienBean.evaluation.pointFaibleQualitePerso}" />
-							<h:message id="msg_5" for="_5" styleClass="help-inline" />
-						</div>
-					</div>
-</div><div class="controls-row">
-					<div class="control-group span3">
-						<h:outputLabel for="_10" value="#{msg['evaluation.cabinetRecrutement']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_10" value="#{entretienBean.evaluation.cabinetRecrutement}" />
-							<h:message id="msg_10" for="_10" styleClass="help-inline" />
-						</div>
-					</div>
-					<div class="control-group span3">
-						<h:outputLabel for="_11" value="#{msg['evaluation.recommandationInterne']}" styleClass="control-label" />
-						<div class="controls">
-							<h:inputTextarea id="_11" value="#{entretienBean.evaluation.recommandationInterne}" />
-							<h:message id="msg_11" for="_11" styleClass="help-inline" />
-						</div>
-					</div>
-					</div>
-					<div class="controls-row">
-					<div class="control-group span3">
-						<h:outputLabel for="_6" value="#{msg['evaluation.situationSalActuelleAvantages']}" styleClass="control-label" />
-						<div class="controls">
-							<h:selectOneRadio id="_6" value="#{entretienBean.entretien.decisionEntretien}" styleClass="radio.inline" >
-							<f:selectItems value="#{enumsBean.decisionEntretiensCE}" />
-							</h:selectOneRadio>
-							<h:message id="msg_6" for="_6" styleClass="help-inline" />
-						</div>
-					</div>
-					<div class="control-group span3">
-						<h:outputLabel for="_8" value="#{msg['evaluation.dateDisponibilite']}" styleClass="control-label" />
-						<div class="controls">
-							<p:calendar id="_8" value="#{entretienBean.evaluation.dateDisponibilite}" />
-							<h:message id="msg_8" for="_8" styleClass="help-inline" />
-						</div>
-					</div>
-					</div>
-					<div class="form-actions">
-						<p:commandLink styleClass="btn btn-primary" update=":form:entretienTable"
-							oncomplete="if(!args.validationFailed)entretienDialogProceed.hide()" value="#{msg['save']}"
-							actionListener="#{entretienBean.completeEntretienCE}" />
-						<p:commandLink styleClass="btn btn-primary" process="@none" immediate="true" value="#{msg['cancel']}"
-							oncomplete="if(args)entretienDialogProceed.hide()" actionListener="#{entretienBean.initEvaluation}" />
-					</div>
-				</p:outputPanel>
+                    <div class="form-actions" style="display: block; float: none;">
+                        <p:commandLink styleClass="btn btn-primary" immediate="true" value="#{msg['cancel']}"
+                                       oncomplete="entretienDialogInfo.hide()"/>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
 
-			</h:form>
-		</p:dialog>
-	</ui:define>
+        <p:dialog closable="false" id="dialogProceed" showEffect="fade" draggable="false" resizable="false"
+                  widgetVar="entretienDialogProceed" modal="true">
+            <h:form id="formProceed" styleClass="form">
+                <h2 class="page-header">#{msg['candidat.competence.update']}</h2>
+                <p:outputPanel id="entretienPanelProceed" styleClass="span7">
+                    <div class="controls-row">
+                        <div class="control-group span3">
+                            <h:outputLabel for="_0" value="#{msg['evaluation.pointFortFormation']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_0" value="#{entretienBean.evaluation.pointFortFormation}"/>
+                                <h:message id="msg_0" for="_0" styleClass="help-inline"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group span3">
+                            <h:outputLabel for="_1" value="#{msg['evaluation.pointFaibleFormation']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_1" value="#{entretienBean.evaluation.pointFaibleFormation}"/>
+                                <h:message id="msg_1" for="_1" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="control-group span3">
+                            <h:outputLabel for="_2" value="#{msg['evaluation.pointFortExpProf']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_2" value="#{entretienBean.evaluation.pointFortExpProf}"/>
+                                <h:message id="msg_2" for="_2" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                        <div class="control-group span3">
+                            <h:outputLabel for="_3" value="#{msg['evaluation.pointFaibleExpProf']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_3" value="#{entretienBean.evaluation.pointFaibleExpProf}"/>
+                                <h:message id="msg_3" for="_3" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="control-group span3">
+                            <h:outputLabel for="_4" value="#{msg['evaluation.pointFortQualitePerso']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_4" value="#{entretienBean.evaluation.pointFortQualitePerso}"/>
+                                <h:message id="msg_4" for="_4" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                        <div class="control-group span3">
+                            <h:outputLabel for="_5" value="#{msg['evaluation.pointFaibleQualitePerso']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_5" value="#{entretienBean.evaluation.pointFaibleQualitePerso}"/>
+                                <h:message id="msg_5" for="_5" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="control-group span3">
+                            <h:outputLabel for="_10" value="#{msg['evaluation.cabinetRecrutement']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_10" value="#{entretienBean.evaluation.cabinetRecrutement}"/>
+                                <h:message id="msg_10" for="_10" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                        <div class="control-group span3">
+                            <h:outputLabel for="_11" value="#{msg['evaluation.recommandationInterne']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:inputTextarea id="_11" value="#{entretienBean.evaluation.recommandationInterne}"/>
+                                <h:message id="msg_11" for="_11" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="control-group span3">
+                            <h:outputLabel for="_6" value="#{msg['evaluation.situationSalActuelleAvantages']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <h:selectOneRadio id="_6" value="#{entretienBean.entretien.decisionEntretien}"
+                                                  styleClass="radio.inline">
+                                    <f:selectItems value="#{enumsBean.decisionEntretiensCE}"/>
+                                </h:selectOneRadio>
+                                <h:message id="msg_6" for="_6" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                        <div class="control-group span3">
+                            <h:outputLabel for="_8" value="#{msg['evaluation.dateDisponibilite']}"
+                                           styleClass="control-label"/>
+
+                            <div class="controls">
+                                <p:calendar id="_8" value="#{entretienBean.evaluation.dateDisponibilite}"/>
+                                <h:message id="msg_8" for="_8" styleClass="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <p:commandLink styleClass="btn btn-primary" update=":form:entretienTable"
+                                       oncomplete="if(!args.validationFailed)entretienDialogProceed.hide()"
+                                       value="#{msg['save']}"
+                                       actionListener="#{entretienBean.completeEntretienCE}"/>
+                        <p:commandLink styleClass="btn btn-primary" process="@none" immediate="true"
+                                       value="#{msg['cancel']}"
+                                       oncomplete="if(args)entretienDialogProceed.hide()"
+                                       actionListener="#{entretienBean.initEvaluation}"/>
+                    </div>
+                </p:outputPanel>
+
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+    <ui:define name="footer">
+        <ui:include src="/templates/footers/footer.xhtml"/>
+    </ui:define>
+
 </ui:composition>

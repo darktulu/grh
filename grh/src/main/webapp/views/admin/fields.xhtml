@@ -1,69 +1,70 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    template="/templates/template.xhtml"
-     xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
 
 
-<ui:define name="header">
-	<ui:include src="/templates/headers/header.xhtml"/>
-</ui:define>
+    <ui:define name="header">
+        <ui:include src="/templates/headers/header.xhtml"/>
+    </ui:define>
 
-<div class="container">
-	<div class="row">
-		<ui:define name="sider">
-			<ui:include src="/templates/siders/siderAdmin.xhtml"/>
-		</ui:define>
-		<ui:define name="body">
-			
-		
-	<h:form >
-		<p:messages id="errorMessagesPanel" ></p:messages>
-		<h:commandButton value="Ajouter" action="#{adminDynamicFormBean.retour}" styleClass="btn btn-primary pull-right"/>	
-		<h:outputLabel value="Formulaire"/>
-			<h:selectOneMenu value="#{adminDynamicFormBean.formulaire}">
-				<f:selectItems value="#{adminDynamicFormBean.listFormulaires}"/>
-					<f:ajax render="dtFields" event="change" listener="#{adminDynamicFormBean.remplirFields}"/>
-			</h:selectOneMenu>
-	
+    <div class="container">
+        <div class="row">
+            <ui:define name="sider">
+                <ui:include src="/templates/siders/siderAdmin.xhtml"/>
+            </ui:define>
+            <ui:define name="body">
 
-	
-	
-	<p:dataTable id="dtFields" var="field" value="#{adminDynamicFormBean.listFields}" styleClass="table table-condensed">
-	
-		<p:column id="champ">
-			<f:facet name="header"><h:outputText value="Nom de champ" /></f:facet>
-				<h:outputText value="#{field.nom}"/>
-		</p:column>
-		
-		<p:column id="javaType">
-			<f:facet name="header"><h:outputText value="Type Java" /></f:facet>
-				<h:outputText value="#{field.javaType}"/>
-		</p:column>
-		
-		<p:column id="regexp">
-			<f:facet name="header"><h:outputText value="Expression Réguliere" /></f:facet>
-				<h:outputText value="#{field.regExpr.label}" />
-		</p:column>
-		
-		<p:column id="options">
-			<f:facet name="header"><h:outputText value="Option" /></f:facet>
-				<h:commandLink value="Supprimer" actionListener="#{adminDynamicFormBean.delete}">
-					<f:setPropertyActionListener target="#{adminDynamicFormBean.fieldvo.nom}" value="#{field.nom}"/>
-				</h:commandLink>
-		
-				<h:outputText value="   "/>
-				<h:commandLink value="Modifier" action="#{adminDynamicFormBean.editAnnuler}">
-					<f:setPropertyActionListener target="#{adminDynamicFormBean.fieldvo}" value="#{field}"/>
-				</h:commandLink>
-		</p:column>
-	</p:dataTable>
 
-			
-	</h:form> 
-	
-	</ui:define>
-	</div>
-</div>
+                <h:form>
+                    <p:messages id="errorMessagesPanel"></p:messages>
+                    <h:commandButton value="Ajouter" action="#{adminDynamicFormBean.retour}"
+                                     styleClass="btn btn-primary pull-right"/>
+                    <h:outputLabel value="Formulaire"/>
+                    <h:selectOneMenu value="#{adminDynamicFormBean.formulaire}">
+                        <f:selectItems value="#{adminDynamicFormBean.listFormulaires}"/>
+                        <f:ajax render="dtFields" event="change" listener="#{adminDynamicFormBean.remplirFields}"/>
+                    </h:selectOneMenu>
+
+
+                    <p:dataTable id="dtFields" var="field" value="#{adminDynamicFormBean.listFields}"
+                                 styleClass="table table-condensed">
+
+                        <p:column id="champ">
+                            <f:facet name="header"><h:outputText value="Nom de champ"/></f:facet>
+                            <h:outputText value="#{field.nom}"/>
+                        </p:column>
+
+                        <p:column id="javaType">
+                            <f:facet name="header"><h:outputText value="Type Java"/></f:facet>
+                            <h:outputText value="#{field.javaType}"/>
+                        </p:column>
+
+                        <p:column id="regexp">
+                            <f:facet name="header"><h:outputText value="Expression Réguliere"/></f:facet>
+                            <h:outputText value="#{field.regExpr.label}"/>
+                        </p:column>
+
+                        <p:column id="options">
+                            <f:facet name="header"><h:outputText value="Option"/></f:facet>
+                            <h:commandLink value="Supprimer" actionListener="#{adminDynamicFormBean.delete}">
+                                <f:setPropertyActionListener target="#{adminDynamicFormBean.fieldvo.nom}"
+                                                             value="#{field.nom}"/>
+                            </h:commandLink>
+
+                            <h:outputText value="   "/>
+                            <h:commandLink value="Modifier" action="#{adminDynamicFormBean.editAnnuler}">
+                                <f:setPropertyActionListener target="#{adminDynamicFormBean.fieldvo}" value="#{field}"/>
+                            </h:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+
+                </h:form>
+
+            </ui:define>
+        </div>
+    </div>
 </ui:composition>

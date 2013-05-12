@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:define name="title">
+        #{msg['profil.title']}
+    </ui:define>
+    <ui:define name="header">
+        <ui:include src="/templates/headers/header.xhtml"/>
+    </ui:define>
+
+    <div class="container">
+        <div class="row">
+            <ui:define name="sider">
+                <ui:include src="/templates/siders/siderAdmin.xhtml"/>
+            </ui:define>
+            <ui:define name="body">
+                <h:form>
+                    index du role ADMIN
+                </h:form>
+            </ui:define>
+        </div>
+    </div>
+</ui:composition>

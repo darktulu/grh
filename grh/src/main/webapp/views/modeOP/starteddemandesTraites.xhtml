@@ -1,88 +1,107 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+                template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
 
+    <ui:define name="header">
+        <ui:include src="/templates/headers/header.xhtml"/>
+    </ui:define>
 
-	<ui:define name="header">
-		<ui:include src="/templates/headers/header.xhtml" />
-	</ui:define>
+    <div class="container">
+        <div class="row">
+            <ui:define name="sider">
+                <ui:include src="/templates/siders/siderOP.xhtml"/>
+            </ui:define>
+            <ui:define name="body">
+                <h1>Liste des demandes</h1>
+                <h:form id="formDemande">
+                    <br/>
 
-	<div class="container">
-		<div class="row">
-			<ui:define name="sider">
-				<ui:include src="/templates/siders/siderOP.xhtml" />
-			</ui:define>
-			<ui:define name="body">
-				<h1>Liste des demandes</h1>
-				<h:form id="formDemande">
-					<br />
-					<h3>Description du poste</h3>
-					<ui:repeat id="demandesID" var="demande" styleClass="table table-striped"
-						value="#{demandeBean.startedDemandesTraite}">
-						<div class="page-header">
-							<div class="btn-group pull-right">
-								<p:commandLink styleClass="btn" update="@form">
-									<i class="icon-pencil"></i>
-									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
-								</p:commandLink>
-								<p:commandLink styleClass="btn btn-primary" style="color:white" oncomplete="confirmationSend.show()">
-									<i class="icon-share icon-white"></i>
-									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
-								</p:commandLink>
-							</div>
-							<h:outputText style="font-size:30px;" value="#{demande.intitulePoste}" />
-						</div>
-						<h:outputText value="#{demande.nbPersonnes}" />
+                    <h3>Description du poste</h3>
+                    <ui:repeat id="demandesID" var="demande" styleClass="table table-striped"
+                               value="#{demandeBean.startedDemandesTraite}">
+                        <div class="page-header">
+                            <div class="btn-group pull-right">
+                                <p:commandLink styleClass="btn" update="@form">
+                                    <i class="icon-pencil"></i>
+                                    <f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}"/>
+                                </p:commandLink>
+                                <p:commandLink styleClass="btn btn-primary" style="color:white"
+                                               oncomplete="confirmationSend.show()">
+                                    <i class="icon-share icon-white"></i>
+                                    <f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}"/>
+                                </p:commandLink>
+                            </div>
+                            <h:outputText style="font-size:30px;" value="#{demande.intitulePoste}"/>
+                        </div>
+                        <h:outputText value="#{demande.nbPersonnes}"/>
 
-						<h:outputText value="#{demande.date}" />
-						<p:dataTable value="#{demandeBean.candidatureList}" rendered="#{demandeBean.demande.id == demande.id}"
-							var="candidature">
+                        <h:outputText value="#{demande.date}"/>
+                        <p:dataTable value="#{demandeBean.candidatureList}"
+                                     rendered="#{demandeBean.demande.id == demande.id}"
+                                     var="candidature">
 
-							<p:effect type="clip" event="load" />
-							<p:column>
-								<h:commandLink action="../cvteque/profil.xhtml">
-									<f:facet name="header">full name</f:facet>
-							#{candidature.candidat.nom} #{candidature.candidat.prenom}
-							<f:setPropertyActionListener value="#{candidature.candidat}" target="#{profilBean.candidat}" />
-								</h:commandLink>
-							</p:column>
-							<p:column>
-								<f:facet name="header">actions</f:facet>
-								<p:commandLink styleClass="btn btn-primary" style="color:white" oncomplete="deletCandidat.show()">
-									<i class="icon-share icon-white"></i>
-									<f:setPropertyActionListener value="#{candidature.candidat}" target="#{demandeSessionBean.candidat}" />
-									<f:setPropertyActionListener value="#{candidature.demande}" target="#{demandeSessionBean.demande}" />
-								</p:commandLink>
-							</p:column>
-						</p:dataTable>
-					</ui:repeat>
+                            <p:effect type="clip" event="load"/>
+                            <p:column>
+                                <h:commandLink action="../cvteque/profil.xhtml">
+                                    <f:facet name="header">full name</f:facet>
+                                    #{candidature.candidat.nom} #{candidature.candidat.prenom}
+                                    <f:setPropertyActionListener value="#{candidature.candidat}"
+                                                                 target="#{profilBean.candidat}"/>
+                                </h:commandLink>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">actions</f:facet>
+                                <p:commandLink styleClass="btn btn-primary" style="color:white"
+                                               oncomplete="deletCandidat.show()">
+                                    <i class="icon-share icon-white"></i>
+                                    <f:setPropertyActionListener value="#{candidature.candidat}"
+                                                                 target="#{demandeSessionBean.candidat}"/>
+                                    <f:setPropertyActionListener value="#{candidature.demande}"
+                                                                 target="#{demandeSessionBean.demande}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </ui:repeat>
 
-					<p:dialog widgetVar="deletCandidat" modal="true" closable="false">
-						<p:outputPanel id="deleteCandidature">
-							<h2 class="page-header">#{msg['entretien.confirm.proceed.title']}</h2>
-							<p style="padding: 10px 40px;">
-								<h:outputText value="#{msg['entretien.confirm.proceed.text']}" />
-								<br /> <small><h:outputText value="#{msg['entretien.confirm.info']}" /></small>
-							</p>
-							<div class="form-actions">
-								<p:commandLink styleClass="btn btn-primary" update="@form" oncomplete="deletCandidat.hide()"
-									value="#{msg['proceed']}" actionListener="#{demandeSessionBean.removeCandidat}" />
-								<p:commandLink styleClass="btn btn-primary" process="@none" immediate="true" value="#{msg['cancel']}"
-									oncomplete="if(args)deletCandidat.hide()" />
-							</div>
-						</p:outputPanel>
-					</p:dialog>
+                    <p:dialog widgetVar="deletCandidat" modal="true" closable="false">
+                        <p:outputPanel id="deleteCandidature">
+                            <h2 class="page-header">#{msg['entretien.confirm.proceed.title']}</h2>
 
-					<p:confirmDialog widgetVar="confirmationSend"
-						message="Voullez-vous vraiment soumettre cette demande ? cette action est irréversible">
-						<p:commandLink id="confirmSend" value="Soumettre" oncomplete="confirmationSend.hide()"
-							actionListener="#{demandeBean.completeDemandeOP}" styleClass="btn btn-primary" style="color:white;"
-							update=":formDemande" />
-						<p:commandLink id="declineSend" value="Annuler" onclick="confirmationSend.hide()" type="button" styleClass="btn" />
-					</p:confirmDialog>
+                            <p style="padding: 10px 40px;">
+                                <h:outputText value="#{msg['entretien.confirm.proceed.text']}"/>
+                                <br/>
+                                <small><h:outputText value="#{msg['entretien.confirm.info']}"/></small>
+                            </p>
+                            <div class="form-actions">
+                                <p:commandLink styleClass="btn btn-primary" update="@form"
+                                               oncomplete="deletCandidat.hide()"
+                                               value="#{msg['proceed']}"
+                                               actionListener="#{demandeSessionBean.removeCandidat}"/>
+                                <p:commandLink styleClass="btn btn-primary" process="@none" immediate="true"
+                                               value="#{msg['cancel']}"
+                                               oncomplete="if(args)deletCandidat.hide()"/>
+                            </div>
+                        </p:outputPanel>
+                    </p:dialog>
 
-				</h:form>
-			</ui:define>
-		</div>
-	</div>
+                    <p:confirmDialog widgetVar="confirmationSend"
+                                     message="Voullez-vous vraiment soumettre cette demande ? cette action est irréversible">
+                        <p:commandLink id="confirmSend" value="Soumettre" oncomplete="confirmationSend.hide()"
+                                       actionListener="#{demandeBean.completeDemandeOP}" styleClass="btn btn-primary"
+                                       style="color:white;"
+                                       update=":formDemande"/>
+                        <p:commandLink id="declineSend" value="Annuler" onclick="confirmationSend.hide()" type="button"
+                                       styleClass="btn"/>
+                    </p:confirmDialog>
+
+                </h:form>
+            </ui:define>
+        </div>
+    </div>
+
+    <ui:define name="footer">
+        <ui:include src="/templates/footers/footer.xhtml"/>
+    </ui:define>
+
 </ui:composition>
