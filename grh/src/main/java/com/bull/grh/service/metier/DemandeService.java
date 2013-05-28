@@ -7,6 +7,7 @@ import com.bull.grh.service.exception.NoDemandeSelectedException;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,6 +23,8 @@ public interface DemandeService {
     List<DemandeVO> loadDemandesNouveau();
 
     List<DemandeVO> loadDemandesTraite();
+
+    List<DemandeVO> loadStartedDemandesTraite();
 
     List<DemandeVO> loadDemandesSoumise();
 
@@ -55,4 +58,7 @@ public interface DemandeService {
     void rejectDemandeAfterAccepting(DemandeVO demande);
 
     Long getCountCandidatures(DemandeVO demande);
+
+    @Transactional(readOnly = true)
+    Integer getCountStartedDemandesTraite();
 }

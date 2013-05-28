@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/spring/applicationContext-data.xml",
 		"classpath:META-INF/spring/applicationContext-mail.xml",
-		"classpath:META-INF/spring/applicationContext-jbpm.xml",
+		"classpath:META-INF/spring/applicationContext-activiti.xml",
 		"classpath:META-INF/spring/applicationContext-security.xml",
 		"classpath:META-INF/spring/applicationContext-aop.xml", "classpath:META-INF/spring/applicationContext.xml" })
 public class I18nMessageBeanTest {

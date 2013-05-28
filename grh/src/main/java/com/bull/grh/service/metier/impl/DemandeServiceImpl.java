@@ -6,6 +6,7 @@ import com.bull.grh.domaine.Demande;
 import com.bull.grh.domaine.DossierCandidature;
 import com.bull.grh.domaine.types.EtatDemande;
 import com.bull.grh.domaine.types.ProcessConst;
+import com.bull.grh.repos.admin.PersonneDao;
 import com.bull.grh.repos.metier.CandidatureDao;
 import com.bull.grh.repos.metier.DemandeDao;
 import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
@@ -25,10 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Transactional
 @Service("demandeService")
@@ -41,6 +39,8 @@ public class DemandeServiceImpl implements DemandeService {
     @Inject
     private DemandeDao demandeDao;
     @Inject
+    private PersonneDao personneDao;
+    @Inject
     private RuntimeService runtimeService;
     @Inject
     private TaskService taskService;
@@ -48,8 +48,10 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public void createDemande(DemandeVO demande) {
         demande.setEtatDemande(EtatDemande.NEW);
-        demande.getPersonne().setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        demandeDao.save(mapper.map(demande, Demande.class));
+        Demande toSave = mapper.map(demande, Demande.class);
+        toSave.setPersonne(personneDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        toSave.setDate(new Date());
+        demandeDao.save(toSave);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class DemandeServiceImpl implements DemandeService {
     @Transactional(readOnly = true)
     public List<DemandeVO> loadDemandesNouveau() {
         List<DemandeVO> list = new ArrayList<DemandeVO>();
-        List<Demande> demandes = demandeDao.findByEtatDemande(EtatDemande.NEW);
+        List<Demande> demandes = demandeDao.findByEtatDemandeIn(Arrays.asList(EtatDemande.NEW, EtatDemande.REJECTED));
         for (Demande demande : demandes) {
             list.add(mapper.map(demande, DemandeVO.class));
         }
@@ -82,6 +84,24 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     @Transactional(readOnly = true)
     public List<DemandeVO> loadDemandesTraite() {
+        List<Task> tasks = taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
+                .taskUnassigned()
+                .list();
+
+        DemandeVO demandeVO;
+        List<DemandeVO> list = new ArrayList<DemandeVO>();
+        for (Task task : tasks) {
+            Long demandeId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.DEMANDE_DEMANDE);
+            demandeVO = mapper.map(demandeDao.findOne(demandeId), DemandeVO.class);
+            list.add(demandeVO);
+        }
+        return list;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DemandeVO> loadStartedDemandesTraite() {
         List<Task> tasks = taskService.createTaskQuery()
                 .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
@@ -135,10 +155,19 @@ public class DemandeServiceImpl implements DemandeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Integer getCountDemandesTraite() {
+    public Integer getCountStartedDemandesTraite() {
         return taskService.createTaskQuery()
                 .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
+                .list().size();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Integer getCountDemandesTraite() {
+        return taskService.createTaskQuery()
+                .taskDefinitionKey(ProcessConst.DEMANDE_TASK_OP_CHOICE)
+                .taskUnassigned()
                 .list().size();
     }
 
@@ -163,7 +192,7 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     @Transactional(readOnly = true)
     public Integer getCountDemandesNouveau() {
-        return demandeDao.findAll().size();
+        return demandeDao.findByEtatDemandeIn(Arrays.asList(EtatDemande.NEW, EtatDemande.REJECTED)).size();
     }
 
     @Override
@@ -285,7 +314,6 @@ public class DemandeServiceImpl implements DemandeService {
         params.put(ProcessConst.DEMANDE_CANDIDATURE_LIST, candidaturesId);
 
         taskService.complete(task.getId(), params);
-
     }
 
     @Override

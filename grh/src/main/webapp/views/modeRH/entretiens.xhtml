@@ -15,30 +15,42 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<h:form id="form">
+		<h:form id="formentretien">
 			<div class="page-header">
 				<h1>#{msg['entretien.subtitle']}</h1>
 			</div>
 			<p:dataTable styleClass="table table-striped" id="entretienTable" var="entretien" value="#{entretienBean.entretiensRH}">
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['convocation.demande.titlejob']}" />
-					</f:facet>
-					<h:outputText value="#{entretien.date}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['convocation.candidat.fullname']}" />
-					</f:facet>
-					<h:outputText value="#{entretien.candidature.candidat.nom} #{entretien.candidature.candidat.prenom}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msg['convocation.candidat.email']}" />
-					</f:facet>
-					<h:outputText value="#{entretien.candidature.demande.intitulePoste}" />
-				</p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['convocation.demande.titlejob']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.candidature.demande.intitulePoste}">
+                        <f:convertDateTime dateStyle="default"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['entretien.date']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.date}">
+                        <f:convertDateTime dateStyle="default"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['convocation.candidat.fullname']}"/>
+                    </f:facet>
+                    <h:outputText
+                            value="#{entretien.candidature.candidat.nom} #{entretien.candidature.candidat.prenom}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['convocation.candidat.email']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.candidature.candidat.email}"/>
+                </p:column>
+
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="#{msg['action']}" />
@@ -84,7 +96,7 @@
 						<br /> <small><h:outputText value="#{msg['entretien.confirm.info']}" /></small>
 					</p>
 					<div class="form-actions">
-						<p:commandLink styleClass="btn btn-primary" update=":form:entretienTable"
+						<p:commandLink styleClass="btn btn-primary" update=":formentretien, :siderform"
 							oncomplete="entretienDialogProceed.hide()" value="#{msg['proceed']}"
 							actionListener="#{entretienBean.proceedEntretienRH}" />
 						<p:commandLink styleClass="btn btn-primary" process="@none" immediate="true"

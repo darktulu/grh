@@ -1,24 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets">
-	<h:form>
-		<div class="well" style="padding-left: 0px; padding-right: 0px;">
-			<ul class="nav nav-list">
-				<li class="nav-header">Mode Chargé d'entretiens</li>
-				<li class="divider" />
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form id="siderform">
+        <div class="well" style="padding-left: 0; padding-right: 0;">
+            <ul class="nav nav-list">
+                <li class="nav-header">Mode Chargé d'entretiens</li>
+                <li class="divider"/>
 
-				<li class="#{request.requestURI  == url['page.ce.appointments']?'active':''}"><a
-					href="#{url['page.ce.appointments']}"> <i class="icon-cog"></i> Mes entretiens <h:outputText
-							styleClass="badge badge-inverse pull-right" value="#{menuCEBean.entretiensCount}"
-							rendered="#{menuCEBean.entretiensCount > 0}" />
-				</a></li>
+                <li class="#{request.requestURI  == url['page.ce.appointments']?'active':''}"><a
+                        href="#{url['page.ce.appointments']}"> <i class="icon-cog"></i> Mes entretiens <h:outputText
+                        styleClass="badge badge-inverse pull-right" value="#{menuCEBean.entretiensCount}"
+                        rendered="#{menuCEBean.entretiensCount > 0}"/>
+                </a></li>
 
-				<li class="#{request.requestURI  == url['page.ce.evaluations']?'active':''}"><a
-					href="#{url['page.ce.evaluations']}"> <i class="icon-cog"></i> Mes evaluations <h:outputText
-							styleClass="badge badge-inverse pull-right" value="#{menuCEBean.startedentretiensCount}"
-							rendered="#{menuCEBean.startedentretiensCount > 0}" />
-				</a></li>
-			</ul>
-		</div>
-	</h:form>
+                <li class="#{request.requestURI  == url['page.ce.evaluations']?'active':''}"><a
+                        href="#{url['page.ce.evaluations']}"> <i class="icon-cog"></i> Mes evaluations <h:outputText
+                        styleClass="badge badge-inverse pull-right" value="#{menuCEBean.startedentretiensCount}"
+                        rendered="#{menuCEBean.startedentretiensCount > 0}"/>
+                </a></li>
+            </ul>
+        </div>
+    </h:form>
 </ui:composition>

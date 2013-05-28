@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/template.xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
@@ -26,7 +27,17 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['convocation.demande.titlejob']}"/>
                     </f:facet>
-                    <h:outputText value="#{entretien.date}"/>
+                    <h:outputText value="#{entretien.candidature.demande.intitulePoste}">
+                        <f:convertDateTime dateStyle="default"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['entretien.date']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.date}">
+                        <f:convertDateTime dateStyle="default"/>
+                    </h:outputText>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
@@ -39,7 +50,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['convocation.candidat.email']}"/>
                     </f:facet>
-                    <h:outputText value="#{entretien.candidature.demande.intitulePoste}"/>
+                    <h:outputText value="#{entretien.candidature.candidat.email}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
@@ -91,7 +102,7 @@
                         <small><h:outputText value="#{msg['entretien.confirm.info']}"/></small>
                     </p>
                     <div class="form-actions">
-                        <p:commandLink styleClass="btn btn-primary" update=":form:entretienTable"
+                        <p:commandLink styleClass="btn btn-primary" update=":form:entretienTable, :siderform"
                                        oncomplete="entretienDialogProceed.hide()" value="#{msg['proceed']}"
                                        actionListener="#{entretienBean.proceedEntretienCE}"/>
                         <p:commandLink styleClass="btn btn-primary" process="@none" immediate="true"

@@ -1,12 +1,12 @@
 package com.bull.grh.view.metier;
 
-import com.bull.grh.i18n.I18nMessageBean;
 import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
 import com.bull.grh.service.exception.CandidatureNotFoundException;
 import com.bull.grh.service.exception.NoDemandeSelectedException;
 import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
+import com.bull.grh.view.utils.MessagesBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,13 +21,13 @@ public class DemandeSessionBean implements Serializable {
 
     @Inject
     private DemandeService demandeService;
-
     @Inject
-    private I18nMessageBean i18nMessageBean;
+    private MessagesBean messagesBean;
 
     private DemandeVO demande = new DemandeVO();
     private CandidatVO candidat = new CandidatVO();
     private long countCandidats;
+    private Boolean changed = false;
 
     public void init() {
         demande = new DemandeVO();
@@ -37,10 +37,11 @@ public class DemandeSessionBean implements Serializable {
     public void addCandidat() {
         try {
             demandeService.addCandidateToDemand(candidat, demande);
+            changed = true;
         } catch (AlreadyHaveCandidatureException e) {
-            i18nMessageBean.showErrorMessage("impossible d'ajouter dandidat");
+            messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "impossible d'ajouter dandidat");
         } catch (NoDemandeSelectedException e) {
-            i18nMessageBean.showErrorMessage("Pas de demande selectionnée");
+            messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "Pas de demande selectionnée");
         }
 
     }
@@ -48,19 +49,15 @@ public class DemandeSessionBean implements Serializable {
     public void removeCandidat() {
         try {
             demandeService.removeCandidateFromDemand(candidat, demande);
+            changed = true;
         } catch (CandidatureNotFoundException e) {
             // TODO Faces message
-            i18nMessageBean
-                    .showErrorMessage("impossible de supprimer dandidat");
+            messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "impossible de supprimer dandidat");
         }
     }
 
-    public DemandeService getDemandeService() {
-        return demandeService;
-    }
-
-    public void setDemandeService(DemandeService demandeService) {
-        this.demandeService = demandeService;
+    public void reset() {
+        changed = false;
     }
 
     public DemandeVO getDemande() {
@@ -69,6 +66,7 @@ public class DemandeSessionBean implements Serializable {
 
     public void setDemande(DemandeVO demande) {
         this.demande = demande;
+        changed = true;
     }
 
     public CandidatVO getCandidat() {
@@ -88,4 +86,11 @@ public class DemandeSessionBean implements Serializable {
         this.countCandidats = countCandidats;
     }
 
+    public Boolean getChanged() {
+        return changed;
+    }
+
+    public void setChanged(Boolean changed) {
+        this.changed = changed;
+    }
 }

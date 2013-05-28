@@ -13,6 +13,14 @@
     <h:outputScript library="js" name="bootstrap.js"/>
 
     <div id="wrap">
+        <h:form id="messages" style="margin: 0">
+            <div class="alert myalert #{messagesBean.type.toString()}" style="display :#{messagesBean.show? 'block' : 'none'};">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>#{messagesBean.title} </strong> #{messagesBean.message}
+            </div>
+            #{messagesBean.reset()}
+        </h:form>
+
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
@@ -31,7 +39,7 @@
 
         </div>
 
-        <div id="push"/>
+        <div id="push"></div>
     </div>
     <div id="footer">
         <div class="container">

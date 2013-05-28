@@ -8,7 +8,7 @@
         <startEvent id="start"/>
         <userTask id="validationDemandeTask" name="Validation de la demande" activiti:candidateGroups="ROLE_RH"/>
         <exclusiveGateway id="exclu"/>
-        <userTask id="choixConvocationTask" name="Choix des candidat a convoquer" activiti:assignee="${owner}"/>
+        <userTask id="choixConvocationTask" name="Choix des candidat a convoquer"/>
         <userTask id="updateDemandeTask" name="Mise a jour de la demande" activiti:assignee="${owner}"/>
         <callActivity id="convocationSub" name="Sous process de convocation" calledElement="convocation">
             <extensionElements>

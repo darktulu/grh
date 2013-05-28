@@ -1,38 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets">
-	<h:form>
-		<div class="well" style="padding-left: 0px; padding-right: 0px;">
-			<ul class="nav nav-list">
-				<li class="nav-header"><i class="icon-home"></i> Mode Responsable operationnel</li>
-				
-				<li class="divider" />
-				
-				<li class="#{request.requestURI  == url['page.op.creationDemande']?'active':''}"><a
-					href="#{url['page.op.creationDemande']}"> <i class="icon-cog"></i> Création demandes
-				</a></li>
-				
-				<li class="#{request.requestURI  == url['page.op.demandesNouvelles']?'active':''}"><a
-					href="#{url['page.op.demandesNouvelles']}"> <i class="icon-cog"></i> Nouvelles demandes <h:outputText
-							styleClass="badge badge-inverse pull-right" value="#{menuOPBean.demandesCount}"
-							rendered="#{menuOPBean.demandesCount > 0}" />
-				</a></li>
-				
-				<li class="#{request.requestURI  == url['page.op.demandesTraites']?'active':''}"><a
-					href="#{url['page.op.demandesTraites']}"> <i class="icon-cog"></i> Demandes traitées <h:outputText
-							styleClass="badge badge-inverse pull-right" value="#{menuOPBean.demandesTraiteCount}"
-							rendered="#{menuOPBean.demandesTraiteCount > 0}" />
-				</a></li>
-				
-				<li class="#{request.requestURI  == url['page.op.starteddemandesTraites']?'active':''}"><a
-					href="#{url['page.op.starteddemandesTraites']}"> <i class="icon-cog"></i> Selection des candidats <h:outputText
-							styleClass="badge badge-inverse pull-right" value="#{menuOPBean.starteddemandeTraiteCount}"
-							rendered="#{menuOPBean.starteddemandeTraiteCount > 0}" />
-				</a></li>
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form id="siderform">
+        <div class="well" style="padding-left: 0; padding-right: 0;">
+            <ul class="nav nav-list">
+                <li class="nav-header"><i class="icon-home"/> Mode Responsable operationnel</li>
 
-				<li class=""><a href="#"> <i class="icon-cog"></i> Historique des demandes
-				</a></li>
-			</ul>
-		</div>
-	</h:form>
+                <li class="divider"/>
+
+                <li class="#{request.requestURI  == url['page.op.creationDemande']?'active':''}"><a
+                        href="#{url['page.op.creationDemande']}"> <i class="icon-cog"/> Création demandes
+                </a></li>
+
+                <li class="#{request.requestURI  == url['page.op.demandesNouvelles']?'active':''}"><a
+                        href="#{url['page.op.demandesNouvelles']}"> <i class="icon-cog"/> Nouvelles demandes
+                    <h:outputText
+                            styleClass="badge badge-inverse pull-right" value="#{menuOPBean.demandesCount}"
+                            rendered="#{menuOPBean.demandesCount > 0}"/>
+                </a></li>
+
+                <li class="#{request.requestURI  == url['page.op.demandesTraites']?'active':''}"><a
+                        href="#{url['page.op.demandesTraites']}"> <i class="icon-cog"/> Demandes traitées
+                    <h:outputText
+                            styleClass="badge badge-inverse pull-right" value="#{menuOPBean.demandesTraiteCount}"
+                            rendered="#{menuOPBean.demandesTraiteCount > 0}"/>
+                </a></li>
+
+                <li class="#{request.requestURI  == url['page.op.starteddemandesTraites']?'active':''}"><a
+                        href="#{url['page.op.starteddemandesTraites']}">
+                    <i class="icon-cog"/> Selection des candidats <h:outputText
+                        styleClass="badge badge-inverse pull-right" value="#{menuOPBean.starteddemandeTraiteCount}"
+                        rendered="#{menuOPBean.starteddemandeTraiteCount > 0}"/>
+                </a></li>
+
+                <li class=""><a href="#"> <i class="icon-cog"/> Historique des demandes
+                </a></li>
+            </ul>
+        </div>
+    </h:form>
 </ui:composition>

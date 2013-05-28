@@ -44,7 +44,7 @@
 						<f:facet name="header">
 							<h:outputText value="ajouter à la demande" />
 						</f:facet>
-						<p:commandLink styleClass="icon-user" action="#{demandeSessionBean.addCandidat}" update=":siderform">
+						<p:commandLink styleClass="icon-user" action="#{demandeSessionBean.addCandidat}" update=":selectedDemandeForm">
 							<f:setPropertyActionListener target="#{demandeSessionBean.candidat}" value="#{candidat}" />
 						</p:commandLink>
 					</p:column>

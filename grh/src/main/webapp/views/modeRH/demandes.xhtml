@@ -18,43 +18,50 @@
 					<br />
 					<h3>Description du poste</h3>
 					<p:dataTable id="deamnadesID" var="demande" styleClass="table table-striped" value="#{demandeBean.demandesRH}">
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Intitulé poste" />
-							</f:facet>
-							<h:outputText value="#{demande.intitulePoste}" />
-						</p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Intitulé poste"/>
+                            </f:facet>
+                            <h:outputText value="#{demande.intitulePoste}"/>
+                        </p:column>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Intitulé poste" />
-							</f:facet>
-							<h:outputText value="#{demande.nbPersonnes}" />
-						</p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre de personnes"/>
+                            </f:facet>
+                            <h:outputText value="#{demande.nbPersonnes}"/>
+                        </p:column>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Intitulé poste" />
-							</f:facet>
-							<h:outputText value="#{demande.date}" />
-						</p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Date de création"/>
+                            </f:facet>
+                            <h:outputText value="#{demande.date}" >
+                                <f:convertDateTime dateStyle="default" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Statut demande"/>
+                            </f:facet>
+                            <h:outputText value="#{demande.etatDemande.value}"/>
+                        </p:column>
 						<p:column>
 							<f:facet name="header">
 								<h:outputText value="Actions" />
 							</f:facet>
-							<div class="btn-group">
-								<p:commandLink styleClass="btn" oncomplete="confirmationDel.show()">
+								<p:commandLink oncomplete="confirmationDel.show()">
 									<i class="icon-trash"></i>
 									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
 								</p:commandLink>
-								<p:commandLink styleClass="btn">
-									<i class="icon-pencil"></i>
+								<p:commandLink >
+									<i class="icon-user"></i>
 								</p:commandLink>
-								<p:commandLink styleClass="btn btn-primary" style="color:white" oncomplete="confirmationSend.show()">
-									<i class="icon-share icon-white"></i>
+								<p:commandLink style="color:white" oncomplete="confirmationSend.show()">
+									<i class="icon-share"></i>
 									<f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}" />
 								</p:commandLink>
-							</div>
 						</p:column>
 					</p:dataTable>
 
@@ -62,7 +69,7 @@
 					<p:confirmDialog widgetVar="confirmationDel"
 						message="Voullez-vous vraiment supprimer cette demande ? cette action est irréversible">
 						<p:commandLink id="confirmDel" value="Supprimer" oncomplete="confirmationDel.hide()"
-							actionListener="#{demandeBean.rejectDemande}" styleClass="btn" update=":formDemande" />
+							actionListener="#{demandeBean.rejectDemande}" styleClass="btn" update=":formDemande, :siderform" />
 						<p:commandLink id="declineDel" value="Annuler" onclick="confirmationDel.hide()" type="button" styleClass="btn" />
 					</p:confirmDialog>
 
@@ -70,7 +77,7 @@
 						message="Voullez-vous vraiment soumettre cette demande ? cette action est irréversible">
 						<p:commandLink id="confirmSend" value="Soumettre" oncomplete="confirmationSend.hide()"
 							actionListener="#{demandeBean.proceedDemandeRH}" styleClass="btn btn-primary" style="color:white;"
-							update=":formDemande" />
+							update=":formDemande, :siderform" />
 						<p:commandLink id="declineSend" value="Annuler" onclick="confirmationSend.hide()" type="button" styleClass="btn" />
 					</p:confirmDialog>
 

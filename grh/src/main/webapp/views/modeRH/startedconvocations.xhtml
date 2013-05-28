@@ -15,7 +15,7 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<h:form id="form">
+		<h:form id="formconvocation">
 			<div class="page-header">
 				<h1>#{msg['convocation.subtitle.own']}</h1>
 			</div>
@@ -69,7 +69,7 @@
 
 				<h:outputText value="Voulez vous vraiment annuler la convocation ?" />
 				<br />
-				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" update="@form" value="#{msg['yes']}"
+				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" update=":formconvocation, :siderform" value="#{msg['yes']}"
 					actionListener="#{convocationBean.cancelConvocation}" oncomplete="convocationDialogCancel.hide()" />
 				<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" immediate="true"
 					value="#{msg['no']}" oncomplete="convocationDialogCancel.hide()" />
@@ -110,7 +110,6 @@
 		<p:dialog closable="false" id="dialogProceed" showEffect="fade" draggable="false" resizable="false"
 			widgetVar="convocationDialogProceed" modal="true">
 			<h:form id="formProceed" styleClass="form-horizontal">
-
 
 				<h2 class="page-header">#{msg['candidat.competence.update']}</h2>
 				<p:outputPanel id="convocationPanelProceed" styleClass="span7">
@@ -156,7 +155,7 @@
 					</div>
 					<div class="form-actions">
 						<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary"
-							update=":form:convocationTable,:formProceed:convocationPanelProceed,:form:convocationTable"
+							update=":formconvocation,:formProceed:convocationPanelProceed, :siderform"
 							oncomplete="if(!args.validationFailed)convocationDialogProceed.hide()" value="#{msg['update']}"
 							actionListener="#{convocationBean.completeConvocation}" />
 						<p:commandLink style="color : white; margin : 5px" styleClass="btn btn-primary" process="@none" immediate="true"

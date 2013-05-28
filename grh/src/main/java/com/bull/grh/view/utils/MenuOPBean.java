@@ -45,7 +45,7 @@ public class MenuOPBean implements Serializable {
     }
 
     public Integer getStarteddemandeTraiteCount() {
-        starteddemandeTraiteCount = demandeService.getCountDemandesTraite();
+        starteddemandeTraiteCount = demandeService.getCountStartedDemandesTraite();
         return starteddemandeTraiteCount;
     }
 

@@ -14,7 +14,6 @@
 			<ui:define name="body">
 				<h1>Création de la demande</h1>
 				<h:form id="formDemande" prependId="false" styleClass="form-horizontal">
-					<br />
 					<h3>Description du poste</h3>
 
 					<div class="control-group">
@@ -30,10 +29,10 @@
 					</div>
 
 					<div class="control-group">
-						<h:outputLabel styleClass="control-label" for="nbPersonnes"
-							value="Nombre de personnes souhaité" />
+						<h:outputLabel styleClass="control-label" for="nbPersonnes" value="Nombre de personnes souhaité" />
 						<div class="controls">
-							<p:inputText id="nbPersonnes" value="#{demandeBean.demande.nbPersonnes}" />
+							<p:inputText id="nbPersonnes" value="#{demandeBean.demande.nbPersonnes}"
+                                         validatorMessage="Le nombre de personnes doit être entre 1 et 50"/>
 							<h:message styleClass="help-inline" id="nbPersonnesID" for="nbPersonnes" />
 						</div>
 					</div>
@@ -146,8 +145,7 @@
 					</div>
 
 					<div class="control-group">
-						<h:outputLabel value="Compétences techniques" styleClass="control-label"
-							for="connaissanceTechnique" />
+						<h:outputLabel value="Compétences techniques" styleClass="control-label" for="connaissanceTechnique" />
 						<div class="controls">
 							<p:inputText id="connaissanceTechnique"
 								value="#{demandeBean.demande.descPosteProfil.connaissanceTechnique}" />
@@ -156,8 +154,7 @@
 					</div>
 
 					<div class="control-group">
-						<h:outputLabel styleClass="control-label" for="competenceOrgRel"
-							value="Compétences organisationnelles et relationnelles" />
+						<h:outputLabel styleClass="control-label" for="competenceOrgRel" value="Compétences organisationnelles et relationnelles" />
 						<div class="controls">
 							<p:inputText id="competenceOrgRel"
 								value="#{demandeBean.demande.descPosteProfil.competenceOrgRel}" />
@@ -166,8 +163,7 @@
 					</div>
 
 					<div class="control-group">
-						<h:outputLabel value="Autres éléments d'informations" styleClass="control-label"
-							for="descautre" />
+						<h:outputLabel value="Autres éléments d'informations" styleClass="control-label" for="descautre" />
 						<div class="controls">
 							<p:inputTextarea id="descautre" value="#{demandeBean.demande.descPosteProfil.autre}" />
 							<h:message styleClass="help-inline" id="descautreID" for="descautre" />

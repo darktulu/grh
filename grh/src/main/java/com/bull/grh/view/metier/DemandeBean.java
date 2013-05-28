@@ -4,6 +4,7 @@ import com.bull.grh.service.exception.DemandeHaveNoCandidatureException;
 import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
+import com.bull.grh.view.utils.MessagesBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,8 @@ public class DemandeBean implements Serializable {
 
     @Inject
     transient private DemandeService demandeService;
+    @Inject
+    transient private MessagesBean messagesBean;
 
     private List<DemandeVO> demandesTraite;
     private List<DemandeVO> startedDemandesTraite;
@@ -29,7 +32,13 @@ public class DemandeBean implements Serializable {
     private List<CandidatureVO> candidatureList;
 
     public void createDemande() {
-        demandeService.createDemande(demande);
+        try {
+            demandeService.createDemande(demande);
+            demande = new DemandeVO();
+        } catch (Exception e) {
+            messagesBean.showMessage(MessagesBean.MessageType.ERROR, "Erreur", "demande.create.faillure");
+        }
+        messagesBean.showMessage(MessagesBean.MessageType.SUCCESS, "Success", "demande.create.succes");
     }
 
     public void sendDemande() {
@@ -63,6 +72,7 @@ public class DemandeBean implements Serializable {
             startedDemandesTraite.remove(demande);
         } catch (DemandeHaveNoCandidatureException e) {
             // TODO faces message
+            messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "DemandeHaveNoCandidatureException");
         }
     }
 
@@ -77,15 +87,8 @@ public class DemandeBean implements Serializable {
             startedDemandesRH.remove(demande);
         } catch (DemandeHaveNoCandidatureException e) {
             // TODO faces message
+            messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "DemandeHaveNoCandidatureException");
         }
-    }
-
-    public DemandeService getDemandeService() {
-        return demandeService;
-    }
-
-    public void setDemandeService(DemandeService demandeService) {
-        this.demandeService = demandeService;
     }
 
     public List<DemandeVO> getDemandesTraite() {
@@ -101,7 +104,7 @@ public class DemandeBean implements Serializable {
 
     public List<DemandeVO> getStartedDemandesTraite() {
         if (startedDemandesTraite == null || startedDemandesTraite.isEmpty()) {
-            startedDemandesTraite = demandeService.loadDemandesTraite();
+            startedDemandesTraite = demandeService.loadStartedDemandesTraite();
         }
         return startedDemandesTraite;
     }

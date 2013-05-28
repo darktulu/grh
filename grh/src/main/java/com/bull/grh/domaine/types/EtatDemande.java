@@ -14,10 +14,10 @@ public enum EtatDemande implements Serializable {
     String value;
 
     private EtatDemande(String value) {
-	this.value = value;
+        this.value = value;
     }
 
     public String getValue() {
-	return value;
+        return value;
     }
 }

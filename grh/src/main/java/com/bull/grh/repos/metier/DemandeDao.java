@@ -10,4 +10,6 @@ public interface DemandeDao extends JpaRepository<Demande, Long> {
     Demande findByIntitulePoste(String intitule);
 
     List<Demande> findByEtatDemande(EtatDemande etatDemande);
+
+    List<Demande> findByEtatDemandeIn(List<EtatDemande> etatDemandes);
 }

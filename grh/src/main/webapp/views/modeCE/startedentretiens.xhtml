@@ -25,7 +25,17 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['convocation.demande.titlejob']}"/>
                     </f:facet>
-                    <h:outputText value="#{entretien.date}"/>
+                    <h:outputText value="#{entretien.candidature.demande.intitulePoste}">
+                        <f:convertDateTime dateStyle="default"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['entretien.date']}"/>
+                    </f:facet>
+                    <h:outputText value="#{entretien.date}">
+                        <f:convertDateTime dateStyle="default"/>
+                    </h:outputText>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
@@ -38,7 +48,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['convocation.candidat.email']}"/>
                     </f:facet>
-                    <h:outputText value="#{entretien.candidature.demande.intitulePoste}"/>
+                    <h:outputText value="#{entretien.candidature.candidat.email}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
@@ -186,7 +196,7 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <p:commandLink styleClass="btn btn-primary" update=":form:entretienTable"
+                        <p:commandLink styleClass="btn btn-primary" update=":form:entretienTable, :siderform"
                                        oncomplete="if(!args.validationFailed)entretienDialogProceed.hide()"
                                        value="#{msg['save']}"
                                        actionListener="#{entretienBean.completeEntretienCE}"/>
