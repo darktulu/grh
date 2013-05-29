@@ -12,15 +12,10 @@ import java.io.Serializable;
 @Component
 @Scope("request")
 public class MenuRHBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     @Inject
     private EntretienService entretienService;
-
     @Inject
     private DemandeService demandeService;
-
     @Inject
     private ConvocationService convocationsService;
 
@@ -63,14 +58,6 @@ public class MenuRHBean implements Serializable {
         this.starteddemandesCount = starteddemandesCount;
     }
 
-    public EntretienService getEntretienService() {
-        return entretienService;
-    }
-
-    public void setEntretienService(EntretienService entretienService) {
-        this.entretienService = entretienService;
-    }
-
     public Integer getEntretiensCount() {
         entretiensCount = entretienService.getCountRHTaskList();
         return entretiensCount;
@@ -88,21 +75,4 @@ public class MenuRHBean implements Serializable {
     public void setStartedentretiensCount(Integer startedentretiensCount) {
         this.startedentretiensCount = startedentretiensCount;
     }
-
-    public DemandeService getDemandeService() {
-        return demandeService;
-    }
-
-    public void setDemandeService(DemandeService demandeService) {
-        this.demandeService = demandeService;
-    }
-
-    public ConvocationService getConvocationsService() {
-        return convocationsService;
-    }
-
-    public void setConvocationsService(ConvocationService convocationsService) {
-        this.convocationsService = convocationsService;
-    }
-
 }

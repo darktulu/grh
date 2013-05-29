@@ -36,9 +36,13 @@ public class MessagesBean implements MessageSourceAware {
     private Boolean show = false;
 
     public void showMessage(MessageType type, String title, String message) {
-        this.title = title;
         this.type = type;
         this.show = true;
+        this.title = new MessageBuilder()
+                .code(title)
+                .build()
+                .resolveMessage(messageSource, Locale.FRANCE)
+                .getText();
         this.message = new MessageBuilder()
                 .code(message)
                 .build()

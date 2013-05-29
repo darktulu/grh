@@ -32,12 +32,12 @@ import java.util.Map;
 
 @Service
 public class RegisterProcessNestedServiceImpl implements RegisterProcessNestedService {
-    private static Log log = LogFactory.getLog(RegisterProcessNestedServiceImpl.class);
-
     @Autowired
     private CandidatDao candidatDao;
     @Autowired
     private EmailPreparatorService emailService;
+
+    private static Log log = LogFactory.getLog(RegisterProcessNestedServiceImpl.class);
 
     @Override
     public void deleteAccount(String username) {

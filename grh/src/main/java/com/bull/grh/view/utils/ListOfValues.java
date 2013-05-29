@@ -12,8 +12,6 @@ import java.util.List;
 @Component
 @Scope("request")
 public class ListOfValues implements ValueListConst {
-
-    private static final long serialVersionUID = 1L;
     private List<ValueVO> listVille;
     private List<ValueVO> listPays;
     private List<ValueVO> listNiveauExp;
@@ -27,14 +25,6 @@ public class ListOfValues implements ValueListConst {
 
     @Inject
     private AdminValueService adminValueService;
-
-    public AdminValueService getAdminValueService() {
-        return adminValueService;
-    }
-
-    public void setAdminValueService(AdminValueService adminValueService) {
-        this.adminValueService = adminValueService;
-    }
 
     public List<ValueVO> getListVille() {
         if (listVille == null || listVille.isEmpty()) {

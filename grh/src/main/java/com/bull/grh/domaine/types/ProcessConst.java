@@ -36,6 +36,8 @@ public interface ProcessConst {
     // Entretien Process variables
     static final String APPOINTMENT_USERNAME_CE = "usernameCE";
     static final String APPOINTMENT_ENTRETIEN = "entretien";
+    static final String APPOINTMENT_DECISION = "decision";
+    static final String APPOINTMENT_CANDIDATURE = "candidature";
     static final String APPOINTMENT_TASK_CE = "evaluationTask";
     static final String APPOINTMENT_TASK_RH = "evaluationRH";
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Strings;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -41,13 +42,10 @@ public class InformationBean implements ValueListConst {
 
 	@Inject
 	transient private CandidatService candidatService;
-
 	@Inject
 	transient private AuthenticationService authenticationService;
-
 	@Inject
 	transient private AdminValueService adminValueService;
-
 	@Inject
 	transient private I18nMessageBean messageBean;
 
@@ -144,8 +142,9 @@ public class InformationBean implements ValueListConst {
 	// GETERS AND SETTERS
 
 	public CandidatVO getCandidat() {
-		if (candidat == null)
-			candidat = authenticationService.getConnectedCandidat();
+		if (candidat == null){
+            candidat = authenticationService.getConnectedCandidat();
+        }
 		return candidat;
 	}
 
@@ -154,8 +153,9 @@ public class InformationBean implements ValueListConst {
 	}
 
 	public String getUsername() {
-		if (username == null || "".equals(username))
-			username = getCandidat().getUsername();
+		if (Strings.isNullOrEmpty(username)) {
+            username = getCandidat().getUsername();
+        }
 		return username;
 	}
 
@@ -179,18 +179,6 @@ public class InformationBean implements ValueListConst {
 
 	public void setCompetences(List<CompetenceVO> competences) {
 		this.competences = competences;
-	}
-
-	public CandidatService getCandidatService() {
-		return candidatService;
-	}
-
-	public void setCandidatService(CandidatService candidatService) {
-		this.candidatService = candidatService;
-	}
-
-	public AdminValueService getAdminValueService() {
-		return adminValueService;
 	}
 
 	public FormationVO getFormation() {
@@ -246,9 +234,4 @@ public class InformationBean implements ValueListConst {
 	public void setLangues(List<LangueVO> langues) {
 		this.langues = langues;
 	}
-
-	public void setAdminValueService(AdminValueService adminValueService) {
-		this.adminValueService = adminValueService;
-	}
-
 }

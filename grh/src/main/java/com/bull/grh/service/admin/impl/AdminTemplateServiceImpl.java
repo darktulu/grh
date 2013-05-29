@@ -16,10 +16,8 @@ import java.util.List;
 @Service
 @Transactional
 public class AdminTemplateServiceImpl implements AdminTemplateService {
-
     @Inject
     private EmailTemplateDao emailTemplateDao;
-
     @Inject
     private DozerBeanMapper mapper;
 
@@ -41,9 +39,7 @@ public class AdminTemplateServiceImpl implements AdminTemplateService {
     public List<EmailTemplateVO> loadEmailTemplates() {
         List<EmailTemplateVO> templates = new ArrayList<EmailTemplateVO>();
         List<EmailTemplate> templateEntityList = emailTemplateDao.findAll();
-        if (templateEntityList == null || templateEntityList.isEmpty()) {
-            // TODO nothing here
-        } else {
+        if (!templateEntityList.isEmpty()) {
             for (EmailTemplate e : templateEntityList)
                 templates.add(mapper.map(e, EmailTemplateVO.class));
         }

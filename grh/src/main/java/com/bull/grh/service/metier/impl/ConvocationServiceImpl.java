@@ -28,7 +28,6 @@ import java.util.Map;
 @Transactional
 @Service("convocationService")
 public class ConvocationServiceImpl implements ConvocationService {
-
     @Inject
     public AuthenticationService authenticationService;
     @Inject

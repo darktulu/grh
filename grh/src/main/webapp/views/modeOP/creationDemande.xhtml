@@ -37,7 +37,7 @@
 						</div>
 					</div>
 
-					<f:subview rendered="#{!empty listOfValues.listDisponibilite}">
+					<f:subview rendered="#{!empty listOfValues.listDisponibilite}" id="disponibiliteView">
 						<div class="control-group">
 							<h:outputLabel styleClass="control-label" for="disponibilite" value="Disponibilité" />
 							<div class="controls">
@@ -50,7 +50,7 @@
 						</div>
 					</f:subview>
 
-					<f:subview rendered="#{!empty listOfValues.listNiveauEtu}">
+					<f:subview rendered="#{!empty listOfValues.listNiveauEtu}" id="niveauEtuView">
 						<div class="control-group">
 							<h:outputLabel styleClass="control-label" for="niveauEtu" value="Niveau étude" />
 							<div class="controls">
@@ -63,7 +63,7 @@
 						</div>
 					</f:subview>
 
-					<f:subview rendered="#{!empty listOfValues.listNiveauExp}">
+					<f:subview rendered="#{!empty listOfValues.listNiveauExp}" id="niveauExpView">
 						<div class="control-group">
 							<h:outputLabel styleClass="control-label" for="niveauExp" value="Niveau expérience" />
 							<div class="controls">
@@ -76,7 +76,7 @@
 						</div>
 					</f:subview>
 
-					<f:subview rendered="#{!empty listOfValues.listPays}">
+					<f:subview rendered="#{!empty listOfValues.listPays}" id="paysView">
 						<div class="control-group">
 							<h:outputLabel styleClass="control-label" for="pays" value="Pays" />
 							<div class="controls">
@@ -89,7 +89,7 @@
 						</div>
 					</f:subview>
 
-					<f:subview rendered="#{!empty listOfValues.listVille}">
+					<f:subview rendered="#{!empty listOfValues.listVille}" id="villesView">
 						<div class="control-group">
 							<h:outputLabel styleClass="control-label" for="villes" value="Villes" />
 							<div class="controls">

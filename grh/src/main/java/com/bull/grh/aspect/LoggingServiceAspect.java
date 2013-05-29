@@ -18,8 +18,6 @@ import java.io.Serializable;
 @Aspect
 @Component
 public class LoggingServiceAspect implements Serializable {
-
-    private static final long serialVersionUID = 1L;
     protected final Logger logger = Logger.getLogger("Service LOG");
 
     @Around("execution(* com.bull.grh.service..*(..))")

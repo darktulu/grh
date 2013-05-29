@@ -2,6 +2,8 @@ package com.bull.grh.view.admin;
 
 import com.bull.grh.service.admin.AdminTemplateService;
 import com.bull.grh.view.admin.vo.EmailTemplateVO;
+import com.bull.grh.view.utils.MessagesBean;
+import com.bull.grh.view.utils.MessagesBean.MessageType;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,13 +24,17 @@ public class AdminEmailTemplateBean implements Serializable {
 
     @Inject
     private transient AdminTemplateService templateEmailService;
+    @Inject
+    private transient MessagesBean messagesBean;
 
     public void updateEmailTemplate() {
         logger.debug("Update Email template");
         try {
             templateEmailService.addorupdatEmailTemplate(emailtemplate);
+            messagesBean.showMessage(MessageType.SUCCESS,"general.success.title","general.success");
         } catch (Exception e) {
             logger.error("error updating Email Template");
+            messagesBean.showMessage(MessageType.ERROR,"general.failure.title","general.failure");
         }
     }
 
@@ -36,8 +42,10 @@ public class AdminEmailTemplateBean implements Serializable {
         logger.debug("Delete Email template");
         try {
             templateEmailService.deleteEmailTemplate(emailtemplate);
+            messagesBean.showMessage(MessageType.SUCCESS,"general.success.title","general.success");
         } catch (Exception e) {
             logger.error("error deleting Email Template");
+            messagesBean.showMessage(MessageType.ERROR,"general.failure.title","general.failure");
         }
     }
 
@@ -45,8 +53,10 @@ public class AdminEmailTemplateBean implements Serializable {
         logger.debug("Create Email template");
         try {
             templateEmailService.addorupdatEmailTemplate(emailtemplate);
+            messagesBean.showMessage(MessageType.SUCCESS,"general.success.title","general.success");
         } catch (Exception e) {
             logger.error("error creating Email Template");
+            messagesBean.showMessage(MessageType.ERROR,"general.failure.title","general.failure");
         }
     }
 
@@ -67,14 +77,4 @@ public class AdminEmailTemplateBean implements Serializable {
     public void setEmailtemplate(EmailTemplateVO emailtemplate) {
         this.emailtemplate = emailtemplate;
     }
-
-    public AdminTemplateService getTemplateEmailService() {
-        return templateEmailService;
-    }
-
-    public void setTemplateEmailService(AdminTemplateService templateEmailService) {
-        this.templateEmailService = templateEmailService;
-    }
-
-
 }

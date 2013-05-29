@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.bull.grh.domaine.types.ProcessConst.*;
+
 @Transactional
 @Service("entretienService")
 public class EntretienServiceImpl implements EntretienService {
@@ -38,10 +40,10 @@ public class EntretienServiceImpl implements EntretienService {
         entretienDao.save(mapper.map(entretien, Entretien.class));
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(ProcessConst.APPOINTMENT_USERNAME_CE, SecurityContextHolder.getContext().getAuthentication().getName());
-        params.put(ProcessConst.APPOINTMENT_ENTRETIEN, entretien.getId());
+        params.put(APPOINTMENT_USERNAME_CE, SecurityContextHolder.getContext().getAuthentication().getName());
+        params.put(APPOINTMENT_ENTRETIEN, entretien.getId());
 
-        runtimeService.startProcessInstanceByKey(ProcessConst.PROCESS_ID_ENTRETIEN, entretien.getId().toString(), params);
+        runtimeService.startProcessInstanceByKey(PROCESS_ID_ENTRETIEN, entretien.getId().toString(), params);
     }
 
     @Override
@@ -51,12 +53,12 @@ public class EntretienServiceImpl implements EntretienService {
 
         Task task = taskService.createTaskQuery()
                 .processInstanceBusinessKey(entretien.getId().toString())
-                .processDefinitionKey(ProcessConst.PROCESS_ID_ENTRETIEN)
+                .processDefinitionKey(PROCESS_ID_ENTRETIEN)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
                 .singleResult();
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("decision", entretien.getDecisionEntretien().toString());
+        params.put(APPOINTMENT_DECISION, entretien.getDecisionEntretien().toString());
 
         taskService.complete(task.getId(), params);
     }
@@ -65,7 +67,7 @@ public class EntretienServiceImpl implements EntretienService {
     public void startRHTask(EntretienVO entretien) {
         Task task = taskService.createTaskQuery()
                 .processInstanceBusinessKey(entretien.getId().toString())
-                .processDefinitionKey(ProcessConst.PROCESS_ID_ENTRETIEN)
+                .processDefinitionKey(PROCESS_ID_ENTRETIEN)
                 .taskCandidateGroup("ROLE_RH")
                 .singleResult();
 
@@ -84,13 +86,13 @@ public class EntretienServiceImpl implements EntretienService {
         // continues the process by injecting the appointment
         Task task = taskService.createTaskQuery()
                 .processInstanceBusinessKey(entretien.getId().toString())
-                .processDefinitionKey(ProcessConst.PROCESS_ID_ENTRETIEN)
+                .processDefinitionKey(PROCESS_ID_ENTRETIEN)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
                 .singleResult();
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("candidature", entretien.getCandidature().getId());
-        params.put("decision", entretien.getDecisionEntretien().toString());
+        params.put(APPOINTMENT_CANDIDATURE, entretien.getCandidature().getId());
+        params.put(APPOINTMENT_DECISION, entretien.getDecisionEntretien().toString());
 
         taskService.complete(task.getId(), params);
     }
@@ -99,14 +101,14 @@ public class EntretienServiceImpl implements EntretienService {
     @Transactional(readOnly = true)
     public List<EntretienVO> loadCETaskList() {
         List<Task> tasks = taskService.createTaskQuery()
-                .taskDefinitionKey(ProcessConst.APPOINTMENT_TASK_CE)
+                .taskDefinitionKey(APPOINTMENT_TASK_CE)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
                 .list();
 
         EntretienVO entretien;
         List<EntretienVO> list = new ArrayList<EntretienVO>();
         for (Task task : tasks) {
-            Long entretienId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.APPOINTMENT_ENTRETIEN);
+            Long entretienId = (Long) runtimeService.getVariable(task.getExecutionId(), APPOINTMENT_ENTRETIEN);
             entretien = mapper.map(entretienDao.findOne(entretienId), EntretienVO.class);
             list.add(entretien);
         }
@@ -117,14 +119,14 @@ public class EntretienServiceImpl implements EntretienService {
     @Transactional(readOnly = true)
     public List<EntretienVO> loadRHTaskList() {
         List<Task> tasks = taskService.createTaskQuery()
-                .taskDefinitionKey(ProcessConst.APPOINTMENT_TASK_RH)
+                .taskDefinitionKey(APPOINTMENT_TASK_RH)
                 .taskCandidateGroup("ROLE_RH")
                 .list();
 
         EntretienVO entretien;
         List<EntretienVO> list = new ArrayList<EntretienVO>();
         for (Task task : tasks) {
-            Long entretienId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.APPOINTMENT_ENTRETIEN);
+            Long entretienId = (Long) runtimeService.getVariable(task.getExecutionId(), APPOINTMENT_ENTRETIEN);
             entretien = mapper.map(entretienDao.findOne(entretienId), EntretienVO.class);
             list.add(entretien);
         }
@@ -135,14 +137,14 @@ public class EntretienServiceImpl implements EntretienService {
     @Transactional(readOnly = true)
     public List<EntretienVO> loadRHStartedTaskList() {
         List<Task> tasks = taskService.createTaskQuery()
-                .taskDefinitionKey(ProcessConst.APPOINTMENT_TASK_RH)
+                .taskDefinitionKey(APPOINTMENT_TASK_RH)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
                 .list();
 
         EntretienVO entretien;
         List<EntretienVO> list = new ArrayList<EntretienVO>();
         for (Task task : tasks) {
-            Long entretienId = (Long) runtimeService.getVariable(task.getExecutionId(), ProcessConst.APPOINTMENT_ENTRETIEN);
+            Long entretienId = (Long) runtimeService.getVariable(task.getExecutionId(), APPOINTMENT_ENTRETIEN);
             entretien = mapper.map(entretienDao.findOne(entretienId), EntretienVO.class);
             list.add(entretien);
         }
@@ -164,7 +166,7 @@ public class EntretienServiceImpl implements EntretienService {
     @Transactional(readOnly = true)
     public Integer getCountCETaskList() {
         return taskService.createTaskQuery()
-                .taskDefinitionKey(ProcessConst.APPOINTMENT_TASK_CE)
+                .taskDefinitionKey(APPOINTMENT_TASK_CE)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
                 .list().size();
     }
@@ -173,7 +175,7 @@ public class EntretienServiceImpl implements EntretienService {
     @Transactional(readOnly = true)
     public Integer getCountRHTaskList() {
         return taskService.createTaskQuery()
-                .taskDefinitionKey(ProcessConst.APPOINTMENT_TASK_RH)
+                .taskDefinitionKey(APPOINTMENT_TASK_RH)
                 .taskCandidateGroup("ROLE_RH")
                 .list().size();
     }
@@ -182,7 +184,7 @@ public class EntretienServiceImpl implements EntretienService {
     @Transactional(readOnly = true)
     public Integer getCountRHStartedTaskList() {
         return taskService.createTaskQuery()
-                .taskDefinitionKey(ProcessConst.APPOINTMENT_TASK_RH)
+                .taskDefinitionKey(APPOINTMENT_TASK_RH)
                 .taskAssignee(SecurityContextHolder.getContext().getAuthentication().getName())
                 .list().size();
     }
@@ -192,5 +194,4 @@ public class EntretienServiceImpl implements EntretienService {
         return entretienDao.findByPersonneUsernameAndEtat(SecurityContextHolder.getContext().getAuthentication().getName(),
                 EtatEntretien.NEW).size();
     }
-
 }

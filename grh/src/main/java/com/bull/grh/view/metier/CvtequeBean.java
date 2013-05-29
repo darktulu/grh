@@ -134,5 +134,4 @@ public class CvtequeBean implements Serializable {
     public void setPagecount(int pagecount) {
         this.pagecount = pagecount;
     }
-
 }

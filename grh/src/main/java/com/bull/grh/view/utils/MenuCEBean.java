@@ -10,21 +10,10 @@ import java.io.Serializable;
 @Component
 @Scope("request")
 public class MenuCEBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     @Inject
     private EntretienService entretienService;
 
     private long entretiensCount, startedentretiensCount;
-
-    public EntretienService getEntretienService() {
-        return entretienService;
-    }
-
-    public void setEntretienService(EntretienService entretienService) {
-        this.entretienService = entretienService;
-    }
 
     public long getEntretiensCount() {
         entretiensCount = entretienService.getCountCEEntretiens();
@@ -43,5 +32,4 @@ public class MenuCEBean implements Serializable {
     public void setStartedentretiensCount(long startedentretiensCount) {
         this.startedentretiensCount = startedentretiensCount;
     }
-
 }

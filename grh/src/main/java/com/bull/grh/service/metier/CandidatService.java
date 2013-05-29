@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.bull.grh.process.exception.InvalidActivationTokenException;
+import com.bull.grh.service.exception.InvalidActivationTokenException;
 import com.bull.grh.service.exception.CandidatNotFoundException;
 import com.bull.grh.service.exception.CannotRegisterException;
 import com.bull.grh.view.metier.vo.CandidatVO;

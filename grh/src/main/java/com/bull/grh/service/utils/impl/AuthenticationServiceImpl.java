@@ -52,5 +52,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		return mapper.map(candidatDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()),
 				CandidatVO.class);
 	}
-
 }

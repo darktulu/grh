@@ -12,9 +12,6 @@ import java.io.Serializable;
 @Component
 @Scope("session")
 public class UserSessionBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     public CandidatVO candidat;
     public PersonneVO personne;
 
@@ -22,8 +19,9 @@ public class UserSessionBean implements Serializable {
     public AuthenticationService authenticationService;
 
     public CandidatVO getCandidat() {
-        if (candidat == null)
+        if (candidat == null) {
             candidat = authenticationService.getConnectedCandidat();
+        }
         return candidat;
     }
 
@@ -32,8 +30,9 @@ public class UserSessionBean implements Serializable {
     }
 
     public PersonneVO getPersonne() {
-        if (personne == null)
+        if (personne == null) {
             personne = authenticationService.getConnectedPersonne();
+        }
         return personne;
     }
 

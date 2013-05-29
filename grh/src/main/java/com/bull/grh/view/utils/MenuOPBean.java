@@ -10,21 +10,10 @@ import java.io.Serializable;
 @Component
 @Scope("request")
 public class MenuOPBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     @Inject
     private DemandeService demandeService;
 
     private Integer demandesCount, demandesTraiteCount, starteddemandeTraiteCount;
-
-    public DemandeService getDemandeService() {
-        return demandeService;
-    }
-
-    public void setDemandeService(DemandeService demandeService) {
-        this.demandeService = demandeService;
-    }
 
     public Integer getDemandesCount() {
         demandesCount = demandeService.getCountDemandesNouveau();
@@ -52,6 +41,4 @@ public class MenuOPBean implements Serializable {
     public void setStarteddemandeTraiteCount(Integer starteddemandeTraiteCount) {
         this.starteddemandeTraiteCount = starteddemandeTraiteCount;
     }
-
-
 }

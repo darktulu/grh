@@ -10,8 +10,6 @@ import org.springframework.aop.interceptor.CustomizableTraceInterceptor;
  */
 @Aspect
 public class LoggingReposAspect extends CustomizableTraceInterceptor {
-
-    private static final long serialVersionUID = 1L;
     protected final Logger logger = Logger.getLogger("Repository LOG");
 
     @Override

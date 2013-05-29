@@ -5,15 +5,15 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
 	<aop:aspectj-autoproxy />
-	
-	<bean id="customizableTraceInterceptor"
-		class="com.bull.grh.aspect.LoggingReposAspect">
-		<!--<property name="enterMessage" value="Invoque $[methodName]($[arguments])" />-->
-		<property name="exitMessage" value="Return $[methodName]($[arguments]) : $[returnValue]" />
-	</bean>
 
-	<aop:config>
-		<aop:advisor advice-ref="customizableTraceInterceptor"
-			pointcut="execution(* com.bull.grh.repos..*(..))" />
-	</aop:config>
+	<!--<bean id="customizableTraceInterceptor"-->
+		<!--class="com.bull.grh.aspect.LoggingReposAspect">-->
+		<!--&lt;!&ndash;<property name="enterMessage" value="Invoque $[methodName]($[arguments])" />&ndash;&gt;-->
+		<!--<property name="exitMessage" value="Return $[methodName]($[arguments]) : $[returnValue]" />-->
+	<!--</bean>-->
+
+	<!--<aop:config>-->
+		<!--<aop:advisor advice-ref="customizableTraceInterceptor"-->
+			<!--pointcut="execution(* com.bull.grh.repos..*(..))" />-->
+	<!--</aop:config>-->
 </beans>

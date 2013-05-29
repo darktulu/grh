@@ -8,6 +8,7 @@ import com.bull.grh.domaine.types.Statut;
 import com.bull.grh.repos.admin.AuthorityDao;
 import com.bull.grh.repos.admin.EmailTemplateDao;
 import com.bull.grh.repos.admin.PersonneDao;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -103,6 +104,7 @@ public class ApplicationInitializator {
             personne.setFonction("developpeur");
             personne.setNom("Kecha");
             personne.setPrenom("Mohamed");
+            personne.setPassword(new String(DigestUtils.md5("test")));
             personne.setStatut(Statut.ACTIF);
 
             Authority authority = new Authority();

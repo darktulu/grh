@@ -2,7 +2,7 @@ package com.bull.grh.service.metier.impl;
 
 import com.bull.grh.domaine.*;
 import com.bull.grh.process.RegisterProcessService;
-import com.bull.grh.process.exception.InvalidActivationTokenException;
+import com.bull.grh.service.exception.InvalidActivationTokenException;
 import com.bull.grh.repos.metier.*;
 import com.bull.grh.service.exception.CandidatNotFoundException;
 import com.bull.grh.service.exception.CannotRegisterException;
@@ -22,7 +22,6 @@ import java.util.UUID;
 @Service("candidatService")
 @Transactional
 public class CandidatServiceImpl implements CandidatService {
-
     @Inject
     private CandidatDao candidatDao;
     @Inject
@@ -40,7 +39,6 @@ public class CandidatServiceImpl implements CandidatService {
 
     @Override
     public void register(CandidatVO candidatVO) throws CannotRegisterException {
-
         candidatVO.setPassword(DigestUtils.md5Hex(candidatVO.getPassword()));
         candidatVO.setCodeActivationCompte(DigestUtils.md5Hex("salt :D" + UUID.randomUUID()));
 
@@ -96,10 +94,8 @@ public class CandidatServiceImpl implements CandidatService {
     @Transactional(readOnly = true)
     public List<CompetenceVO> loadCompetences(String username) {
         List<CompetenceVO> competences = new ArrayList<CompetenceVO>();
-        List<Competence> competencesEntity = competenceDao.findByCandidat_username(username);
-        if (competencesEntity == null || competencesEntity.isEmpty()) {
-            // TODO nothing here
-        } else {
+        List<Competence> competencesEntity = competenceDao.findByCandidatUsername(username);
+        if (!competencesEntity.isEmpty()) {
             for (Competence c : competencesEntity)
                 competences.add(mapper.map(c, CompetenceVO.class));
         }
@@ -123,10 +119,8 @@ public class CandidatServiceImpl implements CandidatService {
     @Transactional(readOnly = true)
     public List<FormationVO> loadFormations(String username) {
         List<FormationVO> formations = new ArrayList<FormationVO>();
-        List<Formation> formationsEntity = formationDao.findByCandidat_username(username);
-        if (formationsEntity == null || formationsEntity.isEmpty()) {
-            // TODO nothing here
-        } else {
+        List<Formation> formationsEntity = formationDao.findByCandidatUsername(username);
+        if (!formationsEntity.isEmpty()) {
             for (Formation f : formationsEntity)
                 formations.add(mapper.map(f, FormationVO.class));
         }
@@ -150,10 +144,8 @@ public class CandidatServiceImpl implements CandidatService {
     @Transactional(readOnly = true)
     public List<ExperienceVO> loadExperiences(String username) {
         List<ExperienceVO> experiences = new ArrayList<ExperienceVO>();
-        List<Experience> experiencesEntity = experienceDao.findByCandidat_username(username);
-        if (experiencesEntity == null || experiencesEntity.isEmpty()) {
-            // TODO nothing here
-        } else {
+        List<Experience> experiencesEntity = experienceDao.findByCandidatUsername(username);
+        if (!experiencesEntity.isEmpty()) {
             for (Experience e : experiencesEntity)
                 experiences.add(mapper.map(e, ExperienceVO.class));
         }
@@ -176,10 +168,8 @@ public class CandidatServiceImpl implements CandidatService {
     @Override
     public List<LangueVO> loadLangues(String username) {
         List<LangueVO> langues = new ArrayList<LangueVO>();
-        List<Langue> languesEntity = langueDao.findByCandidat_username(username);
-        if (languesEntity == null || languesEntity.isEmpty()) {
-            // TODO nothing here
-        } else {
+        List<Langue> languesEntity = langueDao.findByCandidatUsername(username);
+        if (!languesEntity.isEmpty()) {
             for (Langue l : languesEntity)
                 langues.add(mapper.map(l, LangueVO.class));
         }

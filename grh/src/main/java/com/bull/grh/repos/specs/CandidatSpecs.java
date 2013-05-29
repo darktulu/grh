@@ -9,12 +9,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 public class CandidatSpecs {
-    public static final String NOM = "nom";
-    public static final String PRENOM = "prenom";
-
     public static Specification<Candidat> prenomLike(final String prenom) {
         return new Specification<Candidat>() {
-
             @Override
             public Predicate toPredicate(Root<Candidat> candidatRoot, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 String likepattern = getLikePattern(prenom);
@@ -25,7 +21,6 @@ public class CandidatSpecs {
 
     public static Specification<Candidat> nomLike(final String nom) {
         return new Specification<Candidat>() {
-
             @Override
             public Predicate toPredicate(Root<Candidat> candidatRoot, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 String likepattern = getLikePattern(nom);

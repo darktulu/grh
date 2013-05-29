@@ -36,9 +36,9 @@ public class DemandeBean implements Serializable {
             demandeService.createDemande(demande);
             demande = new DemandeVO();
         } catch (Exception e) {
-            messagesBean.showMessage(MessagesBean.MessageType.ERROR, "Erreur", "demande.create.faillure");
+            messagesBean.showMessage(MessagesBean.MessageType.ERROR, "general.failure.title", "demande.create.faillure");
         }
-        messagesBean.showMessage(MessagesBean.MessageType.SUCCESS, "Success", "demande.create.succes");
+        messagesBean.showMessage(MessagesBean.MessageType.SUCCESS, "general.success.title", "demande.create.succes");
     }
 
     public void sendDemande() {

@@ -19,10 +19,8 @@ import java.util.List;
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     @Inject
     private PersonneDao personneDao;
-
     @Inject
     private CandidatDao candidatDao;
 

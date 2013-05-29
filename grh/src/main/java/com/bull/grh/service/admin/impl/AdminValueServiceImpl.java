@@ -19,21 +19,17 @@ import java.util.List;
 @Service("adminValueService")
 @Transactional
 public class AdminValueServiceImpl implements AdminValueService {
-
-    protected static Logger logger = Logger.getLogger("AdminValueService");
-
     @Inject
     private DozerBeanMapper mapper;
-
     @Inject
     private TypeValueDao typeValueDao;
-
     @Inject
     private ValueListDao valueListDao;
 
+    protected static Logger logger = Logger.getLogger("AdminValueService");
+
     @Override
     public void save(TypeVO typeVO) {
-
         logger.debug("saving typeVO");
 
         if (typeVO == null) {
@@ -43,15 +39,15 @@ public class AdminValueServiceImpl implements AdminValueService {
             TypeValue typeValue = new TypeValue();
             typeValue.setNom(typeVO.getNom());
 
-            if (typeVO.getParent() != null)
+            if (typeVO.getParent() != null){
                 typeValue.setParent(typeValueDao.findOne(typeVO.getParent().getId()));
+            }
             typeValueDao.save(typeValue);
         }
     }
 
     @Override
     public void updateType(TypeVO typeVO) {
-
         logger.debug("updateType typevalue");
 
         if (typeVO == null) {
@@ -65,7 +61,6 @@ public class AdminValueServiceImpl implements AdminValueService {
 
     @Override
     public void deleteType(TypeVO typeVO) {
-
         logger.debug("delete Type");
 
         if (typeVO == null || "".equals(typeVO.getNom())) {
@@ -78,7 +73,6 @@ public class AdminValueServiceImpl implements AdminValueService {
 
     @Override
     public void addValue(ValueVO valueVo) {
-
         logger.debug("addValue");
 
         if (valueVo == null) {
@@ -88,8 +82,9 @@ public class AdminValueServiceImpl implements AdminValueService {
             ValueList valueList = new ValueList();
             ValueList parent = null;
 
-            if (valueVo.getParent() != null)
+            if (valueVo.getParent() != null) {
                 parent = valueListDao.findOne(valueVo.getParent().getId());
+            }
 
             valueList.setParent(parent);
             valueList.setValue(valueVo.getValue());
@@ -100,7 +95,6 @@ public class AdminValueServiceImpl implements AdminValueService {
 
     @Override
     public void updateValue(ValueVO valueVO) {
-
         logger.debug("updateValue valueList");
 
         if (valueVO == null) {
@@ -114,7 +108,6 @@ public class AdminValueServiceImpl implements AdminValueService {
 
     @Override
     public void deleteValue(ValueVO valueVo) {
-
         logger.debug("deleteValue");
 
         if (valueVo == null) {
@@ -128,12 +121,8 @@ public class AdminValueServiceImpl implements AdminValueService {
     @Override
     public List<ValueVO> loadValuesRoot() {
         List<ValueVO> values = new ArrayList<ValueVO>();
-        try {
-            for (ValueList value : valueListDao.findByParentIsNull()) {
-                values.add(mapper.map(value, ValueVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No children found with parent ");
+        for (ValueList value : valueListDao.findByParentIsNull()) {
+            values.add(mapper.map(value, ValueVO.class));
         }
         return values;
     }
@@ -141,12 +130,8 @@ public class AdminValueServiceImpl implements AdminValueService {
     @Override
     public List<ValueVO> loadValuesByDefName(String name) {
         List<ValueVO> values = new ArrayList<ValueVO>();
-        try {
-            for (ValueList value : valueListDao.findByTypeValue_nom(name)) {
-                values.add(mapper.map(value, ValueVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No ValueList match for name : " + name);
+        for (ValueList value : valueListDao.findByTypeValueNom(name)) {
+            values.add(mapper.map(value, ValueVO.class));
         }
         return values;
     }
@@ -154,37 +139,27 @@ public class AdminValueServiceImpl implements AdminValueService {
     @Override
     public List<ValueVO> loadValuesChildren(String parentName) {
         List<ValueVO> values = new ArrayList<ValueVO>();
-        try {
-            for (ValueList value : valueListDao.findByParent_value(parentName)) {
-                values.add(mapper.map(value, ValueVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No children found with parent : " + parentName);
+        for (ValueList value : valueListDao.findByParentValue(parentName)) {
+            values.add(mapper.map(value, ValueVO.class));
         }
         return values;
     }
 
     @Override
     public boolean valueExists(ValueVO valueVO) {
-        ValueList tmp = valueListDao.findByValue(valueVO.getValue());
-        return tmp != null;
+        return valueListDao.findByValue(valueVO.getValue()) != null;
     }
 
     @Override
     public boolean typeExists(TypeVO typeVO) {
-        TypeValue tmp = typeValueDao.findByNom(typeVO.getNom());
-        return tmp != null;
+        return typeValueDao.findByNom(typeVO.getNom()) != null;
     }
 
     @Override
     public List<ValueVO> loadValuesByType(String typeName) {
         List<ValueVO> values = new ArrayList<ValueVO>();
-        try {
-            for (ValueList value : valueListDao.findByTypeValue_nom(typeName)) {
-                values.add(mapper.map(value, ValueVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No ValueList found with type : " + typeName);
+        for (ValueList value : valueListDao.findByTypeValueNom(typeName)) {
+            values.add(mapper.map(value, ValueVO.class));
         }
         return values;
     }
@@ -192,12 +167,8 @@ public class AdminValueServiceImpl implements AdminValueService {
     @Override
     public List<TypeVO> loadTypes() {
         List<TypeVO> types = new ArrayList<TypeVO>();
-        try {
-            for (TypeValue type : typeValueDao.findAll()) {
-                types.add(mapper.map(type, TypeVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No TypeValue found with");
+        for (TypeValue type : typeValueDao.findAll()) {
+            types.add(mapper.map(type, TypeVO.class));
         }
         return types;
     }
@@ -205,12 +176,8 @@ public class AdminValueServiceImpl implements AdminValueService {
     @Override
     public List<TypeVO> loadTypeChildren(String parentNom) {
         List<TypeVO> types = new ArrayList<TypeVO>();
-        try {
-            for (TypeValue type : typeValueDao.findByParent_nom(parentNom)) {
-                types.add(mapper.map(type, TypeVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No TypeValue found with");
+        for (TypeValue type : typeValueDao.findByParentNom(parentNom)) {
+            types.add(mapper.map(type, TypeVO.class));
         }
         return types;
     }
@@ -218,14 +185,9 @@ public class AdminValueServiceImpl implements AdminValueService {
     @Override
     public List<TypeVO> loadTypesRoot() {
         List<TypeVO> types = new ArrayList<TypeVO>();
-        try {
-            for (TypeValue type : typeValueDao.findByParentIsNull()) {
-                types.add(mapper.map(type, TypeVO.class));
-            }
-        } catch (Exception e) {
-            logger.error("No TypeValue found");
+        for (TypeValue type : typeValueDao.findByParentIsNull()) {
+            types.add(mapper.map(type, TypeVO.class));
         }
         return types;
     }
-
 }

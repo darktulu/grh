@@ -10,10 +10,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CandidatureDao extends JpaRepository<Candidature, Long> {
-    @Query("FROM Candidature c WHERE c.demande.id = :idDemande ")
-    List<Candidature> findByDemand(@Param("idDemande") Long idDemande);
+    List<Candidature> findByDemandeId(Long idDemande);
 
-    @Query("SELECT count(*) FROM Candidature c WHERE c.demande.id = :idDemande ")
+    @Query("SELECT count(c) FROM Candidature c WHERE c.demande.id = :idDemande ")
     Long findByDemandeIdCount(@Param("idDemande") Long idDemande);
 
     List<Candidature> findByEtatCandidatureAndCandidatEmail(EtatCandidature etatCandidature, String email);

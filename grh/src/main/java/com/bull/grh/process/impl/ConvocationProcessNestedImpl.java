@@ -34,13 +34,12 @@ import java.util.Map;
 
 @Service
 public class ConvocationProcessNestedImpl {
-
-    private static Log log = LogFactory.getLog(ConvocationProcessNestedImpl.class);
-
     @Inject
     private EntretienDao entretienDao;
     @Inject
     private EmailPreparatorService emailService;
+
+    private static Log log = LogFactory.getLog(ConvocationProcessNestedImpl.class);
 
     @Value("email.sender")
     private String sender;

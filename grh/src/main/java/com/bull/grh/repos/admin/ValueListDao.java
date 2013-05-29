@@ -12,7 +12,7 @@ public interface ValueListDao extends JpaRepository<ValueList, Long> {
 
     List<ValueList> findByParentIsNull();
 
-    List<ValueList> findByParent_value(String parentNom);
+    List<ValueList> findByParentValue(String parentNom);
 
-    List<ValueList> findByTypeValue_nom(String nom);
+    List<ValueList> findByTypeValueNom(String nom);
 }

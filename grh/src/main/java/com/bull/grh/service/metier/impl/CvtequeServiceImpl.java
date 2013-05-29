@@ -5,6 +5,7 @@ import com.bull.grh.repos.metier.CandidatDao;
 import com.bull.grh.repos.specs.CandidatSpecs;
 import com.bull.grh.service.metier.CvtequeService;
 import com.bull.grh.view.metier.vo.CandidatVO;
+import com.google.common.base.Strings;
 import org.dozer.DozerBeanMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,12 +43,13 @@ public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService 
         Specification<Candidat> sp;
 
         // always search for name cause if "" it will return all the candidats
-        if (query.get(NOM) == null || "".equals(query.get(NOM))) {
+        if (Strings.isNullOrEmpty(query.get("nom"))) {
             sp = Specifications.where(nomLike(""));
-        } else
-            sp = Specifications.where(nomLike(query.get(NOM)));
-        if (query.get(PRENOM) != null || !"".equals(query.get(PRENOM))) {
-            sp = Specifications.where(sp).and(prenomLike(query.get(PRENOM)));
+        } else {
+            sp = Specifications.where(nomLike(query.get("nom")));
+        }
+        if (!Strings.isNullOrEmpty(query.get("prenom"))) {
+            sp = Specifications.where(sp).and(prenomLike(query.get("prenom")));
         }
 
         //search with specifications
@@ -66,12 +68,13 @@ public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService 
         Specification<Candidat> sp;
 
         // always search for name cause if "" it will return all the candidats
-        if (query.get(NOM) == null || "".equals(query.get(NOM))) {
+        if (Strings.isNullOrEmpty(query.get("nom"))) {
             sp = Specifications.where(nomLike(""));
-        } else
-            sp = Specifications.where(nomLike(query.get(NOM)));
-        if (query.get(PRENOM) != null || !"".equals(query.get(PRENOM))) {
-            sp = Specifications.where(sp).and(prenomLike(query.get(PRENOM)));
+        } else {
+            sp = Specifications.where(nomLike(query.get("nom")));
+        }
+        if (!Strings.isNullOrEmpty(query.get("prenom"))) {
+            sp = Specifications.where(sp).and(prenomLike(query.get("prenom")));
         }
 
         //search with specifications and page request
@@ -91,12 +94,13 @@ public class CvtequeServiceImpl extends CandidatSpecs implements CvtequeService 
         Specification<Candidat> sp;
 
         // always search for name cause if "" it will return all the candidats
-        if (query.get(NOM) == null || "".equals(query.get(NOM))) {
+        if (Strings.isNullOrEmpty(query.get("nom"))) {
             sp = Specifications.where(nomLike(""));
-        } else
-            sp = Specifications.where(nomLike(query.get(NOM)));
-        if (query.get(PRENOM) != null || !"".equals(query.get(PRENOM))) {
-            sp = Specifications.where(sp).and(prenomLike(query.get(PRENOM)));
+        } else {
+            sp = Specifications.where(nomLike(query.get("nom")));
+        }
+        if (!Strings.isNullOrEmpty(query.get("prenom"))) {
+            sp = Specifications.where(sp).and(prenomLike(query.get("prenom")));
         }
 
         //search with specifications and page request

@@ -7,13 +7,11 @@ import com.bull.grh.service.exception.NoDemandeSelectedException;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
 
 public interface DemandeService {
-
     void createDemande(@Valid DemandeVO demande);
 
     void startTaskDemandeOP(@Valid DemandeVO demande);
@@ -49,7 +47,8 @@ public interface DemandeService {
     void completeDemande(@Valid DemandeVO demande, List<CandidatureVO> candidatureList)
             throws DemandeHaveNoCandidatureException;
 
-    void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException, NoDemandeSelectedException;
+    void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException,
+            NoDemandeSelectedException;
 
     void removeCandidateFromDemand(CandidatVO candidat, DemandeVO demand) throws CandidatureNotFoundException;
 
@@ -59,6 +58,5 @@ public interface DemandeService {
 
     Long getCountCandidatures(DemandeVO demande);
 
-    @Transactional(readOnly = true)
     Integer getCountStartedDemandesTraite();
 }

@@ -17,7 +17,6 @@ import java.util.List;
 
 @Service("secureResourceFilterService")
 public class SecureResourceFilterService implements FilterInvocationSecurityMetadataSource {
-
     @Inject
     private WebPageDao webPageDao;
 
@@ -28,7 +27,6 @@ public class SecureResourceFilterService implements FilterInvocationSecurityMeta
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object filter) throws IllegalArgumentException {
-
         FilterInvocation filterinvocation = (FilterInvocation) filter;
         String url = filterinvocation.getRequestUrl();
         List<String> list = getAuthorities(url);

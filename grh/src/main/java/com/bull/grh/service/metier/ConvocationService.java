@@ -7,18 +7,17 @@ import javax.validation.Valid;
 import java.util.List;
 
 public interface ConvocationService {
-    public Integer getCountStartedTaskList();
+    Integer getCountStartedTaskList();
 
-    public Integer getCountTaskList();
+    Integer getCountTaskList();
 
-    public List<CandidatureVO> loadStartedTaskList();
+    List<CandidatureVO> loadStartedTaskList();
 
-    public List<CandidatureVO> loadTaskList();
+    List<CandidatureVO> loadTaskList();
 
-    public void completeConvocation(@Valid CandidatureVO candidature, @Valid EntretienVO entretien);
+    void completeConvocation(@Valid CandidatureVO candidature, @Valid EntretienVO entretien);
 
-    public void cancelConvocation(CandidatureVO candidature);
+    void cancelConvocation(CandidatureVO candidature);
 
-    public void startConvocation(CandidatureVO candidature);
-
+    void startConvocation(CandidatureVO candidature);
 }

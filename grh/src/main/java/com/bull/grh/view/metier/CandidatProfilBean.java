@@ -15,9 +15,10 @@ import com.bull.grh.view.metier.vo.CandidatVO;
 @Scope("request")
 public class CandidatProfilBean {
 
+    private static final long serialVersionUID = 1L;
+
     @Inject
     private CandidatService candidatService;
-
     @Inject
     private I18nMessageBean i18nMessageBean;
     

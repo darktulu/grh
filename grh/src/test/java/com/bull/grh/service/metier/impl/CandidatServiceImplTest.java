@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.bull.grh.process.exception.InvalidActivationTokenException;
+import com.bull.grh.service.exception.InvalidActivationTokenException;
 import com.bull.grh.service.exception.CannotRegisterException;
 import com.bull.grh.service.metier.CandidatService;
 import com.bull.grh.view.metier.vo.CandidatVO;

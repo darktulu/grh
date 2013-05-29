@@ -18,14 +18,14 @@ import java.util.Map;
 
 @Service
 public class EntretienProcessNestedImpl {
-    private static Log log = LogFactory.getLog(RegisterProcessNestedServiceImpl.class);
-
     @Inject
     private CandidatDao candidatDao;
     @Inject
     private EmailPreparatorService emailService;
     @Inject
     private EntretienDao entretienDao;
+
+    private static Log log = LogFactory.getLog(RegisterProcessNestedServiceImpl.class);
     @Value("${email.sender}")
     private String sender;
 

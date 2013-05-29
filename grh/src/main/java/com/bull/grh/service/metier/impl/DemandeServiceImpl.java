@@ -31,7 +31,6 @@ import java.util.*;
 @Transactional
 @Service("demandeService")
 public class DemandeServiceImpl implements DemandeService {
-
     @Inject
     private CandidatureDao candidatureDao;
     @Inject
@@ -241,7 +240,7 @@ public class DemandeServiceImpl implements DemandeService {
 
         // verify if the demand has some candidatures saved if so delete
         // them from the database
-        List<Candidature> candidatures = candidatureDao.findByDemand(demande.getId());
+        List<Candidature> candidatures = candidatureDao.findByDemandeId(demande.getId());
         if (candidatures != null && candidatures.size() > 0) {
             for (Candidature candidature : candidatures) {
                 candidatureDao.delete(candidature);
@@ -263,7 +262,7 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public void completeDemande(DemandeVO demande) throws DemandeHaveNoCandidatureException {
 
-        List<Candidature> candidatures = candidatureDao.findByDemand(demande.getId());
+        List<Candidature> candidatures = candidatureDao.findByDemandeId(demande.getId());
 
         if (candidatures == null || candidatures.isEmpty())
             throw new DemandeHaveNoCandidatureException();
@@ -289,7 +288,7 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public void completeDemande(DemandeVO demande, List<CandidatureVO> candidatureList)
             throws DemandeHaveNoCandidatureException {
-        List<Candidature> candidatures = candidatureDao.findByDemand(demande.getId());
+        List<Candidature> candidatures = candidatureDao.findByDemandeId(demande.getId());
 
         if (candidatures == null || candidatures.isEmpty())
             throw new DemandeHaveNoCandidatureException();
@@ -347,8 +346,9 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CandidatureVO> loadCandidatures(DemandeVO demande) {
-        List<Candidature> list = candidatureDao.findByDemand(demande.getId());
+        List<Candidature> list = candidatureDao.findByDemandeId(demande.getId());
         List<CandidatureVO> result = new ArrayList<CandidatureVO>();
         for (Candidature candidature : list) {
             result.add(mapper.map(candidature, CandidatureVO.class));
@@ -357,6 +357,7 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long getCountCandidatures(DemandeVO demande) {
         return candidatureDao.findByDemandeIdCount(demande.getId());
     }
