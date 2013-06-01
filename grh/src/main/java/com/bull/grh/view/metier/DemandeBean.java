@@ -1,6 +1,8 @@
 package com.bull.grh.view.metier;
 
+import com.bull.grh.domaine.types.EtatDemande;
 import com.bull.grh.service.exception.DemandeHaveNoCandidatureException;
+import com.bull.grh.service.exception.ServiceException;
 import com.bull.grh.service.metier.DemandeService;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
@@ -35,59 +37,95 @@ public class DemandeBean implements Serializable {
         try {
             demandeService.createDemande(demande);
             demande = new DemandeVO();
+            messagesBean.showMessage(MessagesBean.MessageType.SUCCESS, "general.success.title", "demande.create.succes");
         } catch (Exception e) {
             messagesBean.showMessage(MessagesBean.MessageType.ERROR, "general.failure.title", "demande.create.faillure");
         }
-        messagesBean.showMessage(MessagesBean.MessageType.SUCCESS, "general.success.title", "demande.create.succes");
     }
 
     public void sendDemande() {
-        demandeService.sendDemande(demande);
-        demandesNouveau.remove(demande);
+        try {
+            demandeService.sendDemande(demande);
+            demandesNouveau.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
+        } catch (Exception e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
+        }
     }
 
     public void deleteDemande() {
-        demandeService.deleteDemande(demande);
-        demandesNouveau.remove(demande);
+        try {
+            demandeService.deleteDemande(demande);
+            demandesNouveau.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
+        } catch (Exception e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
+        }
     }
 
     public void rejectDemande() {
-        demandeService.rejectDemande(demande);
-        demandesRH.remove(demande);
+        try {
+            demandeService.rejectDemande(demande);
+            demandesRH.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
+        } catch (ServiceException e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
+        }
     }
 
     public void rejectDemandeAfterAccepting() {
-        demandeService.rejectDemandeAfterAccepting(demande);
-        startedDemandesRH.remove(demande);
+        try {
+            demandeService.rejectDemandeAfterAccepting(demande);
+            startedDemandesRH.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
+        } catch (ServiceException e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
+        }
     }
 
     public void proceedDemandeOP() {
-        demandeService.startTaskDemandeOP(demande);
-        demandesTraite.remove(demande);
+        try {
+            demandeService.startTaskDemandeOP(demande);
+            demandesTraite.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
+        } catch (ServiceException e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
+        }
     }
 
     public void completeDemandeOP() {
         try {
             demandeService.completeDemande(demande, candidatureList);
             startedDemandesTraite.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
         } catch (DemandeHaveNoCandidatureException e) {
             // TODO faces message
             messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "DemandeHaveNoCandidatureException");
+        } catch (ServiceException e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
         }
     }
 
     public void proceedDemandeRH() {
-        demandeService.startTaskDemandeRH(demande);
-        demandesRH.remove(demande);
+        try {
+            demandeService.startTaskDemandeRH(demande);
+            demandesRH.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
+        } catch (ServiceException e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
+        }
     }
 
     public void completeDemandeRH() {
         try {
             demandeService.completeDemande(demande);
             startedDemandesRH.remove(demande);
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.SUCCESS);
         } catch (DemandeHaveNoCandidatureException e) {
             // TODO faces message
             messagesBean.showMessageNatif(MessagesBean.MessageType.ERROR, "", "DemandeHaveNoCandidatureException");
+        } catch (ServiceException e) {
+            messagesBean.showGeneralMessage(MessagesBean.MessageType.ERROR);
         }
     }
 

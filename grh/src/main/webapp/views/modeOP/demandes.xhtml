@@ -54,7 +54,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Actions"/>
                             </f:facet>
-                            <p:commandLink oncomplete="confirmationDel.show()">
+                            <p:commandLink oncomplete="confirmationDel.show()" update=":formDel">
                                 <i class="icon-trash"></i>
                                 <f:setPropertyActionListener value="#{demande}" target="#{demandeBean.demande}"/>
                             </p:commandLink>
@@ -67,27 +67,54 @@
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
-
-
-                    <p:confirmDialog widgetVar="confirmationDel"
-                                     message="Voullez-vous vraiment supprimer cette demande ? cette action est irréversible">
-                        <p:commandLink id="confirmDel" value="Supprimer" oncomplete="confirmationDel.hide()"
-                                       actionListener="#{demandeBean.deleteDemande}" styleClass="btn"
-                                       update=":formDemande, :siderform"/>
-                        <p:commandLink id="declineDel" value="Annuler" onclick="confirmationDel.hide()" type="button"
-                                       styleClass="btn"/>
-                    </p:confirmDialog>
-
-                    <p:confirmDialog widgetVar="confirmationSend"
-                                     message="Voullez-vous vraiment soumettre cette demande ? cette action est irréversible">
-                        <p:commandLink id="confirmSend" value="Soumettre" oncomplete="confirmationSend.hide()"
-                                       actionListener="#{demandeBean.sendDemande}" styleClass="btn btn-primary"
-                                       style="color:white;"
-                                       update=":formDemande, :siderform"/>
-                        <p:commandLink id="declineSend" value="Annuler" onclick="confirmationSend.hide()" type="button"
-                                       styleClass="btn"/>
-                    </p:confirmDialog>
                 </h:form>
+
+                <p:dialog closable="false" showEffect="fade" draggable="false" resizable="false"
+                          widgetVar="confirmationDel" modal="true">
+                    <h:form id="formDel" styleClass="form-horizontal">
+                        <h2 class="page-header">Annuler la demande</h2>
+                        <p:outputPanel id="convocationPanelProceed">
+                            <p style="padding:10px 40px;">
+                                <h:outputText value="Voullez-vous vraiment supprimer cette demande ?"/><br/>
+                                <small><h:outputText value="Cette action est irréversible"/></small>
+                            </p>
+                            <div class="form-actions">   #{demandeBean.demande.etatDemande}
+                                <p:commandLink id="confirmDel" value="#{msg['proceed']}" oncomplete="confirmationDel.hide()"
+                                               actionListener="#{demandeBean.deleteDemande}" styleClass="btn"
+                                               rendered="#{demandeBean.demande.etatDemande != 'REJECTED'}" update=":formDemande, :siderform"/>
+                                <p:commandLink id="confirmReject" value="#{msg['proceed']}" oncomplete="confirmationDel.hide()"
+                                               actionListener="#{demandeBean.rejectDemandeAfterAccepting}" styleClass="btn"
+                                               rendered="#{demandeBean.demande.etatDemande == 'REJECTED'}" update=":formDemande, :siderform"/>
+                                <p:commandLink id="declineDel" value="#{msg['cancel']}" onclick="confirmationDel.hide()" type="button"
+                                               styleClass="btn"/>
+
+                            </div>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog closable="false" showEffect="fade" draggable="false" resizable="false"
+                          widgetVar="confirmationSend" modal="true">
+                    <h:form id="formProceed" styleClass="form-horizontal">
+                        <h2 class="page-header">Annuler la demande</h2>
+                        <p:outputPanel id="convocationPanelProceed">
+                            <p style="padding:10px 40px;">
+                                <h:outputText value="Voullez-vous vraiment soumettre cette demande ?"/><br/>
+                                <small><h:outputText value="Cette action est irréversible"/></small>
+                            </p>
+                            <div class="form-actions">
+                                <p:commandLink id="confirmSend" value="#{msg['proceed']}" oncomplete="confirmationSend.hide()"
+                                               actionListener="#{demandeBean.sendDemande}" styleClass="btn btn-primary"
+                                               style="color:white;"
+                                               update=":formDemande, :siderform"/>
+                                <p:commandLink id="declineSend" value="#{msg['cancel']}"  onclick="confirmationSend.hide()" type="button"
+                                               styleClass="btn"/>
+
+                            </div>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+
             </ui:define>
         </div>
     </div>

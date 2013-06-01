@@ -70,7 +70,7 @@
 					<p:confirmDialog widgetVar="confirmationDel"
 						message="Voullez-vous vraiment supprimer cette demande ? cette action est irréversible">
 						<p:commandLink id="confirmDel" value="Supprimer" oncomplete="confirmationDel.hide()"
-							actionListener="#{demandeBean.rejectDemandeAfterAccepting}" styleClass="btn" update=":formDemande, :siderform" />
+							actionListener="#{demandeBean.rejectDemande}" styleClass="btn" update=":formDemande, :siderform" />
 						<p:commandLink id="declineDel" value="Annuler" onclick="confirmationDel.hide()" type="button" styleClass="btn" />
 					</p:confirmDialog>
 

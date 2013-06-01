@@ -1,9 +1,6 @@
 package com.bull.grh.service.metier;
 
-import com.bull.grh.service.exception.AlreadyHaveCandidatureException;
-import com.bull.grh.service.exception.CandidatureNotFoundException;
-import com.bull.grh.service.exception.DemandeHaveNoCandidatureException;
-import com.bull.grh.service.exception.NoDemandeSelectedException;
+import com.bull.grh.service.exception.*;
 import com.bull.grh.view.metier.vo.CandidatVO;
 import com.bull.grh.view.metier.vo.CandidatureVO;
 import com.bull.grh.view.metier.vo.DemandeVO;
@@ -14,9 +11,9 @@ import java.util.List;
 public interface DemandeService {
     void createDemande(@Valid DemandeVO demande);
 
-    void startTaskDemandeOP(@Valid DemandeVO demande);
+    void startTaskDemandeOP(@Valid DemandeVO demande) throws ServiceException;
 
-    void startTaskDemandeRH(@Valid DemandeVO demande);
+    void startTaskDemandeRH(@Valid DemandeVO demande) throws ServiceException;
 
     List<DemandeVO> loadDemandesNouveau();
 
@@ -40,12 +37,12 @@ public interface DemandeService {
 
     void deleteDemande(DemandeVO demande);
 
-    void rejectDemande(DemandeVO demande);
+    void rejectDemande(DemandeVO demande) throws ServiceException;
 
-    void completeDemande(@Valid DemandeVO demande) throws DemandeHaveNoCandidatureException;
+    void completeDemande(@Valid DemandeVO demande) throws DemandeHaveNoCandidatureException, ServiceException;
 
     void completeDemande(@Valid DemandeVO demande, List<CandidatureVO> candidatureList)
-            throws DemandeHaveNoCandidatureException;
+            throws DemandeHaveNoCandidatureException, ServiceException;
 
     void addCandidateToDemand(CandidatVO candidat, DemandeVO demand) throws AlreadyHaveCandidatureException,
             NoDemandeSelectedException;
@@ -54,7 +51,7 @@ public interface DemandeService {
 
     List<CandidatureVO> loadCandidatures(DemandeVO demande);
 
-    void rejectDemandeAfterAccepting(DemandeVO demande);
+    void rejectDemandeAfterAccepting(DemandeVO demande) throws ServiceException;
 
     Long getCountCandidatures(DemandeVO demande);
 

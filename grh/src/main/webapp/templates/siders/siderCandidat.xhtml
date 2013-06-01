@@ -1,83 +1,76 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets">
 
-		<ul class="nav nav-list">
-			<li class="nav-header">
-				Mon profil
-			</li>
-			<li id="consultation">
-				<a onclick="document.getElementById('consultation').className='active';" 
-				href="/grh/views/candidat/profil.xhtml">
-					<i class="icon-home"></i>
-					Consulter mon profil
-				</a>
-			</li>
-			<li id="modification">
-				<a onclick="document.getElementById('modification').className='active';"
-				href="/grh/views/login.xhtml">
-					<i class="icon-cog"></i>
-					Modifier mon profil
-				</a>
-			</li>
-			<li>
-				<a onclick="document.getElementById('modification').className='active';"
-				href="../../../views/public/modeCandidat/modificationPasswordCandidat.xhtml">
-					<i class="icon-cog"></i>
-					Modifier mon mot de passe
-				</a>
-			</li>
-			<li class="nav-header">
-				Mes informations
-			</li>
-			<li class="active">
-				<a href="#{url['page.candidat.experiences']}">
-					<i class="icon-cog"></i>
-					Mes expériences
-				</a>
-				
-			</li>
-			<li>
-				<a href="#{url['page.candidat.competences']}">
-					<i class="icon-cog"></i>
-					Mes compétences
-				</a>
-			</li>
-			<li>
-				<a href="#{url['page.candidat.formations']}">
-					<i class="icon-cog"></i>
-					Mes formations
-				</a>
-			</li>
-			<li>
-				<a href="#{url['page.candidat.langues']}">
-					<i class="icon-cog"></i>
-					Mes langues
-				</a>
-			</li>
-			<li>
-				<a href="#{url['page.candidat.piecejointe']}">
-					<i class="icon-cog"></i>
-					Mes piéces jointes
-				</a>
-			</li>
-			<li class="nav-header">
-				Demandes d'emploi
-			</li>
-			<li class="">
-				<a href="#{url['page.candidat.demandeEmploi']}">
-					<i class="icon-home"></i>
-					Mes demandes d'emploi
-				</a>
-			</li>
-			<li>
-				<a onclick="document.getElementById('modification').className='active';"
-				href="../../../views/public/modeCandidat/candidatures.xhtml">
-					<i class="icon-cog"></i>
-					Mes candidatures
-				</a>
-			</li>
-		</ul>
+    <ul class="nav nav-list">
+        <li class="nav-header">
+            Mon profil
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.consultProfil']?'active':''}">
+            <a href="#{url['page.candidat.consultProfil']}">
+                <i class="icon-home"></i>
+                Consulter mon profil
+            </a>
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.modifierProfil']?'active':''}">
+            <a href="#{url['page.candidat.modifierProfil']}">
+                <i class="icon-cog"></i>
+                Modifier mon profil
+            </a>
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.modifierPassWord']?'active':''}">
+            <a href="#{url['page.candidat.modifierPassWord']}">
+                <i class="icon-cog"></i>
+                Modifier mon mot de passe
+            </a>
+        </li>
+        <li class="nav-header">
+            Mes informations
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.experiences']?'active':''}">
+            <a href="#{url['page.candidat.experiences']}">
+                <i class="icon-cog"></i>
+                Mes expériences
+            </a>
+
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.competences']?'active':''}">
+            <a href="#{url['page.candidat.competences']}">
+                <i class="icon-cog"></i>
+                Mes compétences
+            </a>
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.formations']?'active':''}">
+            <a href="#{url['page.candidat.formations']}">
+                <i class="icon-cog"></i>
+                Mes formations
+            </a>
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.langues']?'active':''}">
+            <a href="#{url['page.candidat.langues']}">
+                <i class="icon-cog"></i>
+                Mes langues
+            </a>
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.piecejointe']?'active':''}">
+            <a href="#{url['page.candidat.piecejointe']}">
+                <i class="icon-cog"></i>
+                Mes piéces jointes
+            </a>
+        </li>
+        <li class="nav-header">
+            Demandes d'emploi
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.demandeEmploi']?'active':''}">
+            <a href="#{url['page.candidat.demandeEmploi']}">
+                <i class="icon-home"></i>
+                Mes demandes d'emploi
+            </a>
+        </li>
+        <li class="#{request.requestURI  == url['page.candidat.candidature']?'active':''}">
+            <a href="#{url['page.candidat.candidature']}">
+                <i class="icon-cog"></i>
+                Mes candidatures
+            </a>
+        </li>
+    </ul>
 </ui:composition>

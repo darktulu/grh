@@ -70,6 +70,22 @@ public class MessagesBean implements MessageSourceAware {
         RequestContext.getCurrentInstance().update("messages");
     }
 
+    public void showGeneralMessage(MessageType error) {
+        this.type = error;
+        this.show = true;
+        this.title = new MessageBuilder()
+                .code(error == MessageType.ERROR ? "general.failure.title" : "general.success.title")
+                .build()
+                .resolveMessage(messageSource, Locale.FRANCE)
+                .getText();
+        this.message = new MessageBuilder()
+                .code(error == MessageType.ERROR ? "general.failure" : "general.success")
+                .build()
+                .resolveMessage(messageSource, Locale.FRANCE)
+                .getText();
+        RequestContext.getCurrentInstance().update("messages");
+    }
+
     public void reset() {
         this.show = false;
         this.type = MessageType.DEFAULT;

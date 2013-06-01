@@ -8,27 +8,27 @@
         <div class="well" style="padding-left: 0;padding-right: 0; padding-top:5px;">
             <ul class="nav nav-list">
                 <li class="nav-header">
-                    Responsable des Ressources Humaines
+                    #{msg['sider.rh.header']}
                 </li>
                 <li class="divider"/>
 
                 <li class="nav-header">
-                    CvTheque
+                    #{msg['sider.rh.cvtheque']}
                 </li>
                 <li class="#{request.requestURI  == '/grh/views/cvteque/candidats.xhtml'?'active':''}">
                     <a href="/grh/views/cvteque/candidats.xhtml">
                         <i class="icon-cog"></i>
-                        CvTheque
+                        #{msg['sider.rh.cvtheque']}
                     </a>
                 </li>
                 <li class="nav-header">
-                    Entretiens
+                    #{msg['sider.rh.appointments']}
                 </li>
 
                 <li class="#{request.requestURI  == url['page.rh.entretiens']?'active':''}">
                     <a href="#{url['page.rh.entretiens']}">
                         <i class="icon-cog"></i>
-                        Mes entretiens
+                        #{msg['sider.rh.myappointments']}
                         <h:outputText styleClass="badge badge-inverse pull-right" value="#{menuRHBean.entretiensCount}"
                                       rendered="#{menuRHBean.entretiensCount > 0}"/>
                     </a>
@@ -37,7 +37,7 @@
                 <li class="#{request.requestURI  == url['page.rh.startedentretiens']?'active':''}">
                     <a href="#{url['page.rh.startedentretiens']}">
                         <i class="icon-cog"></i>
-                        Validation entretiens
+                        #{msg['sider.rh.validationapp']}
                         <h:outputText styleClass="badge badge-inverse pull-right"
                                       value="#{menuRHBean.startedentretiensCount}"
                                       rendered="#{menuRHBean.startedentretiensCount > 0}"/>
@@ -45,13 +45,13 @@
                 </li>
 
                 <li class="nav-header">
-                    Demandes de postes
+                    #{msg['sider.rh.demandes']}
                 </li>
 
                 <li class="#{request.requestURI  == url['page.rh.demandes']?'active':''}">
                     <a href="#{url['page.rh.demandes']}">
                         <i class="icon-cog"></i>
-                        Validation demandes
+                        #{msg['sider.rh.mydemandes']}
                         <h:outputText styleClass="badge badge-inverse pull-right" value="#{menuRHBean.demandesCount}"
                                       rendered="#{menuRHBean.demandesCount > 0}"/>
                     </a>
@@ -60,7 +60,7 @@
                 <li class="#{request.requestURI  == url['page.rh.starteddemandes']?'active':''}">
                     <a href="#{url['page.rh.starteddemandes']}">
                         <i class="icon-cog"></i>
-                        Traitement demandes
+                        #{msg['sider.rh.validationdem']}
                         <h:outputText styleClass="badge badge-inverse pull-right"
                                       value="#{menuRHBean.starteddemandesCount}"
                                       rendered="#{menuRHBean.starteddemandesCount > 0}"/>
@@ -68,13 +68,13 @@
                 </li>
 
                 <li class="nav-header">
-                    Convocations
+                    #{msg['sider.rh.convocations']}
                 </li>
 
                 <li class="#{request.requestURI  == url['page.rh.convocations']?'active':''}">
                     <a href="#{url['page.rh.convocations']}">
                         <i class="icon-cog"></i>
-                        Mes convocations
+                        #{msg['sider.rh.myconvocations']}
                         <h:outputText styleClass="badge badge-inverse pull-right"
                                       value="#{menuRHBean.convocationsCount}"
                                       rendered="#{menuRHBean.convocationsCount > 0}"/>
@@ -84,7 +84,7 @@
                 <li class="#{request.requestURI  == url['page.rh.startedconvocations']?'active':''}">
                     <a href="#{url['page.rh.startedconvocations']}">
                         <i class="icon-cog"></i>
-                        Traitement convocations
+                        #{msg['sider.rh.validationcon']}
                         <h:outputText styleClass="badge badge-inverse pull-right"
                                       value="#{menuRHBean.startedconvocationsCount}"
                                       rendered="#{menuRHBean.startedconvocationsCount > 0}"/>
@@ -98,16 +98,18 @@
     </h:form>
     <h:form id="selectedDemandeForm">
 
-        <p:effect event="load" type="pulsate" speed="400" for="test" rendered="#{demandeSessionBean.changed}"><f:param name="times" value="2"/></p:effect>
-        <p:effect event="load" type="pulsate" speed="400" for="testt" rendered="#{demandeSessionBean.changed}"><f:param name="times" value="2"/></p:effect>
+        <p:effect event="load" type="pulsate" speed="400" for="intituleposte" rendered="#{demandeSessionBean.changed}">
+            <f:param name="times" value="2"/></p:effect>
+        <p:effect event="load" type="pulsate" speed="400" for="candidatesnumber" rendered="#{demandeSessionBean.changed}">
+            <f:param name="times" value="2"/></p:effect>
 
         <div class="well" id="demandesrecap">
             <h6>Demande</h6>
             <br/>
-            <h:outputText value="#{demandeSessionBean.demande.intitulePoste}" id="test"
+            <h:outputText value="#{demandeSessionBean.demande.intitulePoste}" id="intituleposte"
                           style="font-size: 1.2em; font-weight: bold;"/>
             <br/>
-            <h:outputText value="Candidats : #{demandeSessionBean.countCandidats}" id="testt" style="font-size: 11px"/>
+            <h:outputText value="Candidats : #{demandeSessionBean.countCandidats}" id="candidatesnumber" style="font-size: 11px"/>
             #{demandeSessionBean.reset()}
         </div>
     </h:form>
